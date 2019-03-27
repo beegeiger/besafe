@@ -205,16 +205,15 @@ def example_data():
 ##############################################################################
 # Helper functions
 
-def connect_to_db(app, db_uri='postgresql:///safework'):
+def connect_to_db(app, db_uri='postgresql:///besafe'):
 	"""Connect the database to our Flask app."""
 	# Configure to use our PstgreSQL database
 	print("Connecting")
-	# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///safework'
 	# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 	# db.app = app
 	db.init_app(app)
 
 if __name__ == "__main__":	
-	connect_to_db(app, 'postgresql:///safework')
+	connect_to_db(app, 'postgresql:///besafe')
 	print("Connected to DB.")
