@@ -137,6 +137,62 @@ def register_process():
         db.session.commit()
     return redirect('/login')
 
+@app.route("/login", methods=["GET"])
+def log_in():
+    """Render's the log-in page if user not in session,
+     otherwise redirects to the homepage (Tested)"""
+
+    if 'current_user' in list(session.keys()):
+        return redirect("/")
+    else:
+        return render_template("login.html")
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    """Gets login info, verifies it, & either redirects to the forums or
+    gives an error message (Tested)"""
+
+    #Sets variable equal to the login form inputs
+    email_input = request.form['email_input']
+    pw_input = request.form['pw_input']
+    user_query = User.query.filter(User.email == email_input).all()
+
+    if user_query == []:
+        flash('There is no record of your e-mail address! Please try again or Register.')
+        print("No Record")
+        return render_template("login.html")
+
+
+    #Queries to see if the email and pword match the database. If so, redirects to the safewalk page.
+    else:
+        p_word = user_query[0].password
+        if isinstance(pw_input, str):
+            pw_input = bytes(pw_input, 'utf-8')
+        passwd = bytes(p_word, 'utf-8')
+
+
+        if bcrypt.hashpw(pw_input, passwd) == passwd:
+            session['current_user'] = email_input
+            flash('You were successfully logged in')
+            return redirect("/sw_main")
+
+        #Otherwise, it re-renders the page and throws an error message to the user
+        else:
+            flash('Your e-mail or password was incorrect! Please try again or Register.')
+            return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    """Logs user out and deletes them from the session (Tested)"""
+
+    del session['current_user']
+
+    flash('Bye! You have been succesfully logged out!')
+    return redirect("/login")
+
+
 
 #####################################################
 
