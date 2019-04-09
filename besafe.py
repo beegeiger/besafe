@@ -193,6 +193,69 @@ def logout():
     return redirect("/login")
 
 
+@app.route("/profile")
+def user_profile():
+    """Renders user's profile"""
+
+    user = User.query.filter_by(email=session['current_user']).one()
+
+    return render_template("user_page.html", user=user, email=user.email, username=user.username,
+                           fname=user.fname, lname=user.lname, about_me=user.description, tagline=user.tagline, location=user.location)
+
+
+
+@app.route("/edit_profile", methods=["GET"])
+def edit_page():
+    """Renders the edit profile page"""
+
+    user = User.query.filter_by(email=session['current_user']).one()
+
+    return render_template("edit_profile.html", email=user.email, username=user.username,
+                           fname=user.fname, lname=user.lname, about_me=user.description, user=user)
+
+
+
+@app.route("/edit_profile", methods=["POST"])
+def edit_profile():
+    """Submits the profile edits"""
+
+
+    #Gets info from html form and dbase
+    email_input = request.form['email_input']
+    pw_input = request.form['password']
+    username = request.form['username']
+    fname = request.form['fname']
+    tagline = request.form['tagline']
+    location = request.form['location']
+    lname = request.form['lname']
+    about_me = request.form['about_me']
+    email2 = request.form['email_input2']
+    phone = request.form['phone']
+    timezone = request.form['timezone']
+    user = User.query.filter_by(email=session['current_user']).one()
+
+
+    p_word = user.password
+    if isinstance(pw_input, str):
+        pw_input = bytes(pw_input, 'utf-8')
+    passwd = bytes(p_word, 'utf-8')
+
+    if bcrypt.hashpw(pw_input, passwd) == passwd:
+        (db.session.query(User).filter(
+            User.email == session['current_user']).update(
+                {'fname': fname, 'lname': lname, 'email': email_input,
+                 'username': username, 'description': about_me, 'email2': email2, 'phone': phone,
+                 'timezone': timezone}))
+        db.session.commit()
+        flash('Your Profile was Updated!')
+        return redirect("/profile")
+        
+
+    #Otherwise, it flashes a message and redirects to the login page
+    else:
+        flash('Your e-mail or password was incorrect! Please try again or Register.')
+        return redirect("/edit_profile")
+
 
 #####################################################
 
