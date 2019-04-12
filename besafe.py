@@ -256,8 +256,8 @@ def edit_profile():
         flash('Your e-mail or password was incorrect! Please try again or Register.')
         return redirect("/edit_profile")
 
-@app.route("/sw_main")
-def safewalk_main():
+@app.route("/bs_alerts")
+def besafe_alerts():
     """Renders the main safewalk page including a user's alert-sets"""
 
     #Creates variables for the curent time, date, and datetime for convenience
@@ -346,7 +346,7 @@ def safewalk_main():
             a_s.a_name = a_s.a_name[:9] + "..." + a_s.a_name[-4:]
 
 
-    return render_template("safewalk_main.html", alert_sets=alert_sets, timezone=user.timezone, user=user)
+    return render_template("besafe_alerts.html", alert_sets=alert_sets, timezone=user.timezone, user=user)
 
 
 #####################################################
