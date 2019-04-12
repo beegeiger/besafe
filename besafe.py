@@ -348,6 +348,461 @@ def besafe_alerts():
 
     return render_template("besafe_alerts.html", alert_sets=alert_sets, timezone=user.timezone, user=user)
 
+@app.route("/sw_getting_started")
+def get_started():
+    """Renders the 'Getting Started with SafeWalk' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+    con_length = len(contacts)
+
+    return render_template("getting_started_safewalk.html", contacts=contacts, con_length=con_length, timezone=user.timezone)
+
+@app.route("/rec_alerts")
+def recurring_alerts():
+    """Renders the 'Create a Recurring Alert-Set' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+
+    return render_template("recurring_alerts.html", contacts=contacts, timezone=user.timezone)
+
+@app.route("/sched_alerts")
+def scheduled_alerts():
+    """Renders the 'Create a Scheduled Alert-Set' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+
+    return render_template("scheduled_alerts.html", contacts=contacts, timezone=user.timezone)
+
+
+@app.route("/contacts")
+def user_contacts():
+    """Renders the User's 'contacts' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+
+    return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
+
+
+@app.route("/contacts", methods=["POST"])
+def add_contact():
+    """Adds a user's new contact's info to the dBase"""
+
+    #Creates variables from the form on the contacts page
+    name = request.form['name']
+    phone = request.form['phone']
+    email = request.form['email']
+    c_type = request.form['c_type']
+    message = request.form['message']
+
+    #Queries the current user
+    user = User.query.filter_by(email=session['current_user']).one()
+
+    #Creates the new Contact object, adds it to the dBase and commits the addition
+    new_contact = Contact(user_id=user.user_id, name=name, email=email, phone=phone, c_type=c_type, c_message=message)
+    db.session.add(new_contact)
+    db.session.commit()
+
+    return redirect("/contacts")
+
+
+@app.route("/del_contact/<contact_num>")
+def delete_contact(contact_num):
+    """Deletes a user's contact from the dBase"""
+
+    #Queries the contact in question, deletes it from the dBase, and commits
+    contact = Contact.query.filter_by(contact_id=contact_num).one()
+    db.session.delete(contact)
+    db.session.commit()
+
+    return redirect("/contacts")
+
+
+@app.route("/edit_contact/<contact_num>", methods=["POST"])
+def edit_contact(contact_num):
+    """Edit's a contact's info"""
+
+    #Creates variables from the form on the contacts page
+    name = request.form['name']
+    phone = request.form['phone']
+    email = request.form['email']
+    c_type = request.form['c_type']
+    message = request.form['message']
+
+    #Queries the contact in question, edits it in the dBase, and commits
+    contact = Contact.query.filter_by(contact_id=contact_num).one()
+    ((db.session.query(Contact).filter_by(contact_id=contact_num)).update(
+    {'name':name, 'email':email, 'phone':phone, 'c_type':c_type, 'c_message':message}))
+    db.session.commit()
+
+    return redirect("/contacts")
+
+
+@app.route("/add_recset", methods=["POST"])
+def add_rec_alertset():
+    """Adds a recurring Alert-Set to the dBase"""
+
+    #Gets the alert and alert set info from the form on the add a new rec set page
+    name = request.form['set_name']
+    desc = request.form['descri']
+    interval = request.form['interval']
+    contacts = request.form.getlist('contact')
+
+    #Queries the current user
+    user = User.query.filter_by(email=session['current_user']).one()
+
+    #Creates a new alert set, adds it to the dBase, commits, and then queries the just-created alert set
+    new_alert_set = AlertSet(user_id=user.user_id, a_name=name, a_desc=desc, interval=interval)
+    db.session.add(new_alert_set)
+    db.session.commit()
+    alert_set = AlertSet.query.filter(AlertSet.user_id == user.user_id, AlertSet.a_name == name).first()
+
+    #Initiates 3 contact variables, sets the first to the first contact and the next two to None
+    contact1 = int(contacts[0])
+    contact2 = None
+    contact3 = None
+
+    #If more than one contact is associated with the alert set, the following variables are set to them
+    if len(contacts) > 1:
+        contact2 = int(contacts[1])
+    if len(contacts) > 2:
+        contact3 = int(contacts[2])
+
+    #A new alert (associated with the alert set) is created, added, and commited to the dBase
+    new_alert = Alert(alert_set_id=alert_set.alert_set_id, user_id=user.user_id, contact_id1=contact1,
+                      contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc)
+    db.session.add(new_alert)
+    db.session.commit()
+
+    return redirect("/sw_main")
+
+@app.route("/edit_recset/<alert_set_id>")
+def edit_recset_page(alert_set_id):
+    """Renders the page to edit a recurring alert set"""
+
+    #Queries the user, alert_set, user's contacts, and associated alerts
+    user = User.query.filter_by(email=session['current_user']).one()
+    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+    alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
+
+    return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
+
+@app.route("/save_recset/<alert_set_id>", methods=["POST"])
+def save_recset(alert_set_id):
+    """Saves the edits to a recurring alert set"""
+
+    #Gets the alert and alert set info from the form
+    name = request.form['set_name']
+    desc = request.form['descri']
+    interval = request.form['interval']
+    contacts = request.form.getlist('contact')
+
+    #The Alert-Set is updated in the dBase with the new data
+    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
+    {'a_name': name, 'a_desc': desc, 'interval': interval})
+
+    #Initiates 3 contact variables, sets the first to the first contact and the next two to None
+    contact1 = int(contacts[0])
+    contact2 = None
+    contact3 = None
+
+    #If more than one contact is associated with the alert set, the following variables are set to them
+    if len(contacts) > 1:
+        contact2 = int(contacts[1])
+    if len(contacts) > 2:
+        contact3 = int(contacts[2])
+
+    #The alert associated with the alert set is then updated and all of the changes are committed
+    (db.session.query(Alert).filter_by(alert_set_id=alert_set_id)).update(
+    {'message': desc, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
+    db.session.commit()
+
+    #The user is then re-routed to the main safewalk page
+    return redirect("/sw_main")
+
+@app.route("/add_schedset", methods=["POST"])
+def add_sched_alertset():
+    """Adds a new scheduled alert set"""
+
+    #Iniates date and end date variables and sets them to None
+    date = None
+    end_date = None
+
+    #If the user enters a date or end_date, the variables are then updated to that value
+    if len(request.form['date']) > 2:
+        date = request.form['date']
+    if len(request.form['end_date']) > 2:
+        end_date = request.form['end_date']
+
+    #Gets the alert set name, description, and then queries the current user
+    name = request.form['set_name']
+    desc = request.form['descri']
+    user = User.query.filter_by(email=session['current_user']).one()
+
+    #A new alert set object is then created, added to the dBase, and commited
+    new_alert_set = AlertSet(user_id=user.user_id, a_name=name, a_desc=desc, date=date, end_date=end_date)
+    db.session.add(new_alert_set)
+    db.session.commit()
+
+    #The just-created alert set is then queried to get the alert_set_id
+    alert_set = AlertSet.query.filter(AlertSet.user_id == user.user_id, AlertSet.a_name == name).first()
+
+    #The user is then redirected to the scheduled set edit page for this alert set
+    return redirect("/edit_schedset/" + str(alert_set.alert_set_id))
+
+@app.route("/edit_schedset/<alert_set_id>")
+def edit_schedset_page(alert_set_id):
+    """Renders the page where a scheduled alert set can be edited"""
+
+    #The user, their alert_sets, alerts, and contacts are queried
+    user = User.query.filter_by(email=session['current_user']).one()
+    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
+    alerts = Alert.query.filter_by(alert_set_id=alert_set_id).order_by(asc(Alert.alert_id)).all()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+
+    #This information is then sent to the rendered edit page
+    return render_template("edit_sched_alerts.html", alert_set=alert_set, contacts=contacts, alerts=alerts, timezone=user.timezone)
+
+@app.route("/edit_set/<alert_set_id>", methods=["POST"])
+def save_schedset(alert_set_id):
+    """Saves the scheduled alert set beind edited"""
+
+    #Gets the alert set details from the form
+    date = request.form['date']
+    end_date = request.form['end_date']
+    name = request.form['set_name']
+    desc = request.form['descri']
+
+    #Queries the dBase for the alert set, updates it, commits, and redirects the user back to edit page
+    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
+    {'date': date, 'end_date': end_date, 'a_name': name, 'a_desc': desc})
+    db.session.commit()
+    return redirect("/edit_schedset/" + str(alert_set_id))
+
+@app.route("/edit_al/<alert_id>", methods=["POST"])
+def edit_schedal(alert_id):
+    """Saves the existing scheduled alert being edited"""
+
+    #Queries alert in question current user
+    alert = Alert.query.filter_by(alert_id=alert_id).one()
+    user = User.query.filter_by(email=session['current_user']).one()
+
+    #Gets the alert information from the form on the page
+    time = request.form['time']
+    contacts = request.form.getlist('contact')
+    message = request.form['check_mess']
+
+    #Initiates 3 contact variables, sets the first to the first contact and the next two to None
+    contact1 = int(contacts[0])
+    contact2 = None
+    contact3 = None
+
+    #If more than one contact is associated with the alert set, the following variables are set to them
+    if len(contacts) > 1:
+        contact2 = int(contacts[1])
+    if len(contacts) > 2:
+        contact3 = int(contacts[2])
+
+    #Queries and updates the alert, commits, and redirects back to the edit page
+    (db.session.query(Alert).filter_by(alert_id=alert_id)).update(
+    {'time': time, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3, 'message': message})
+    db.session.commit()
+    return redirect("/edit_schedset/" + str(alert.alert_set_id))
+
+@app.route("/add_alert/<alert_set_id>", methods=["POST"])
+def add_sched_alert(alert_set_id):
+    """Saves a new scheduled alert"""
+
+    #Queries the current user
+    user = User.query.filter_by(email=session['current_user']).one()
+    
+    #Gets the alert info from the form on the edit sched set page
+    time = request.form['time']
+    contacts = request.form.getlist('contact')
+    message = request.form['check_mess']
+    
+    #Initiates 3 contact variables, sets the first to the first contact and the next two to None
+    contact1 = int(contacts[0])
+    contact2 = None
+    contact3 = None
+    
+    #If more than one contact is associated with the alert set, the following variables are set to them
+    if len(contacts) > 1:
+        contact2 = int(contacts[1])
+    if len(contacts) > 2:
+        contact3 = int(contacts[2])
+    
+    #Creates a new alert object, adds it to the dBase, commits, and redirects back to the edit page
+    new_alert = Alert(alert_set_id=alert_set_id, user_id=user.user_id, contact_id1=contact1,
+                      contact_id2=contact2, contact_id3=contact3, message=message, time=time)
+    db.session.add(new_alert)
+    db.session.commit()
+    return redirect("/edit_schedset/" + str(alert_set_id))
+
+@app.route("/activate/<alert_set_id>")
+def activate_alertset(alert_set_id):
+    """Activates an alert set"""
+
+    #The alert set in question is queried
+    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
+    
+    #Variables set to the current date, time, and datetime are created for convenience
+    time = datetime.datetime.now().time()
+    date = (datetime.datetime.today())
+    dt = datetime.datetime.now()
+    
+    #An empty list is created to store the datetimes of the alerts associated with the alert set
+    dt_list = []
+    
+    #If there is no start date, the start date is set to today
+    if alert_set.date == None:
+        db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id).update({'date': date, 'start_datetime': dt})
+    
+    #If the alert set is scheduled (not recurring), the alert times are added to the the dt_list
+    if alert_set.interval == None:
+        alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
+        for alert in alerts:
+            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time})
+            if alert.date == None:
+                dtime = datetime.datetime.combine(date, alert.time)
+                db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'date': date, 'datetime': dtime})
+                dt_list.append(dtime)
+            else:
+                dtime = datetime.datetime.combine(alert.date, alert.time)
+                db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime})
+                dt_list.append(dtime)
+    
+    #If the alert set is recurring, the alert time is set to now + the time interval
+    else:
+        print("Interval = " + str(alert_set.interval))
+        print("Rec Activated")
+        # dtime = datetime.datetime.combine(date, time)
+        # dt_list.append(dtime)
+        dtime_int = dt + datetime.timedelta(minutes=alert_set.interval)
+        alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
+        db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time, 'time': dtime_int.time(), 'datetime': dtime_int})
+        dt_list.append(dtime_int)
+    
+    #The alert set is updated to be active and its commited
+    db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id).update({'active': True, 'start_time': time, 'start_datetime': dt})
+    db.session.commit()
+    
+    #The alert datetime list is sorted and the earliest time is then sent back to the page
+    dt_list.sort()
+    alarm_dt = dt_list[0].strftime("%I:%M %p, %m/%d/%Y")
+    return str(alarm_dt)
+
+@app.route("/deactivate/<alert_set_id>")
+def deactivate_alertset(alert_set_id):
+    """Deactivates an alert set"""
+
+    #The alert set is queried and updated
+    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
+    {'active': False})
+    
+    #All alerts associated with the alert set are queried and updated, and it's all commited
+    alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
+    for alert in alerts:
+        if alert.interval:
+            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
+            {'active': False, 'checked_in': False, 'time': None, 'datetime': None})
+        else:
+            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
+            {'active': False, 'checked_in': False,'datetime': None})
+    db.session.commit()
+    return "Alert Set Deactivated"
+
+@app.route("/check_ins")
+def checkin_page():
+    """Renders the User's check-in page"""
+
+    #The current user and check-ins are queried and the page is rendered
+    user = User.query.filter_by(email=session['current_user']).one()
+    check_ins = CheckIn.query.filter_by(user_id=user.user_id).all()
+    return render_template("checkins_page.html", check_ins=check_ins, timezone=user.timezone)
+
+@app.route("/add_check_in", methods=["POST"])
+def add_new_checkin():
+    """Using POST, a new check-in is added from the check-in page"""
+
+    #Get's the check-in details from the form on the page and runs the check_in helper-function
+    text = request.form['check_text']
+    user = User.query.filter_by(email=session['current_user']).one()
+    
+    #Use's the helper function check_in()
+    check_in(user.user_id, text)
+    
+    #Queries the active and all alerts
+    alerts = Alert.query.filter(Alert.user_id == user.user_id, Alert.active == True).all()
+    all_alerts = Alert.query.filter(Alert.user_id == user.user_id).all()
+    
+    #Creates and empty list which is then filled with datetimes from the active alerts
+    alert_datetimes = []
+    for alert in alerts:
+        if alert.datetime:
+            alert_datetimes.append(alert.datetime)
+    
+    #The List of Datetimes is sorted
+    alert_datetimes.sort()
+    
+    #If there is at least one active alert, a message is created with that info
+    if len(alert_datetimes) > 0:
+        diff = datetime.datetime.now() - alert_datetimes[0]
+        minutes = (diff.total_seconds()) / 60
+        time = alert_datetimes[0].time()
+        check_time = (alert_datetimes[0] - datetime.timedelta(hours=1)).time()
+        message = "Your Check-In has been received! Your next alarm is due in " + str(minutes) + " minutes, so you must check in between " + str(check_time) + " and " + str(time) + "."
+    
+    #Otherwise a message is created explaining that there are no active alerts
+    else:
+        message = "Your check-in has been received! You don't have any alerts currently active."
+    
+    #The message is then sent back to the user as confirmation
+    if len(all_alerts) > 0:
+        send_alert_user(all_alerts[0].alert_id, message)
+
+    return redirect("/check_ins")
+
+@app.route("/feedback", methods=["POST"])
+def submit_feedback():
+    """Using POST, feedback is added from the check-in page"""
+
+    #Get's the Feedback details from the form on the page and adds it to the dBase
+    text = request.form['feedback_text']
+    user = User.query.filter_by(email=session['current_user']).one()
+    dt = datetime.datetime.now()
+    new_feedback = Feedback(user_id=user.user_id, datetime=dt, content=text)
+    db.session.add(new_feedback)
+    db.session.commit()
+    return "Feedback Submitted!"
+
+@app.route("/user_code", methods=["POST"])
+def new_user_code():
+    """Creates a new User Code"""
+    
+    user = User.query.filter_by(email=session['current_user']).one()
+    code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(4))
+    # code = "".join(random.choices(string.ascii_uppercase + string.digits, k=4))
+    code_check = User.query.filter_by(user_code=code).all()
+    while len(code_check) > 0 or "0" in code or "O" in code:
+        code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(4))
+        # code = "".join(random.choices(string.ascii_uppercase + string.digits, k=4))
+        code_check = User.query.filter_by(user_code=code).all()
+
+    db.session.query(User).filter_by(user_id=user.user_id).update({'user_code': code})
+
+    db.session.commit()
+
+    return str(code)
+
 
 #####################################################
 
