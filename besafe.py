@@ -802,7 +802,105 @@ def new_user_code():
     db.session.commit()
 
     return str(code)
+@app.route("/incoming_mail", methods=["POST"])
+def mailin():
+    """Route where incoming mail is sent from mailgun"""
 
+    #Access some of the email parsed values:
+    sender = request.form['From']
+    send_address = request.form['sender']
+    subject = request.form['subject']
+    text = request.form['body-plain']
+    body = str(text)
+
+    #The user is queried using the e-mail address
+    user = User.query.filter_by(email=str.strip(send_address)).all()
+    if user == []:
+        user = User.query.filter_by(email2=str.strip(send_address)).all()
+
+    if user != []:
+        print("User Found by email address")
+
+    while user == []:
+        left = body.find("(")
+        if left == -1:
+            break
+        else:
+            right = body.find(")")
+            if right == left + 5:
+                user = User.query.filter_by(user_code=body[(left + 1):(left + 5)]).all()
+                body = body[0:left] + body[(left + 1):]
+                body = body[0:right] + body[(right + 1):]
+                if user != []:
+                    print("User Found by user code")
+    
+    if user == []:
+        print("No User Was Found")
+    else:
+        send_email(send_address, "Thank You! Your Check-In has been received and logged!")
+
+    #Assuming a user is found, the check-in helper-function is run
+    if len(user) >= 1:
+        u_id = user[0].user_id
+        check_in(u_id, text)
+    print(send_address)
+    print("Email Message Received")
+    return "Email Message Received"
+
+@app.route('/incoming_sms', methods=['POST'])
+def smsin():
+    """Route where incoming SMS messages are sent from Bandwidth"""
+    
+    number = request.form['From']
+    message_body = request.form['Body']
+    body = str(message_body)
+
+    # # Access some of the SMS parsed values:
+    # dat = request.data
+    # data = json.loads(dat.decode(encoding="utf-8", errors="strict"))
+    # message_body = data['text']
+    # phone = data['from']
+
+    if len(number) > 10:
+        number = number[-10:]
+
+    print("Number =" + str(number))
+    print("Body =" + body)
+
+
+    #The user is queried using the phone-number
+
+    user = User.query.filter_by(phone=str(number)).all()
+
+    if user != []:
+        print("User Found by phone number")
+
+    while user == []:
+        left = body.find("(")
+        if left == -1:
+            break
+        else:
+            right = body.find(")")
+            if right == left + 5:
+                user = User.query.filter_by(user_code=body[(left + 1):(left + 5)]).all()
+                body = body[0:left] + body[(left + 1):]
+                body = body[0:right] + body[(right + 1):]
+                if user != []:
+                    print("User Found by user code")
+    
+    if user == []:
+        print("No User Was Found")
+    else:
+        send_message(number, "Thank You " + user[0].fname + "! Your Check-In has been received and logged!")
+    
+    #Assuming a user is found, the check-in helper-function is run
+    if len(user) >= 1:
+        u_id = user[0].user_id
+        check_in(u_id, message_body)
+    print(number)
+    print(user)
+    print("SMS Received")
+    return "SMS Received"
 
 #####################################################
 
