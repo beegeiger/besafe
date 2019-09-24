@@ -38,7 +38,7 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route("/")
 def go_home():
-    """Renders the safework homepage. (Tested)"""
+    """Renders the besafe homepage. (Tested)"""
     return render_template("homepage.html")
 
 
@@ -164,7 +164,7 @@ def login():
         return render_template("login.html")
 
 
-    #Queries to see if the email and pword match the database. If so, redirects to the safewalk page.
+    #Queries to see if the email and pword match the database. If so, redirects to the besafe page.
     else:
         p_word = user_query[0].password
         if isinstance(pw_input, str):
@@ -258,7 +258,7 @@ def edit_profile():
 
 @app.route("/bs_alerts")
 def besafe_alerts():
-    """Renders the main safewalk page including a user's alert-sets"""
+    """Renders the main besafe page including a user's alert-sets"""
 
     #Creates variables for the curent time, date, and datetime for convenience
     time = datetime.datetime.now().time()
@@ -350,14 +350,14 @@ def besafe_alerts():
 
 @app.route("/sw_getting_started")
 def get_started():
-    """Renders the 'Getting Started with SafeWalk' Page"""
+    """Renders the 'Getting Started with besafe' Page"""
 
     #Queries the current user and their contact info
     user = User.query.filter_by(email=session['current_user']).one()
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
     con_length = len(contacts)
 
-    return render_template("getting_started_safewalk.html", contacts=contacts, con_length=con_length, timezone=user.timezone)
+    return render_template("getting_started_besafe.html", contacts=contacts, con_length=con_length, timezone=user.timezone)
 
 @app.route("/rec_alerts")
 def recurring_alerts():
@@ -525,7 +525,7 @@ def save_recset(alert_set_id):
     {'message': desc, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
     db.session.commit()
 
-    #The user is then re-routed to the main safewalk page
+    #The user is then re-routed to the main besafe page
     return redirect("/sw_main")
 
 @app.route("/add_schedset", methods=["POST"])
