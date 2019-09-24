@@ -902,6 +902,146 @@ def smsin():
     print("SMS Received")
     return "SMS Received"
 
+@app.route('/pass_change', methods=['POST'])
+def pass_change():
+    """Changes user password"""
+
+    #Posts the values from the form
+    old_pw = request.form['pw_old']
+    new_pw1 = request.form['pw_new']
+    new_pw2 = request.form['pw_new2']
+    
+    #Queries User
+    user_query = User.query.filter_by(email=session['current_user']).one()
+
+    #Hashes Password
+    pword = bytes(new_pw1, 'utf-8')
+    hashed_word = bcrypt.hashpw(pword, bcrypt.gensalt()).decode('utf-8')
+        
+
+    p_word = user_query.password
+
+    pw_input = bytes(old_pw, 'utf-8')
+    passwd = bytes(p_word, 'utf-8')
+
+
+    #If the passwords don't match old password, redirects to pass page
+    if bcrypt.hashpw(pw_input, passwd) != passwd:
+        flash('Your existing password is incorrect. Please Try again.')
+        return redirect("/pass_page")
+
+    #If the two passwords don't match, redirects to page
+    elif new_pw1 != new_pw2:
+        flash("Your passwords don't match!")
+        return redirect("/pass_page")
+
+    #If the new password is too short, it redirects
+    elif len(new_pw2) < 6:
+        flash("Your password must be at least 6 characters!")
+        return redirect("/pass_page")
+
+    #Otherwise the new password is added to the User object!
+    else:
+        (db.session.query(User).filter(
+            User.email == session['current_user']).update(
+                {'password': hashed_word}))
+        db.session.commit()
+        flash('Your Password was updated!')
+        return redirect("/check_ins")
+
+@app.route('/pass_reset', methods=['POST'])
+def pass_reset():
+    """Resets users password"""
+    email = request.form['email']
+    user_query = User.query.filter(User.email == email).all()
+    dt = datetime.datetime.now()
+
+    if user_query == []:
+        flash('There is no record of this e-mail address. Try again with a different e-mail or register a new account.')
+        return redirect("/pass_reset_page")
+
+    else:
+        reset_code = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(8))
+        message = "Enter the following reset code in the field at 'safeworkproject.org/pass_reset_page' / Reset Code: " + reset_code
+        session['reset'] = "reset_sent"
+        send_email(email, message)
+        (db.session.query(User).filter(
+            User.email == email).update(
+                {'reset_code': reset_code, 'reset_datetime': dt}))
+        db.session.commit()
+        return "code_sent"
+
+
+@app.route('/pass_code', methods=['POST'])
+def pass_code():
+    code = request.form['pass_code']
+    user_query = User.query.filter(User.reset_code == code).all()
+    dt = datetime.datetime.now()
+    
+    if user_query == []:
+        flash('The code was incorrect. Try again. Re-send a new code to your e-mail anytime!')
+        return redirect("/pass_reset_page")
+    elif abs(user_query[0].reset_datetime - dt) > datetime.timedelta(minutes=10):
+        flash('This code is expired. Each code is only valid for 10 minutes. Re-send a new code anytime.')
+        return redirect("/pass_reset_page")
+    else:
+        session['user_reset'] = user_query[0].email
+        return "code_correct"
+    
+
+@app.route('/new_pass', methods=['POST'])
+def new_pass():
+    new_pw1 = request.form['pw_new']
+    new_pw2 = request.form['pw_new2']
+    user_query = User.query.filter_by(email=session['user_reset']).one()
+    if new_pw1 != new_pw2:
+        flash("Your passwords don't match! Try again")
+        return redirect("/pass_reset_page")
+
+    elif len(new_pw2) < 6:
+        flash("Your password must be at least 6 characters!")
+        return redirect("/pass_reset_page")
+
+    else:
+        p_word = bytes(new_pw2, 'utf-8')
+        hashed_word = bcrypt.hashpw(p_word, bcrypt.gensalt()).decode('utf-8')
+        (db.session.query(User).filter(
+            User.email == session['user_reset']).update(
+                {'password': hashed_word}))
+        db.session.commit()
+        flash('Your Password was updated! You can now log in with it.')
+        del session['user_reset']
+        del session['reset']
+        return redirect("/")
+
+
+
+@app.route("/pass_page", methods=["GET"])
+def pass_page():
+    """Renders the password change page"""
+
+    return render_template("pass_change.html")
+
+@app.route("/pass_reset_page", methods=["GET"])
+def pass_reset_page():
+    """Renders password reset page"""
+    return render_template("reset.html")
+
+@app.route("/geo_point", methods=["POST"])
+def add_geo_point():
+    """Adds New Geo Point for user's phone"""
+    user = User.query.filter_by(email=session['current_user']).one()
+    now = datetime.datetime.now()
+    lat = str(request.form['lat'])
+    lon = str(request.form['long'])
+    print("Lat + Long =")
+    print(lat, lon)
+    geo = GeoPoint(user_id=user.user_id, latitude=lat, longitude=lon, datetime=now)
+    db.session.add(geo)
+    db.session.commit()
+    return "success"
+
+
 #####################################################
 
 if __name__ == "__main__":
