@@ -145,7 +145,7 @@ def log_in():
     if 'current_user' in list(session.keys()):
         return redirect("/")
     else:
-        return render_template("login.html")
+        return render_template("login_auth.html")
 
 
 @app.route("/login", methods=["POST"])
