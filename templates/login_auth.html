@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}{% endblock %}
 {% block head %}
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<link rel="stylesheet" href="style.css" />
 {% endblock %}
 {% block content %}
 <body>
@@ -47,26 +48,30 @@ function checkLoginState() {
 
 
 function statusChangeCallback(response) {
-                console.log('statusChangeCallback');
-                console.log(response);
-                // The response object is returned with a status field that lets the
-                // app know the current login status of the person.
-                // Full docs on the response object can be found in the documentation
-                // for FB.getLoginStatus().
-                if (response.status === 'connected') {
-                    // Logged into your app and Facebook.
-                    console.log('Welcome!  Fetching your information.... ');
-                    FB.api('/me', function (response) {
-                        console.log('Successful login for: ' + response.name);
-                        document.getElementById('status').innerHTML =
-                          'Thanks for logging in, ' + response.name + '!';
-                        console.log(response.name, response.email)
-                    });
-                } else {
-                    // The person is not logged into your app or we are unable to tell.
-                    document.getElementById('status').innerHTML = 'Please log ' +
-                      'into this app.';
-                }
-            }
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+        // Logged into your app and Facebook.
+        console.log('Welcome!  Fetching your information.... ');
+        FB.api('/me', function (response) {
+            console.log('Successful login for: ' + response.name);
+            document.getElementById('status').innerHTML =
+                'Thanks for logging in, ' + response.name + '!';
+            console.log(response.name, response.email)
+        });
+    } else {
+        // The person is not logged into your app or we are unable to tell.
+        document.getElementById('status').innerHTML = 'Please log ' +
+            'into this app.';
+    }
+}
+
+function getUserInfo(user_id) {
+
+}
 </script>
 {% endblock %}
