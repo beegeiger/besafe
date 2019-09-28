@@ -26,11 +26,13 @@
            js.src = "https://connect.facebook.net/en_US/sdk.js";
            fjs.parentNode.insertBefore(js, fjs);
          }(document, 'script', 'facebook-jssdk'));
-      </script>
+     
+         
+     </script>
 </body>
 
 <fb:login-button 
-  scope="public_profile,email"
+  scope="public_profile, email"
   onlogin="checkLoginState();">
 </fb:login-button>
 <script>
@@ -40,7 +42,10 @@ function checkLoginState() {
   });
 }
 
+
 // Code from https://stackoverflow.com/questions/49468165/statuschangecallback-is-not-defined-facebook-javascript-sdk-login-error
+
+
 function statusChangeCallback(response) {
                 console.log('statusChangeCallback');
                 console.log(response);
@@ -55,6 +60,7 @@ function statusChangeCallback(response) {
                         console.log('Successful login for: ' + response.name);
                         document.getElementById('status').innerHTML =
                           'Thanks for logging in, ' + response.name + '!';
+                        console.log(response.name, response.email)
                     });
                 } else {
                     // The person is not logged into your app or we are unable to tell.
