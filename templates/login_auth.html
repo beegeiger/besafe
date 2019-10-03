@@ -27,7 +27,7 @@
            js.src = "https://connect.facebook.net/en_US/sdk.js";
            fjs.parentNode.insertBefore(js, fjs);
          }(document, 'script', 'facebook-jssdk'));
-     
+         
          
      </script>
 </body>
@@ -61,7 +61,15 @@ function statusChangeCallback(response) {
             console.log('Successful login for: ' + response.name);
             document.getElementById('status').innerHTML =
                 'Thanks for logging in, ' + response.name + '!';
-            console.log(response.name, response.email)
+            console.log(response.name, response.email);
+            FB.api(
+                '/me',
+                'GET',
+                {"fields":"id,name,email"},
+                function(response) {
+                    console.log(response);
+                }
+            );
         });
     } else {
         // The person is not logged into your app or we are unable to tell.
