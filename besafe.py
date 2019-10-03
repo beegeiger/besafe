@@ -16,6 +16,19 @@ from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_
 import requests
 import logging
 
+from functools import wraps
+from os import environ as env
+from werkzeug.exceptions import HTTPException
+from dotenv import load_dotenv, find_dotenv
+from flask import Flask
+from flask import jsonify
+from flask import redirect
+from flask import render_template
+from flask import session
+from flask import url_for
+from authlib.flask.client import OAuth
+from six.moves.urllib.parse import urlencode
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///besafe'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -31,9 +44,19 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 ################################################################
+oauth = OAuth(app)
 
-
-
+auth0 = oauth.register(
+    'auth0',
+    client_id='78rUTjeVusqU3vYXyvNpOQiF8jEacf55',
+    client_secret='TlbI5F9JYICPLm2FEkujyOepRJ4ub1Uib3zXwPxy6Q7ULAjgkcvXODmts1V6k48f',
+    api_base_url='https://dev-54k5g1jc.auth0.com',
+    access_token_url='https://dev-54k5g1jc.auth0.com/oauth/token',
+    authorize_url='https://dev-54k5g1jc.auth0.com/authorize',
+    client_kwargs={
+        'scope': 'openid profile email',
+    },
+)
 ################################################################
 
 @app.route("/")
