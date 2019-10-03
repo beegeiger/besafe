@@ -64,6 +64,23 @@ def go_home():
     """Renders the besafe homepage. (Tested)"""
     return render_template("homepage.html")
 
+@app.route('/callback')
+def callback_handling():
+    # Handles response from token endpoint
+    auth0.authorize_access_token()
+    resp = auth0.get('userinfo')
+    userinfo = resp.json()
+
+    # Store the user information in flask session.
+    session['jwt_payload'] = userinfo
+    session['profile'] = {
+        'user_id': userinfo['sub'],
+        'name': userinfo['name'],
+        'picture': userinfo['picture'],
+        'email': userinfo['email']
+    }
+    return redirect('/')
+
 
 @app.route("/register", methods=["GET"])
 def register_form():
@@ -165,10 +182,11 @@ def log_in():
     """Render's the log-in page if user not in session,
      otherwise redirects to the homepage (Tested)"""
 
-    if 'current_user' in list(session.keys()):
-        return redirect("/")
-    else:
-        return render_template("login_auth.html")
+    # if 'current_user' in list(session.keys()):
+    #     return redirect("/")
+    # else:
+    #     return render_template("login_auth.html")
+    return auth0.authorize_redirect(redirect_uri='/callback', audience='https://dev-54k5g1jc.auth0.com/userinfo')
 
 
 @app.route("/login", methods=["POST"])
