@@ -1,3 +1,7 @@
+python-dotenv
+
+authlib
+six
 bandwidth-sdk==3.0.1
 bcrypt==3.1.4
 flask_sqlalchemy
@@ -13,3 +17,4 @@ requests==2.20.0
 SQLAlchemy==1.1.7
 twilio
 psycopg2
+
