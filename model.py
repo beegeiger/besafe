@@ -33,16 +33,16 @@ class User(db.Model):
 	lname = db.Column(db.String(64), nullable=True)
 	email = db.Column(db.String(256))
 	email2 = db.Column(db.String(256), nullable=True)
-	description = db.Column(db.String(512), nullable=True)
+	# description = db.Column(db.String(512), nullable=True)
 	#Image Attachment Documentation at http://sqlalchemy-imageattach.readthedocs.io/en/1.1.0/
-	picture = db.Column(db.String(256), nullable=True)
+	# picture = db.Column(db.String(256), nullable=True)
 	created_at = db.Column(db.DateTime, nullable=True)
 	edited_at = db.Column(db.DateTime, nullable=True)
-	user_type_main = db.Column(db.String(256), nullable=True)
-	user_type_secondary = db.Column(db.String(256), nullable=True)
-	tagline = db.Column(db.String(100), nullable=True)
-	location = db.Column(db.String(50), nullable=True)
-	user_type = db.Column(db.String(50), default="regular")
+	# user_type_main = db.Column(db.String(256), nullable=True)
+	# user_type_secondary = db.Column(db.String(256), nullable=True)
+	# tagline = db.Column(db.String(100), nullable=True)
+	# location = db.Column(db.String(50), nullable=True)
+	# user_type = db.Column(db.String(50), default="regular")
 	timezone = db.Column(db.String(48))
 	phone = db.Column(db.String(28), nullable=True)
 	reset_datetime = db.Column(db.DateTime, nullable=True)
@@ -50,8 +50,8 @@ class User(db.Model):
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<user_id={} user_code={} password={} username={} fname={} lname={} email={} description={} picture={} created_at={} edited_at={} user_type_main={} user_type_secondary={}> tagline={} location={} user_type={} reset_datetime={} reset_code={}>".format(
-			self.user_id, self.user_code, self.password, self.username, self.fname, self.lname, self.email, self.description, self.picture, self.created_at, self.edited_at, self.user_type_main, self.user_type_secondary, self.tagline, self.location, self.user_type, self.reset_datetime, self.reset_code)
+		return "<user_id={} user_code={} password={} username={} fname={} lname={} email={} created_at={} edited_at={} reset_datetime={} reset_code={}>".format(
+			self.user_id, self.user_code, self.password, self.username, self.fname, self.lname, self.email, self.created_at, self.edited_at, self.reset_datetime, self.reset_code)
 
 
 
@@ -191,9 +191,9 @@ def example_data():
 
 	
 	#Example Users
-	u1 = User(password=bcrypt.hashpw("12356".encode(), bcrypt.gensalt()), username="LaceyKittey", fname="Lacey", lname="Kittey", email="lkitty@.com", description="Former Escort", created_at=datetime.now(), edited_at=datetime.now())
-	u2 = User(password=bcrypt.hashpw("abcdef".encode(), bcrypt.gensalt()), username="HappyDoc", fname="Happy", lname="Doc", email="HDoc@.com", description="Former Cam Model", created_at=datetime.now(), edited_at=datetime.now())
-	u3 = User(password=bcrypt.hashpw("Testing".encode(), bcrypt.gensalt()), username="Testing", fname="Dev", lname="Tester", email="Testing@gmail.com", description="Former Sugar baby", created_at=datetime.now(), edited_at=datetime.now())
+	u1 = User(password=bcrypt.hashpw("12356".encode(), bcrypt.gensalt()), username="LaceyKittey", fname="Lacey", lname="Kittey", email="lkitty@.com", created_at=datetime.now(), edited_at=datetime.now())
+	u2 = User(password=bcrypt.hashpw("abcdef".encode(), bcrypt.gensalt()), username="HappyDoc", fname="Happy", lname="Doc", email="HDoc@.com", created_at=datetime.now(), edited_at=datetime.now())
+	u3 = User(password=bcrypt.hashpw("Testing".encode(), bcrypt.gensalt()), username="Testing", fname="Dev", lname="Tester", email="Testing@gmail.com", created_at=datetime.now(), edited_at=datetime.now())
 	
 
 
