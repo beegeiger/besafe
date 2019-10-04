@@ -59,6 +59,18 @@ auth0 = oauth.register(
 )
 ################################################################
 
+def requires_auth(f):
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    if 'profile' not in session:
+      # Redirect to Login page here
+      return redirect('/')
+    return f(*args, **kwargs)
+
+  return decorated
+
+######################################################################3
+
 @app.route("/")
 def go_home():
     """Renders the besafe homepage. (Tested)"""
@@ -81,6 +93,12 @@ def callback_handling():
     }
     return redirect('/')
 
+@app.route('/dashboard')
+@requires_auth
+def dashboard():
+    return render_template('dashboard.html',
+                           userinfo=session['profile'],
+                           userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
 @app.route("/register", methods=["GET"])
 def register_form():
@@ -227,11 +245,14 @@ def login():
 @app.route("/logout")
 def logout():
     """Logs user out and deletes them from the session (Tested)"""
-
-    del session['current_user']
-
-    flash('Bye! You have been succesfully logged out!')
-    return redirect("/login")
+    # del session['current_user']
+    # flash('Bye! You have been succesfully logged out!')
+    # return redirect("/login")
+    # Clear session stored data
+    session.clear()
+    # Redirect user to logout endpoint
+    params = {'returnTo': url_for('home', _external=True), 'client_id': '78rUTjeVusqU3vYXyvNpOQiF8jEacf55'}
+    return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 
 @app.route("/profile")
