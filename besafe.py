@@ -203,8 +203,8 @@ def log_in():
     # if 'current_user' in list(session.keys()):
     #     return redirect("/")
     # else:
-    #     return render_template("login_auth.html")
-    return auth0.authorize_redirect(redirect_uri='/callback', audience='https://dev-54k5g1jc.auth0.com/userinfo')
+    # return render_template("login.html")
+    return auth0.authorize_redirect(redirect_uri='https://d5d2bbc1.ngrok.io/callback', audience='https://dev-54k5g1jc.auth0.com/userinfo')
 
 
 @app.route("/login", methods=["POST"])

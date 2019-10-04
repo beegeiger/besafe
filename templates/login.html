@@ -4,37 +4,12 @@
 
 {% endblock %}
 {% block content %}
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<div class="container">
-		<form action="/login" method="POST" class="form-signin"><br>
-			<h2><i class="fa fa-sign-in" aria-hidden="true"></i> Log In</h2><br>
-			<input type=textbox name="email_input" id="email_input" placeholder="Email Id" size="30" required></input><br>
-			<input type="password" name="pw_input" id="pw_input" placeholder="Password" size="30" required></input><br>
-			<input type="checkbox" onclick="myFunction()">Show Password<br>
-			<br><button class="btn btn-lg btn-primary btn-block" id="signin" type="submit">Sign in</button>
-			<br>&nbsp Don't have an account? &nbsp &nbsp <a href="/register"> Register Here!</a>
-			<br>&nbsp Forgot your password? &nbsp &nbsp <a href="/pass_reset_page"> Reset it Here!</a>
-		</form>
-</div>
-<style>
-	.form-signin {
-		position: relative;
-		height: auto;
-		padding: 15px;
-		font-size: 16px;
-		max-width: 330px;
-		margin: 0 auto;
-	}
-</style>
-
-<script>
-	function myFunction() {
-    var x = document.getElementById("pw_input");
-    if (x.type === "password") {
-        x.type = "text";
-    } else {
-        x.type = "password";
-    }
-}
-</script>
+<body>
+		<div class="login-box auth0-box before">
+				<img src="https://i.cloudup.com/StzWWrY34s.png" />
+				<h3>Auth0 Example</h3>
+				<p>Zero friction identity infrastructure, built for developers</p>
+				<a class="btn btn-primary btn-lg btn-login btn-block" href="/login">Log In</a>
+		</div>
+</body>
 {% endblock %}
