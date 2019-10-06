@@ -47,7 +47,7 @@ app.jinja_env.undefined = StrictUndefined
 
 ################################################################
 oauth = OAuth(app)
-
+print("Oauth: ", oauth_client_id,oauth_client_secret)
 auth0 = oauth.register(
     'auth0',
     client_id=oauth_client_id,
@@ -87,6 +87,7 @@ def callback_handling():
     resp = auth0.get('userinfo')
     print('callback called b')
     userinfo = resp.json()
+    print('userinfo:', userinfo)
     print('callback called2')
     # Store the user information in flask session.
     session['jwt_payload'] = userinfo
@@ -117,44 +118,44 @@ def log_in():
     #     return redirect("/")
     # else:
     # return render_template("login.html")
-    uri = "https://042db7e8.ngrok.io/callback"
+    uri = "https://besafe.ngrok.io/callback"
     print(type(uri))
-    return auth0.authorize_redirect(redirect_uri=uri, audience='https://dev-54k5g1jc.auth0.com/userinfo')
+    return auth0.authorize_redirect(redirect_uri=uri, audience='https://dev-54k5g1jc.auth0.com/api/v2/')
 
 
-@app.route("/login", methods=["POST"])
-def login():
-    """Gets login info, verifies it, & either redirects to the forums or
-    gives an error message (Tested)"""
+# @app.route("/login", methods=["POST"])
+# def login():
+#     """Gets login info, verifies it, & either redirects to the forums or
+#     gives an error message (Tested)"""
 
-    #Sets variable equal to the login form inputs
-    email_input = request.form['email_input']
-    pw_input = request.form['pw_input']
-    user_query = User.query.filter(User.email == email_input).all()
+#     #Sets variable equal to the login form inputs
+#     email_input = request.form['email_input']
+#     pw_input = request.form['pw_input']
+#     user_query = User.query.filter(User.email == email_input).all()
 
-    if user_query == []:
-        flash('There is no record of your e-mail address! Please try again or Register.')
-        print("No Record")
-        return render_template("login.html")
-
-
-    #Queries to see if the email and pword match the database. If so, redirects to the besafe page.
-    else:
-        p_word = user_query[0].password
-        if isinstance(pw_input, str):
-            pw_input = bytes(pw_input, 'utf-8')
-        passwd = bytes(p_word, 'utf-8')
+#     if user_query == []:
+#         flash('There is no record of your e-mail address! Please try again or Register.')
+#         print("No Record")
+#         return render_template("login.html")
 
 
-        if bcrypt.hashpw(pw_input, passwd) == passwd:
-            session['current_user'] = email_input
-            flash('You were successfully logged in')
-            return redirect("/sw_main")
+#     #Queries to see if the email and pword match the database. If so, redirects to the besafe page.
+#     else:
+#         p_word = user_query[0].password
+#         if isinstance(pw_input, str):
+#             pw_input = bytes(pw_input, 'utf-8')
+#         passwd = bytes(p_word, 'utf-8')
 
-        #Otherwise, it re-renders the page and throws an error message to the user
-        else:
-            flash('Your e-mail or password was incorrect! Please try again or Register.')
-            return render_template("login.html")
+
+#         if bcrypt.hashpw(pw_input, passwd) == passwd:
+#             session['current_user'] = email_input
+#             flash('You were successfully logged in')
+#             return redirect("/sw_main")
+
+#         #Otherwise, it re-renders the page and throws an error message to the user
+#         else:
+#             flash('Your e-mail or password was incorrect! Please try again or Register.')
+#             return render_template("login.html")
 
 
 @app.route("/logout")
