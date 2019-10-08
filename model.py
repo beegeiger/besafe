@@ -26,7 +26,8 @@ class User(db.Model):
 	__tablename__ = "users"
 
 	user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	username = db.Column(db.String(64))
+	username = db.Column(db.String(64), nullable=True)
+	name = db.Column(db.String(64), nullable=True)
 	fname = db.Column(db.String(64), nullable=True)
 	lname = db.Column(db.String(64), nullable=True)
 	email = db.Column(db.String(256))
@@ -37,8 +38,8 @@ class User(db.Model):
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<user_id={} username={} fname={} lname={} email={} created_at={} timezone={} phone={}>".format(
-			self.user_id, self.username, self.fname, self.lname, self.email, self.created_at, self.timezone, self.phone)
+		return "<user_id={} username={} name={} fname={} lname={} email={} created_at={} timezone={} phone={}>".format(
+			self.user_id, self.username, self.name, self.fname, self.lname, self.email, self.created_at, self.timezone, self.phone)
 
 
 

@@ -81,24 +81,23 @@ def go_home():
 @app.route('/callback')
 def callback_handling():
     # Handles response from token endpoint
-    print('callback called')
     auth0.authorize_access_token()
-    print('callback called a')
     resp = auth0.get('userinfo')
-    print('callback called b')
     userinfo = resp.json()
-    print('userinfo:', userinfo)
-    print('callback called2')
     # Store the user information in flask session.
     session['jwt_payload'] = userinfo
-    print('callback called3')
     session['profile'] = {
         'user_id': userinfo['sub'],
         'name': userinfo['name'],
         'picture': userinfo['picture'],
         'email': userinfo['email']
     }
-    print('got through call back')
+    user = User.query.filter_by(email=session['email']).all()
+    if user == []:
+        new_user = User(name=userinfo['name'], email=userinfor['email'], , username=userinfo['nickname'], fname=userinfo['given_name'], lname=userinfo['family_name'], created_at=datetime.datetime.now())
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect('/edit_profile')
     return redirect('/dashboard')
 
 @app.route('/dashboard')
@@ -121,41 +120,6 @@ def log_in():
     uri = "https://besafe.ngrok.io/callback"
     print(type(uri))
     return auth0.authorize_redirect(redirect_uri=uri, audience='https://dev-54k5g1jc.auth0.com/api/v2/')
-
-
-# @app.route("/login", methods=["POST"])
-# def login():
-#     """Gets login info, verifies it, & either redirects to the forums or
-#     gives an error message (Tested)"""
-
-#     #Sets variable equal to the login form inputs
-#     email_input = request.form['email_input']
-#     pw_input = request.form['pw_input']
-#     user_query = User.query.filter(User.email == email_input).all()
-
-#     if user_query == []:
-#         flash('There is no record of your e-mail address! Please try again or Register.')
-#         print("No Record")
-#         return render_template("login.html")
-
-
-#     #Queries to see if the email and pword match the database. If so, redirects to the besafe page.
-#     else:
-#         p_word = user_query[0].password
-#         if isinstance(pw_input, str):
-#             pw_input = bytes(pw_input, 'utf-8')
-#         passwd = bytes(p_word, 'utf-8')
-
-
-#         if bcrypt.hashpw(pw_input, passwd) == passwd:
-#             session['current_user'] = email_input
-#             flash('You were successfully logged in')
-#             return redirect("/sw_main")
-
-#         #Otherwise, it re-renders the page and throws an error message to the user
-#         else:
-#             flash('Your e-mail or password was incorrect! Please try again or Register.')
-#             return render_template("login.html")
 
 
 @app.route("/logout")
@@ -188,8 +152,7 @@ def edit_page():
 
     user = User.query.filter_by(email=session['current_user']).one()
 
-    return render_template("edit_profile.html", email=user.email, username=user.username,
-                           fname=user.fname, lname=user.lname, about_me=user.description, user=user)
+    return render_template("edit_profile.html", user=user)
 
 
 
