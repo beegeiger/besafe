@@ -26,24 +26,19 @@ class User(db.Model):
 	__tablename__ = "users"
 
 	user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	user_code = db.Column(db.String(4), nullable=True)
-	password = db.Column(db.String(1028))
 	username = db.Column(db.String(64))
 	fname = db.Column(db.String(64), nullable=True)
 	lname = db.Column(db.String(64), nullable=True)
 	email = db.Column(db.String(256))
-	email2 = db.Column(db.String(256), nullable=True)
 	created_at = db.Column(db.DateTime, nullable=True)
-	edited_at = db.Column(db.DateTime, nullable=True)
 	timezone = db.Column(db.String(48))
 	phone = db.Column(db.String(28), nullable=True)
-	reset_datetime = db.Column(db.DateTime, nullable=True)
-	reset_code = db.Column(db.String(16), nullable=True)
+
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<user_id={} user_code={} password={} username={} fname={} lname={} email={} created_at={} edited_at={} reset_datetime={} reset_code={}>".format(
-			self.user_id, self.user_code, self.password, self.username, self.fname, self.lname, self.email, self.created_at, self.edited_at, self.reset_datetime, self.reset_code)
+		return "<user_id={} username={} fname={} lname={} email={} created_at={} timezone={} phone={}>".format(
+			self.user_id, self.username, self.fname, self.lname, self.email, self.created_at, self.timezone, self.phone)
 
 
 
