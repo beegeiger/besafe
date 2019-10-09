@@ -29,7 +29,7 @@ from flask import url_for
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
 
-from secrets import oauth_client_secret, oauth_client_id
+from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///besafe'
@@ -73,6 +73,10 @@ def requires_auth(f):
 
 ######################################################################3
 
+# @app.route("/api_key", methods=["POST"])
+# def api_key():
+#     return google_maps_key
+
 @app.route("/")
 def go_home():
     """Renders the besafe homepage. (Tested)"""
@@ -92,9 +96,9 @@ def callback_handling():
         'picture': userinfo['picture'],
         'email': userinfo['email']
     }
-    user = User.query.filter_by(email=session['email']).all()
+    user = User.query.filter_by(email=userinfo['email']).all()
     if user == []:
-        new_user = User(name=userinfo['name'], email=userinfor['email'], , username=userinfo['nickname'], fname=userinfo['given_name'], lname=userinfo['family_name'], created_at=datetime.datetime.now())
+        new_user = User(name=userinfo['name'], email=userinfor['email'], username=userinfo['nickname'], fname=userinfo['given_name'], lname=userinfo['family_name'], created_at=datetime.datetime.now())
         db.session.add(new_user)
         db.session.commit()
         return redirect('/edit_profile')
@@ -191,6 +195,8 @@ def edit_profile():
     else:
         flash('Your e-mail or password was incorrect! Please try again or Register.')
         return redirect("/edit_profile")
+
+
 
 @app.route("/bs_alerts")
 def besafe_alerts():

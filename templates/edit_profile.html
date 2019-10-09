@@ -23,7 +23,7 @@
 		<button id = "find-me">Get My Timezone Automatically</button><br/>
 		<p id = "status"></p>
 
-		<button id = "find-me">Select My Timezone Automatically</button><br/>
+		<button id = "time_select">Select My Timezone Automatically</button><br/>
 		<div class=hidden>
 		<select name="timezone" id="DropDownTimezone" value="{{ user.timezone }}">
 		<option value="-12.0" {% if user.timezone == '-12.0' %}selected{% endif %}>(GMT -12:00) Eniwetok, Kwajalein</option>
@@ -83,7 +83,7 @@ function success(position) {
 
   
   status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-  postapp(latitude, longitude);
+  timezone(latitude, longitude);
   setInterval(postapp, 60*1000);
   console.log("location found");
 }
@@ -101,6 +101,14 @@ if (!navigator.geolocation) {
 }
 
 
+}
+
+function timezone(lat, long){
+	let path = 'https://maps.googleapis.com/maps/api/timezone/json?location='.concat(lat, ',', long, '&timestamp=1331161200&key=')
+	$.post(path, function(data){
+		console.log('data:', data)
+		return data
+	});
 }
 
 document.querySelector('#check-click').addEventListener('click', geoFindMe);
