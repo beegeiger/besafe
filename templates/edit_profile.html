@@ -54,46 +54,13 @@
 		<option value="12.0" {% if user.timezone == '12.0' %}selected{% endif %}>(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option><br><br>
 	</select>
 		<br><br>
-
-		<b>Additional E-mail:</b> <input type=textbox name="email_input2"></input><br><br>
 	
 		<b>Phone Number:</b><input type="tel" name="phone"><br><br>
-		
-		<b>Tagline:</b> (what is your experience?) <input type=textbox name="tagline" maxlength="100"><br><br>
-		<b>What city/area is most of your experience from?</b><input type=textbox name="location" maxlength="50"><br><br>
-		
-		
-		<br><br><b>Tell us a bit about yourself:</b><br>
-		<textarea rows="6" cols="50" name="about_me">{{ about_me }}</textarea><br>
 
-		<b>Please Re-Enter Your Password:</b><b style="color: red;">*</b> <input type=password name="password" id="myInput" required></input><br>
-		<input type="checkbox" onclick="myFunction()">Show Password<br>
-		<br><a href="/pass_page">Change Your Password Here</a>
 
 		<br><input type=submit></form>
 </div>
 </div>
 </div>
 
-
-<script>
-	function myFunction() {
-    var x = document.getElementById("myInput");
-    if (x.type === "password") {
-        x.type = "text";
-    } else {
-        x.type = "password";
-    }
-}
-
-	function myFunction2() {
-    var x = document.getElementById("myInput2");
-    if (x.type === "password") {
-        x.type = "text";
-    } else {
-        x.type = "password";
-    }
-}
-
-</script>
 {% endblock %}
