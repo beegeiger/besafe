@@ -163,14 +163,9 @@ def edit_profile():
 
     #Gets info from html form and dbase
     email_input = request.form['email_input']
-    pw_input = request.form['password']
     username = request.form['username']
     fname = request.form['fname']
-    tagline = request.form['tagline']
-    location = request.form['location']
     lname = request.form['lname']
-    about_me = request.form['about_me']
-    email2 = request.form['email_input2']
     phone = request.form['phone']
     timezone = request.form['timezone']
     user = User.query.filter_by(email=session['current_user']).one()
