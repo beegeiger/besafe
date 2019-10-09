@@ -20,7 +20,12 @@
 		<b>First name: <b style="color: red;">*</b></b><input type=textbox name="fname" value="{{ user.fname }}" required></input>&nbsp &nbsp<b>Last name:</b><input type=textbox name="lname" value={{ lname }}></input><br><br>
 
 		<b>What is your timezone?:</b>
-	<select name="timezone" id="DropDownTimezone" value="{{ user.timezone }}">
+		<button id = "find-me">Get My Timezone Automatically</button><br/>
+		<p id = "status"></p>
+
+		<button id = "find-me">Select My Timezone Automatically</button><br/>
+		<div class=hidden>
+		<select name="timezone" id="DropDownTimezone" value="{{ user.timezone }}">
 		<option value="-12.0" {% if user.timezone == '-12.0' %}selected{% endif %}>(GMT -12:00) Eniwetok, Kwajalein</option>
 		<option value="-11.0" {% if user.timezone == '-11.0' %}selected{% endif %}>(GMT -11:00) Midway Island, Samoa</option>
 		<option value="-10.0" {% if user.timezone == '-10.0' %}selected{% endif %}>(GMT -10:00) Hawaii</option>
@@ -52,7 +57,8 @@
 		<option value="10.0" {% if user.timezone == '10.0' %}selected{% endif %}>(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
 		<option value="11.0" {% if user.timezone == '11.0' %}selected{% endif %}>(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
 		<option value="12.0" {% if user.timezone == '12.0' %}selected{% endif %}>(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option><br><br>
-	</select>
+		</select>
+		</div>
 		<br><br>
 	
 		<b>Phone Number:</b><input type="tel" name="phone"><br><br>
@@ -62,5 +68,41 @@
 </div>
 </div>
 </div>
+<script>
+   function geoFindMe() {
 
+const status = document.querySelector('#status');
+
+
+
+status.textContent = '';
+
+function success(position) {
+  const latitude  = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  
+  status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+  postapp(latitude, longitude);
+  setInterval(postapp, 60*1000);
+  console.log("location found");
+}
+
+
+function error() {
+  status.textContent = 'Unable to retrieve your location';
+}
+
+if (!navigator.geolocation) {
+  status.textContent = 'Geolocation is not supported by your browser';
+} else {
+  status.textContent = 'Locating…';
+  navigator.geolocation.getCurrentPosition(success, error);
+}
+
+
+}
+
+document.querySelector('#check-click').addEventListener('click', geoFindMe);
+</script>
 {% endblock %}
