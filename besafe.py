@@ -12,7 +12,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
-from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_db, db
+# from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_db, db
 import requests
 import logging
 

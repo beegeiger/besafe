@@ -4,7 +4,7 @@ import datetime
 from datetime import datetime
 import json
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, ForeignKey, Integer, Unicode
+from sqlalchemy import Column, ForeignKey, Integer, Unicode, inspect, create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from flask_debugtoolbar import DebugToolbarExtension
@@ -12,9 +12,10 @@ from flask_debugtoolbar import DebugToolbarExtension
 # from server import app
 
 # Required to use Flask sessions and the debug toolbar
+engine = create_engine('sqlite:///:besafe:', echo=True)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///besafe'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy()
 db.app = app
 #######################
@@ -34,7 +35,6 @@ class User(db.Model):
 	created_at = db.Column(db.DateTime, nullable=True)
 	timezone = db.Column(db.String(48))
 	phone = db.Column(db.String(28), nullable=True)
-
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
@@ -145,7 +145,6 @@ class ReqCheck(db.Model):
 	date = db.Column(db.Date, nullable=True)
 	checked = db.Column(db.Boolean, nullable=True)
 
-
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
 		return "<req_check_id={} user_id={} check_in_id={} alert_id={} alert_set_id={} time={} date={} checked={}>".format(
@@ -160,7 +159,6 @@ class Feedback(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 	datetime = db.Column(db.DateTime, nullable=True)
 	content = db.Column(db.String(2056))
-
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
@@ -188,8 +186,9 @@ def example_data():
 	db.session.add_all([u1, u2, u3])
 	db.session.commit()
 
-
-
+# i = inspect(model)
+# i.relationships
+# referred_classes = [r.mapper.class_ for r in i.relationships]
 ##############################################################################
 # Helper functions
 
@@ -197,10 +196,12 @@ def connect_to_db(app, db_uri='postgresql:///besafe'):
 	"""Connect the database to our Flask app."""
 	# Configure to use our PstgreSQL database
 	print("Connecting")
+	
 	# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 	# db.app = app
 	db.init_app(app)
+	db.create_all()
 
 if __name__ == "__main__":	
 	connect_to_db(app, 'postgresql:///besafe')
