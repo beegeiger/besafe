@@ -24,8 +24,10 @@
 		
 		<p id = "status"></p>
 
+		<p id = "status2"></p>
+
 		<button id = "time_select">Select My Timezone Automatically</button><br/>
-		<div class=hidden>
+		<div class='hidden'>
 		<select name="timezone" id="DropDownTimezone" value="{{ user.timezone }}">
 		<option value="-12.0" {% if user.timezone == '-12.0' %}selected{% endif %}>(GMT -12:00) Eniwetok, Kwajalein</option>
 		<option value="-11.0" {% if user.timezone == '-11.0' %}selected{% endif %}>(GMT -11:00) Midway Island, Samoa</option>
@@ -74,6 +76,7 @@ document.querySelector('#find_me').addEventListener('click', geoFindMe);
    function geoFindMe() {
 
 const status = document.querySelector('#status');
+const status2 = document.querySelector('#status2');
 
 
 
@@ -109,6 +112,9 @@ function timezone(lat, long){
 	let path = 'https://maps.googleapis.com/maps/api/timezone/json?location='.concat(lat, ',', long, '&timestamp=1331161200&key=AIzaSyBy5ngCDOhsY_rvRZlz3vwz3hO69zbljEI')
 	$.post(path, function(data){
 		console.log('data:', data)
+		let offset = (data.rawOffset / 3600).toString();
+		let tz = data.timeZoneName;
+		status2.textContent = (tz + '   (' + offset + ':00)');
 		return data
 	});
 }
