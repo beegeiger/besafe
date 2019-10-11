@@ -172,7 +172,7 @@ def edit_profile():
     fname = request.form['fname']
     lname = request.form['lname']
     phone = request.form['phone']
-    timezone = request.form['timezone']
+    timezone = request.form['tzim']
     user = User.query.filter_by(email=session['current_user']).one()
 
     (db.session.query(User).filter(

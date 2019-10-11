@@ -15,18 +15,17 @@
 	<form action="/edit_profile" method="POST"><br>
 	
 		<b>E-mail:</b><b style="color: red;">*</b> <input type=textbox name="email_input"  value="{{ user.email }}" required></input><br><br>
-		<b>Username:</b><b style="color: red;">*</b> <input type=textbox name="username" value="{{ user.username }}" required><br><br>
-		<input type=textbox name="tzim">
+	
 		(Feel free to use any name, real or fake!)<br>
 		<b>First name: <b style="color: red;">*</b></b><input type=textbox name="fname" value="{{ user.fname }}" required></input>&nbsp &nbsp<b>Last name:</b><input type=textbox name="lname" value={{ user.lname }}></input><br><br>
 
-		<b>What is your timezone?:</b>
-		<button type=button id ="find_me">Get My Timezone Automatically</button><br/>
+		<b>What is your timezone?:</b><br>
+		<button type=button id ="find_me">Get My Timezone Automatically</button>(recommended)<br/>
 		<p id = "status"></p>
 
 		<p id = "status2"></p>
 
-		<button id = "time_select">Select My Timezone Automatically</button><br/>
+		<button type=button id = "time_select">Select My Timezone Manually</button><br/>
 		<div >
 		<select style="display: none;" name="timezone" id="DropDownTimezone" value="{{ user.timezone }}">
 		<option value="-12.0" {% if user.timezone == '-12.0' %}selected{% endif %}>(GMT -12:00) Eniwetok, Kwajalein</option>
@@ -62,6 +61,8 @@
 		<option value="12.0" {% if user.timezone == '12.0' %}selected{% endif %}>(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option><br><br>
 		</select>
 		</div>
+		<br>
+		The Timezone Hour Offset Being Saved: <input type=textbox name="tzim" maxlength="4" size="3" disabled="disabled">
 		<br><br>
 	
 		<b>Phone Number:</b><input type="tel" name="phone"><br><br>
@@ -73,12 +74,25 @@
 </div>
 <script>
 document.querySelector('#find_me').addEventListener('click', geoFindMe);
+$(document).ready(function(){
+	$( "#time_select" ).click(function(){
+		$( "#DropDownTimezone" ).show();
+		console.log("Man TZ Button working");
+	});
+});
+$(document).ready(function(){
+	$( "#DropDownTimezone" ).change(function(){
+		let DDT = $( "#DropDownTimezone" ).val();
+		$('input[name="tzim"]').val(DDT)
+		console.log("Man TZ Button working");
+	});
+});
    function geoFindMe() {
 
 const status = document.querySelector('#status');
 const status2 = document.querySelector('#status2');
 
-
+document.querySelector('#find_me').addEventListener('click', geoFindMe);
 
 status.textContent = '';
 
