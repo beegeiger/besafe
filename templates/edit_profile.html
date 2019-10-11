@@ -11,24 +11,24 @@
 <div class="container">
 <div class="row" style="width: 100%;">
 <div class="col-lg-6-offset-3 col-md-8-offset-2 col-sm-10-offset-1 col-xs-12">	
-<button id ="find_me">Get My Timezone Automatically</button><br/>
+
 	<form action="/edit_profile" method="POST"><br>
 	
 		<b>E-mail:</b><b style="color: red;">*</b> <input type=textbox name="email_input"  value="{{ user.email }}" required></input><br><br>
 		<b>Username:</b><b style="color: red;">*</b> <input type=textbox name="username" value="{{ user.username }}" required><br><br>
-		
+		<input type=textbox name="tzim">
 		(Feel free to use any name, real or fake!)<br>
 		<b>First name: <b style="color: red;">*</b></b><input type=textbox name="fname" value="{{ user.fname }}" required></input>&nbsp &nbsp<b>Last name:</b><input type=textbox name="lname" value={{ user.lname }}></input><br><br>
 
 		<b>What is your timezone?:</b>
-		
+		<button type=button id ="find_me">Get My Timezone Automatically</button><br/>
 		<p id = "status"></p>
 
 		<p id = "status2"></p>
 
 		<button id = "time_select">Select My Timezone Automatically</button><br/>
-		<div class='hidden'>
-		<select name="timezone" id="DropDownTimezone" value="{{ user.timezone }}">
+		<div >
+		<select style="display: none;" name="timezone" id="DropDownTimezone" value="{{ user.timezone }}">
 		<option value="-12.0" {% if user.timezone == '-12.0' %}selected{% endif %}>(GMT -12:00) Eniwetok, Kwajalein</option>
 		<option value="-11.0" {% if user.timezone == '-11.0' %}selected{% endif %}>(GMT -11:00) Midway Island, Samoa</option>
 		<option value="-10.0" {% if user.timezone == '-10.0' %}selected{% endif %}>(GMT -10:00) Hawaii</option>
@@ -89,7 +89,7 @@ function success(position) {
   
   status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
   timezone(latitude, longitude);
-  setInterval(postapp, 60*1000);
+//   setInterval(postapp, 60*1000);
   console.log("location found");
 }
 
@@ -115,6 +115,9 @@ function timezone(lat, long){
 		let offset = (data.rawOffset / 3600).toString();
 		let tz = data.timeZoneName;
 		status2.textContent = (tz + '   (' + offset + ':00)');
+		let tzi = (offset + ".0")
+		console.log(tzi)
+		$('input[name="tzim"]').val(tzi);
 		return data
 	});
 }
