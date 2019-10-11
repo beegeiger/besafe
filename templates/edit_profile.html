@@ -11,6 +11,7 @@
 <div class="container">
 <div class="row" style="width: 100%;">
 <div class="col-lg-6-offset-3 col-md-8-offset-2 col-sm-10-offset-1 col-xs-12">	
+<button id ="find_me">Get My Timezone Automatically</button><br/>
 	<form action="/edit_profile" method="POST"><br>
 	
 		<b>E-mail:</b><b style="color: red;">*</b> <input type=textbox name="email_input"  value="{{ user.email }}" required></input><br><br>
@@ -20,7 +21,7 @@
 		<b>First name: <b style="color: red;">*</b></b><input type=textbox name="fname" value="{{ user.fname }}" required></input>&nbsp &nbsp<b>Last name:</b><input type=textbox name="lname" value={{ user.lname }}></input><br><br>
 
 		<b>What is your timezone?:</b>
-		<button id = "find-me">Get My Timezone Automatically</button><br/>
+		
 		<p id = "status"></p>
 
 		<button id = "time_select">Select My Timezone Automatically</button><br/>
@@ -69,6 +70,7 @@
 </div>
 </div>
 <script>
+document.querySelector('#find_me').addEventListener('click', geoFindMe);
    function geoFindMe() {
 
 const status = document.querySelector('#status');
@@ -104,13 +106,13 @@ if (!navigator.geolocation) {
 }
 
 function timezone(lat, long){
-	let path = 'https://maps.googleapis.com/maps/api/timezone/json?location='.concat(lat, ',', long, '&timestamp=1331161200&key=')
+	let path = 'https://maps.googleapis.com/maps/api/timezone/json?location='.concat(lat, ',', long, '&timestamp=1331161200&key=AIzaSyBy5ngCDOhsY_rvRZlz3vwz3hO69zbljEI')
 	$.post(path, function(data){
 		console.log('data:', data)
 		return data
 	});
 }
 
-document.querySelector('#check-click').addEventListener('click', geoFindMe);
+
 </script>
 {% endblock %}

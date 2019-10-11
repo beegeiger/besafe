@@ -175,27 +175,15 @@ def edit_profile():
     timezone = request.form['timezone']
     user = User.query.filter_by(email=session['current_user']).one()
 
+    (db.session.query(User).filter(
+        User.email == session['current_user']).update(
+            {'fname': fname, 'lname': lname, 'email': email_input,
+                'username': username,'phone': phone,
+                'timezone': timezone}))
+    db.session.commit()
+    flash('Your Profile was Updated!')
+    return redirect("/")
 
-    p_word = user.password
-    if isinstance(pw_input, str):
-        pw_input = bytes(pw_input, 'utf-8')
-    passwd = bytes(p_word, 'utf-8')
-
-    if bcrypt.hashpw(pw_input, passwd) == passwd:
-        (db.session.query(User).filter(
-            User.email == session['current_user']).update(
-                {'fname': fname, 'lname': lname, 'email': email_input,
-                 'username': username, 'description': about_me, 'email2': email2, 'phone': phone,
-                 'timezone': timezone}))
-        db.session.commit()
-        flash('Your Profile was Updated!')
-        return redirect("/profile")
-        
-
-    #Otherwise, it flashes a message and redirects to the login page
-    else:
-        flash('Your e-mail or password was incorrect! Please try again or Register.')
-        return redirect("/edit_profile")
 
 
 
