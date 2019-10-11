@@ -12,7 +12,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
-# from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_db, db
+from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_db, db
 import requests
 import logging
 
@@ -96,13 +96,14 @@ def callback_handling():
         'picture': userinfo['picture'],
         'email': userinfo['email']
     }
+    session['current_user'] = userinfo['email']
     user = User.query.filter_by(email=userinfo['email']).all()
     if user == []:
-        new_user = User(name=userinfo['name'], email=userinfor['email'], username=userinfo['nickname'], fname=userinfo['given_name'], lname=userinfo['family_name'], created_at=datetime.datetime.now())
+        new_user = User(name=userinfo['name'], email=userinfo['email'], username=userinfo['nickname'], fname=userinfo['given_name'], lname=userinfo['family_name'], created_at=datetime.datetime.now())
         db.session.add(new_user)
         db.session.commit()
         return redirect('/edit_profile')
-    return redirect('/dashboard')
+    return redirect('/edit_profile')
 
 @app.route('/dashboard')
 @requires_auth
@@ -990,6 +991,6 @@ if __name__ == "__main__":
     # start_runner()
     print("should be working")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    connect_to_db(app, 'postgresql:///besafe')
+    # connect_to_db(app, 'postgresql:///besafe')
     print("Connected to DB.")
     app.run()

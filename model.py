@@ -196,12 +196,9 @@ def connect_to_db(app, db_uri='postgresql:///besafe'):
 	"""Connect the database to our Flask app."""
 	# Configure to use our PstgreSQL database
 	print("Connecting")
-	
 	# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 	# db.app = app
 	db.init_app(app)
-	db.create_all()
 
 if __name__ == "__main__":	
 	connect_to_db(app, 'postgresql:///besafe')
