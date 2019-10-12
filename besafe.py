@@ -1,5 +1,5 @@
 import flask
-import bcrypt
+
 import math
 import time
 import json
@@ -152,6 +152,7 @@ def user_profile():
 
 
 @app.route("/edit_profile", methods=["GET"])
+@requires_auth
 def edit_page():
     """Renders the edit profile page"""
 
