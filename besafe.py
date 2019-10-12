@@ -103,6 +103,7 @@ def callback_handling():
         db.session.add(new_user)
         db.session.commit()
         return redirect('/edit_profile')
+    db.session.commit()
     return redirect('/edit_profile')
 
 @app.route('/dashboard')
@@ -169,7 +170,6 @@ def edit_profile():
 
     #Gets info from html form and dbase
     email_input = request.form['email_input']
-    username = request.form['username']
     fname = request.form['fname']
     lname = request.form['lname']
     phone = request.form['phone']
@@ -179,8 +179,7 @@ def edit_profile():
     (db.session.query(User).filter(
         User.email == session['current_user']).update(
             {'fname': fname, 'lname': lname, 'email': email_input,
-                'username': username,'phone': phone,
-                'timezone': timezone}))
+                'phone': phone,'timezone': timezone}))
     db.session.commit()
     flash('Your Profile was Updated!')
     return redirect("/")
