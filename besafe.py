@@ -319,7 +319,7 @@ def user_contacts():
     user = User.query.filter_by(email=session['current_user']).one()
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
 
-    return render_template("contacts.html")
+    return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
 
 
 @app.route("/contacts", methods=["POST"])
