@@ -7,6 +7,78 @@
 <h1>BeSafe Safety Warning System Page</h1>
 <div style="text-align: center"> <h2>Your Local Time: &nbsp <div id='clock'></div></h2></div>
 
+<h2>Recurring Alerts*</h2>
+<div class="container-fluid.">
+	<div class="row">
+		<div class="col-2">
+			<p style="font-size: 140%; text-align: left; padding-left: 15%; text-decoration: underline;">Alert Name</p>
+		</div>
+		<div class="col-2">
+			<p style="font-size: 140%; text-align: left; padding-left: 15%; text-decoration: underline;">Activated</p>
+		</div>
+		<div class="col-6" style="display: inline-block; padding: 0 0 0 0;">
+			<div class="col-5" style="display: inline-block;">
+				<p style="font-size: 140%; text-align: left; display: inline-block; padding-left: 10%; text-decoration: underline;">Next Alert Time</p>
+			</div>
+			<div class="col-6" style="display: inline-block;">
+				<p style="font-size: 140%; text-align: left; display: inline-block; padding-left: 10%; text-decoration: underline;">Next Alert Countdown</p>
+			</div>
+		</div>
+		<div class="col-1">
+			<p style="font-size: 120%; text-align: left; padding-left: 10%; text-decoration: underline;">Checked-In?</p>
+		</div>
+
+	</div>
+</div>
+
+
+
+
+{% for set in alert_sets %}
+{% if set.interval %}
+<div class="container-fluid.">
+	<div class="row.alert_display" style="width:100%">
+		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
+        font-weight: bold; font-size: 135%;">
+			<a href="/edit_recset/{{ set.alert_set_id }}">{{ set.a_name }}</a> &nbsp &nbsp
+		</div>
+		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
+			<input id="toggle_rec{{ set.alert_set_id }}" type="checkbox" data-toggle="toggle" data-on="Alert Set Active" data-off="Inactive" {% if set.active == True %}checked{% endif %}>
+		</div>
+		
+
+		<div {% if set.active == False %}class='hidden.col-6' {% else %} class="col-6" {% endif %} id="count_display{{ set.alert_set_id }}" style="display: inline-block; padding: 0 0 0 0;">
+			
+			<div class="col-5" id="al_time{{ set.alert_set_id }}" style="display: inline-block;">	
+			<p id="datetime{{ set.alert_set_id }}" style="font-family: 'Bitter', serif;
+        	font-weight: bold; font-size: 105%; color: red; display: inline-block;">
+			{% if set.active == True %}
+			{{ set.next_alarm_dis }}
+			{% endif %}
+			</p>
+			</div>
+		
+
+			<div {% if set.active == False %} class='hidden' {% else %} class="col-6" {% endif %} id='countdown{{ set.alert_set_id }}' style=" {% if set.active == False %} display: none; {% else %} display: inline-block; {% endif %} font-family: 'Bitter', serif;
+        font-weight: bold; font-size: 105%; color: red;">
+
+			</div>
+		</div>
+		<div class='col-1'style="display: inline-block;" id="checked{{ set.alert_set_id }}">
+			<p {% if set.active == False %} class='hidden' {% else %} class='visible' {%endif%}  id="checked{{ set.alert_set_id }}" style="font-family: 'Bitter', serif; font-weight: bold; font-size: 150%; {% if set.checked_in %} color: green; {% else %} color: red; {% endif %}">
+			{% if set.checked_in == True %}
+			Yes
+			{% else %}
+			No
+			{% endif %}
+			{% endif %}
+			{% endfor %}
+			</p>
+		</div>
+			
+	</div>
+</div>
+
 
 <script type="text/javascript">
 	$(document).ready( function() {
