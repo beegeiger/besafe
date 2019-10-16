@@ -35,7 +35,6 @@
 
 
 {% for set in alert_sets %}
-{% if set.interval %}
 <div class="container-fluid.">
 	<div class="row.alert_display" style="width:100%">
 		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
@@ -70,7 +69,6 @@
 			Yes
 			{% else %}
 			No
-			{% endif %}
 			{% endif %}
 			{% endfor %}
 			</p>
