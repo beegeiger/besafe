@@ -277,7 +277,7 @@ def besafe_alerts():
             a_s.a_name = a_s.a_name[:9] + "..." + a_s.a_name[-4:]
 
 
-    return render_template("besafe_alerts.html", alert_sets=alert_sets, timezone=user.timezone, user=user)
+    return render_template("besafe_alerts.html", alert_sets=alert_sets, timezone=user.timezone, user=user, contacts=contacts)
 
 @app.route("/sw_getting_started")
 def get_started():

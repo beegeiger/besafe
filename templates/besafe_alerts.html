@@ -79,7 +79,7 @@
 <button id="add_new_main" type="button">Add New Alert Set</button>
 <div>
 	<button id="add_sched" type="button">Create Pre-Scheduled Alerts</button> <button id="add_rec" type="button">Create Recurring Alerts</button>
-	<div id="new_sched" class="hidden">
+	<div id="new_sched"  class="hidden">
 		<h1 style="text-align: center;">New Scheduled Alert Set</h1>
 
 		{% if contacts|length < 1 %}
@@ -99,7 +99,7 @@
 		</form>
 	</div>
 
-	<div id="new_rec" class="hidden">
+	<div id="new_rec"  class="hidden">
 		<h1 style="text-align: center;">Create New Recurring Alert Set</h1>
 
 		{% if contacts|length < 1 %}
@@ -194,7 +194,7 @@
 	});
 
 	$(document).ready(function(){
-	    $( "#add_red" ).click(function(){
+	    $( "#add_rec" ).click(function(){
 	        $( "#new_rec" ).show();
 	        $( "#new_sched" ).hide();
 	        console.log("Add Rec Button working");
