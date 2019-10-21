@@ -76,6 +76,7 @@
 			
 	</div>
 </div>
+
 <button id="add_new_main" type="button">Add New Alert Set</button>
 <div>
 	<button id="add_sched" type="button">Create Pre-Scheduled Alerts</button> <button id="add_rec" type="button">Create Recurring Alerts</button>
@@ -117,6 +118,7 @@
 		Message: {{ alert.message }}<br>
 		<button type="button" id="edit_al_but{{ alert.alert_id }}">Edit Alert</button>
 		</div>
+		
 		<br><br>
 
 		<form id="edit_form{{ alert.alert_id }}" class="hidden" action="/edit_al/{{ alert.alert_id }}" method="post">
@@ -138,7 +140,7 @@
 		</form>
 
 	</div>
-
+	{% endfor %}
 	<div id="new_rec"  class="hidden">
 		<h1 style="text-align: center;">Create New Recurring Alert Set</h1>
 

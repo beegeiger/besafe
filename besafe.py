@@ -47,7 +47,7 @@ app.jinja_env.undefined = StrictUndefined
 
 ################################################################
 oauth = OAuth(app)
-print("Oauth: ", oauth_client_id,oauth_client_secret)
+
 auth0 = oauth.register(
     'auth0',
     client_id=oauth_client_id,
@@ -277,7 +277,7 @@ def besafe_alerts():
             a_s.a_name = a_s.a_name[:9] + "..." + a_s.a_name[-4:]
 
 
-    return render_template("besafe_alerts.html", alert_sets=alert_sets, timezone=user.timezone, user=user, contacts=contacts)
+    return render_template("besafe_alerts.html", alert_sets=alert_sets, alerts=alerts, timezone=user.timezone, user=user, contacts=contacts)
 
 @app.route("/sw_getting_started")
 def get_started():
