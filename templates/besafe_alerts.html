@@ -79,7 +79,7 @@
 
 <button id="add_new_main" type="button">Add New Alert Set</button>
 <div>
-	<button id="add_sched" type="button">Create Pre-Scheduled Alerts</button> <button id="add_rec" type="button">Create Recurring Alerts</button>
+	<button id="add_sched" type="button" class="hidden">Create Pre-Scheduled Alerts</button> <button id="add_rec" type="button" class="hidden">Create Recurring Alerts</button>
 	<div id="new_sched"  class="hidden">
 		<h1 style="text-align: center;">New Scheduled Alert Set</h1>
 
@@ -140,8 +140,10 @@
 		</form>
 
 	</div>
+	
 	{% endfor %}
-	<div id="new_rec"  class="hidden">
+	</div>
+	<div id="new_rec" class="hidden">
 		<h1 style="text-align: center;">Create New Recurring Alert Set</h1>
 
 		{% if contacts|length < 1 %}
@@ -241,5 +243,14 @@
 	        console.log("Add Rec Button working");
 	    });
 	});
+	$(document).ready(function(){
+	    $( "#add_new_main" ).click(function(){
+	        $( "#add_rec" ).show();
+	        $( "#add_sched" ).show();
+			$( "#add_new_main" ).hide()
+	        console.log("Add Main Button working");
+	    });
+	});
+	add_new_main
 </script>
 {% endblock %}

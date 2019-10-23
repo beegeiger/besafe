@@ -290,15 +290,7 @@ def get_started():
 
     return render_template("getting_started_besafe.html", contacts=contacts, con_length=con_length, timezone=user.timezone)
 
-@app.route("/rec_alerts")
-def recurring_alerts():
-    """Renders the 'Create a Recurring Alert-Set' Page"""
 
-    #Queries the current user and their contact info
-    user = User.query.filter_by(email=session['current_user']).one()
-    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-
-    return render_template("recurring_alerts.html", contacts=contacts, timezone=user.timezone)
 
 @app.route("/sched_alerts")
 def scheduled_alerts():
