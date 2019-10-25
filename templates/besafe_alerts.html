@@ -39,7 +39,7 @@
 	<div class="row.alert_display" style="width:100%">
 		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
         font-weight: bold; font-size: 135%;">
-			<a href="/edit_recset/{{ set.alert_set_id }}">{{ set.a_name }}</a> &nbsp &nbsp
+			<!-- <a href="/edit_recset/{{ set.alert_set_id }}">{{ set.a_name }}</a> &nbsp &nbsp -->
 		</div>
 		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
 			<input id="toggle_rec{{ set.alert_set_id }}" type="checkbox" data-toggle="toggle" data-on="Alert Set Active" data-off="Inactive" {% if set.active == True %}checked{% endif %}>
@@ -176,6 +176,7 @@
 			<input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
 			{% endfor %}<br>
 			<a href="/contacts">Add/Edit/View Your Contacts</a>
+			
 		</div>
 
 		<button type="submit">Save Alert Set</button>
@@ -264,7 +265,7 @@
 	    });
 	});
 
-	
+
 
 
 
