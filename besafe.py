@@ -386,7 +386,7 @@ def add_rec_alertset():
     new_alert_set = AlertSet(user_id=user.user_id, start_datetime=dt, a_desc=desc, interval=interval)
     db.session.add(new_alert_set)
     db.session.commit()
-    alert_set = AlertSet.query.order_by(desc('start_datetime')).first()
+    alert_set = AlertSet.query.order_by(desc()).first()
 
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
     contact1 = int(contacts[0])
