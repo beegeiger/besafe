@@ -69,7 +69,7 @@ class AlertSet(db.Model):
 
 	alert_set_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-	a_name = db.Column(db.String(96))
+	a_name = db.Column(db.String(96), nullable=True)
 	a_desc = db.Column(db.String(200), nullable=True)
 	start_time = db.Column(db.Time, nullable=True)
 	start_datetime = db.Column(db.DateTime, nullable=True)

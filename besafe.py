@@ -373,7 +373,8 @@ def add_rec_alertset():
     """Adds a recurring Alert-Set to the dBase"""
 
     #Gets the alert and alert set info from the form on the add a new rec set page
-    name = request.form['set_name']
+    date = request.form['date']
+    end_date = request.form['end_date']
     desc = request.form['descri']
     interval = request.form['interval']
     contacts = request.form.getlist('contact')
@@ -382,7 +383,7 @@ def add_rec_alertset():
     user = User.query.filter_by(email=session['current_user']).one()
 
     #Creates a new alert set, adds it to the dBase, commits, and then queries the just-created alert set
-    new_alert_set = AlertSet(user_id=user.user_id, a_name=name, a_desc=desc, interval=interval)
+    new_alert_set = AlertSet(user_id=user.user_id, date=date, end_date=end_date a_desc=desc, interval=interval)
     db.session.add(new_alert_set)
     db.session.commit()
     alert_set = AlertSet.query.filter(AlertSet.user_id == user.user_id, AlertSet.a_name == name).first()

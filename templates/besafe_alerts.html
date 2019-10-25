@@ -80,7 +80,19 @@
 <button id="add_new_main" type="button">Add New Alert Set</button>
 <div>
 	<button id="add_sched" type="button" class="hidden">Create Pre-Scheduled Alerts</button> <button id="add_rec" type="button" class="hidden">Create Recurring Alerts</button>
-	<div id="new_sched"  class="modal">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div id="new_sched"  class="hidden">
 		<h1 style="text-align: center;">New Scheduled Alert Set</h1>
 
 		{% if contacts|length < 1 %}
@@ -143,7 +155,7 @@
 	
 	{% endfor %}
 	</div>
-	<div id="new_rec" class="modal">
+	<div id="new_rec" class="hidden">
 		<h1 style="text-align: center;">Create New Recurring Alert Set</h1>
 
 		{% if contacts|length < 1 %}
@@ -251,6 +263,12 @@
 	        console.log("Add Main Button working");
 	    });
 	});
+
+	
+
+
+
+
 	// code from https://www.w3schools.com/howto/howto_css_modals.asp//
 	// Get the modal
 	var modal = document.getElementById("myModal");
