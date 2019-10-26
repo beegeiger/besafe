@@ -39,7 +39,7 @@
 	<div class="row.alert_display" style="width:100%">
 		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
         font-weight: bold; font-size: 135%;">
-			<!-- <a href="/edit_recset/{{ set.alert_set_id }}">{{ set.a_name }}</a> &nbsp &nbsp -->
+			<a href="/edit_recset/{{ set.alert_set_id }}">{{ set.a_name }}</a> &nbsp &nbsp
 		</div>
 		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
 			<input id="toggle_rec{{ set.alert_set_id }}" type="checkbox" data-toggle="toggle" data-on="Alert Set Active" data-off="Inactive" {% if set.active == True %}checked{% endif %}>
@@ -161,6 +161,7 @@
 		{% if contacts|length < 1 %}
 		<h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
 		{% endif %}
+		<b>What would you like to name this alert set?:</b> <input type=textbox name="set_name" value="{{ alert_set.a_name }}"></input><br>
 		<form action="/add_recset" method="POST">
 			<b>Where are you going and/or what are you doing that you might need this alert?</b><br>
 			<textarea rows="2" cols="50" name="descri"></textarea><br>
