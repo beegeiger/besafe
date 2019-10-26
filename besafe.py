@@ -373,7 +373,7 @@ def add_rec_alertset():
     """Adds a recurring Alert-Set to the dBase"""
 
     #Gets the alert and alert set info from the form on the add a new rec set page
-
+    name = request.form['set_name']
     desc = request.form['descri']
     interval = request.form['interval']
     contacts = request.form.getlist('contact')
@@ -386,8 +386,13 @@ def add_rec_alertset():
     new_alert_set = AlertSet(user_id=user.user_id, start_datetime=dt, a_desc=desc, interval=interval)
     db.session.add(new_alert_set)
     db.session.commit()
-    alert_set = AlertSet.query.order_by(desc()).first()
-
+    alert_set_q = AlertSet.query.order_by(desc(AlertSet.start_datetime)).first()
+    if name == None:
+        name = AlertSet + str(alert_set_q.alert_set_id)    
+    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_q.alert_set_id)).update(
+    {'a_name': name})
+    db.session.commit()
+    
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
     contact1 = int(contacts[0])
     contact2 = None
