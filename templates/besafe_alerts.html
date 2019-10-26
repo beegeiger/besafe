@@ -109,51 +109,7 @@
 			<br>
 			<a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
 		</form>
-		{% for alert in alerts %}
-		{% set alertloop = loop %}
-		<div id="alert_info{{ alert.alert_id }}">
-		<h5>Alert {{ alertloop.index }}</h5>
-		Time: {{ alert.time }}<br>
-		Contacts:
-		{% for contact in contacts %}
-		{% if contact.contact_id==alert.contact_id1 %}
-		{{ contact.name }} &nbsp &nbsp &nbsp
-		{% endif %}
-		{% if contact.contact_id==alert.contact_id2 %}
-		{{ contact.name }} &nbsp &nbsp &nbsp
-		{% endif %}
-		{% if contact.contact_id==alert.contact_id3 %}
-		{{ contact.name }} &nbsp &nbsp &nbsp
-		{% endif %}
-		{% endfor %}
-		<br>
-		Message: {{ alert.message }}<br>
-		<button type="button" id="edit_al_but{{ alert.alert_id }}">Edit Alert</button>
-		</div>
-		
-		<br><br>
 
-		<form id="edit_form{{ alert.alert_id }}" class="hidden" action="/edit_al/{{ alert.alert_id }}" method="post">
-			<h5>Edit Scheduled Alert {{ alertloop.index }}</h5>
-			
-			<!-- <b>What Date/Time should a check-in be required?</b> <input type="datetime-local" name="check_time"><br> -->
-			Time: <input type="time" name="time" value="{{ alert.time }}"><br>
-			Contacts:<br>
-				{% for contact in contacts %}
-			{% set contactloop = loop %}
-			<input type="checkbox" name="contact" id="contact{{ alert.alert_id }}" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
-			{% endfor %}<br>
-				<a href="/contacts">Add/Edit/View Your Contacts</a><br>
-			<b>Message:</b> 
-			<input type=textbox name="check_mess" value="{{ alert.message }}"></input><br>
-		<br>
-		<button type="submit">Save Alert</button>
-		<br><br>
-		</form>
-
-	</div>
-	
-	{% endfor %}
 	</div>
 	<div id="new_rec" class="hidden">
 		<h1 style="text-align: center;">Create New Recurring Alert Set</h1>
