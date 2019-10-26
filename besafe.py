@@ -214,43 +214,38 @@ def besafe_alerts():
 
     #Loops through all user's alert-sets and initiates variables to keep track of them
     for a_set in alert_sets:
-        print(a_set)
+
         aset_alerts = []
         a_set.total = 0
 
         #Loops through the alerts and adds the datetime for each to the aset_alerts list
         for alert in alerts:
-            print(alert)
-            if alert.active == True:
-                print(alert)
-            if a_set.alert_set_id == alert.alert_set_id and a_set.interval and alert.active == False:
-                tim = now + datetime.timedelta(minutes=a_set.interval)
-                aset_alerts.append(tim)
-                print(tim)
-            elif a_set.alert_set_id == alert.alert_set_id and a_set.interval and alert.active == True:
-                aset_alerts.append(alert.datetime)
-                print(alert.datetime)
-            elif a_set.alert_set_id == alert.alert_set_id and alert.active == True:
-                dtime = alert.datetime
-                aset_alerts.append(dtime)
-            elif a_set.alert_set_id == alert.alert_set_id and alert.active == False:
-                dtime = datetime.datetime.combine(date, alert.time)
-                aset_alerts.append(dtime)
+            if alert.active == False:
+                if a_set.alert_set_id == alert.alert_set_id and a_set.interval and alert.active == False:
+                    tim = now + datetime.timedelta(minutes=a_set.interval)
+                    aset_alerts.append(tim)
+
+                elif a_set.alert_set_id == alert.alert_set_id and a_set.interval and alert.active == True:
+                    aset_alerts.append(alert.datetime)
+
+                elif a_set.alert_set_id == alert.alert_set_id and alert.active == True:
+                    dtime = alert.datetime
+                    aset_alerts.append(dtime)
+                elif a_set.alert_set_id == alert.alert_set_id and alert.active == False:
+                    dtime = datetime.datetime.combine(date, alert.time)
+                    aset_alerts.append(dtime)
 
         """If there is at least one alert for each alert-set, the earliest alert and
         the total number of seconds until that alert are saved to the alert-set object"""
         if len(aset_alerts) >= 1:
             if aset_alerts[0] != []:
-                print('aset_alerts:')
-                print(aset_alerts)
+
                 aset_alerts.sort()
-                print('aset_alerts0:')
-                print(aset_alerts[0])
-                print(now)
+
                 a_set.next_alarm = aset_alerts[0]
                 a_set.next_alarm_dis = aset_alerts[0].strftime("%I:%M %p, %m/%d/%Y")
                 d1 = now - aset_alerts[0]
-                print(d1)
+
                 d2 = abs(d1.total_seconds())
                 # days = math.floor(d2 / 86400)
                 # hours = math.floor((d2 - (days * 86400)) / 3600)
@@ -265,7 +260,7 @@ def besafe_alerts():
                 a_set.total =int(d2)
                 # if d1 < datetime.timedelta(seconds=0):
                 #     a_set.total = 0
-                print(a_set.total)
+
             else:
                 a_set.next_alarm_dis = now.strftime("%I:%M %p, %m/%d/%Y")
 
@@ -371,28 +366,30 @@ def edit_contact(contact_num):
 @app.route("/add_recset", methods=["POST"])
 def add_rec_alertset():
     """Adds a recurring Alert-Set to the dBase"""
+    alert_sets_all = AlertSet.query.all()
 
     #Gets the alert and alert set info from the form on the add a new rec set page
-    name = request.form['set_name']
+    name = request.form['set_nam']
     desc = request.form['descri']
     interval = request.form['interval']
     contacts = request.form.getlist('contact')
+    print("name1: ", name, type(name), len(name))
 
+    if len(name)== 0:
+        name = "Alert Set " + str(len(alert_sets_all))
+    print("name2: ", name, type(name), len(name))
     #Queries the current user
     user = User.query.filter_by(email=session['current_user']).one()
 
     dt = datetime.datetime.now()
     #Creates a new alert set, adds it to the dBase, commits, and then queries the just-created alert set
-    new_alert_set = AlertSet(user_id=user.user_id, start_datetime=dt, a_desc=desc, interval=interval)
+    new_alert_set = AlertSet(user_id=user.user_id, start_datetime=dt, a_desc=desc, interval=interval, a_name=name)
     db.session.add(new_alert_set)
     db.session.commit()
-    alert_set_q = AlertSet.query.order_by(desc(AlertSet.start_datetime)).first()
-    if name == None:
-        name = AlertSet + str(alert_set_q.alert_set_id)    
-    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_q.alert_set_id)).update(
-    {'a_name': name})
-    db.session.commit()
-    
+    alert_set_q = AlertSet.query.order_by(AlertSet.start_datetime.desc()).first()
+
+   
+
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
     contact1 = int(contacts[0])
     contact2 = None
@@ -405,12 +402,12 @@ def add_rec_alertset():
         contact3 = int(contacts[2])
 
     #A new alert (associated with the alert set) is created, added, and commited to the dBase
-    new_alert = Alert(alert_set_id=alert_set.alert_set_id, user_id=user.user_id, contact_id1=contact1,
+    new_alert = Alert(alert_set_id=alert_set_q.alert_set_id, user_id=user.user_id, contact_id1=contact1,
                       contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc)
     db.session.add(new_alert)
     db.session.commit()
 
-    return redirect("/sw_main")
+    return redirect("/bs_alerts")
 
 @app.route("/edit_recset/<alert_set_id>")
 def edit_recset_page(alert_set_id):
