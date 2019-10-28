@@ -463,10 +463,10 @@ def add_sched_alertset():
     end_date = None
 
     #If the user enters a date or end_date, the variables are then updated to that value
-    if len(request.form['date']) > 2:
-        date = request.form['date']
-    if len(request.form['end_date']) > 2:
-        end_date = request.form['end_date']
+    # if len(request.form['date']) > 2:
+    #     date = request.form['date']
+    # if len(request.form['end_date']) > 2:
+    #     end_date = request.form['end_date']
 
     #Gets the alert set name, description, and then queries the current user
     name = request.form['set_name']
@@ -474,7 +474,7 @@ def add_sched_alertset():
     user = User.query.filter_by(email=session['current_user']).one()
 
     #A new alert set object is then created, added to the dBase, and commited
-    new_alert_set = AlertSet(user_id=user.user_id, a_name=name, a_desc=desc, date=date, end_date=end_date)
+    new_alert_set = AlertSet(user_id=user.user_id, a_name=name, a_desc=desc)
     db.session.add(new_alert_set)
     db.session.commit()
 
@@ -482,7 +482,7 @@ def add_sched_alertset():
     alert_set = AlertSet.query.filter(AlertSet.user_id == user.user_id, AlertSet.a_name == name).first()
 
     #The user is then redirected to the scheduled set edit page for this alert set
-    return redirect("/edit_schedset/" + str(alert_set.alert_set_id))
+    return alert_set
 
 @app.route("/edit_schedset/<alert_set_id>")
 def edit_schedset_page(alert_set_id):
