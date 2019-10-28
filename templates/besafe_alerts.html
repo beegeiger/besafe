@@ -7,7 +7,7 @@
 <h1>BeSafe Safety Warning System Page</h1>
 <div style="text-align: center"> <h2>Your Local Time: &nbsp <div id='clock'></div></h2></div>
 
-<h2>Recurring Alerts*</h2>
+<h2>Alerts*</h2>
 <div class="container-fluid.">
 	<div class="row">
 		<div class="col-2">
@@ -32,7 +32,7 @@
 </div>
 
 
-
+<!--#########################################-->
 
 {% for set in alert_sets %}
 <div class="container-fluid.">
@@ -76,20 +76,18 @@
 			
 	</div>
 </div>
+
+
 {% endfor %}
+
+<!--#########################################-->
+
 <button id="add_new_main" type="button">Add New Alert Set</button>
 <div>
 	<button id="add_sched" type="button" class="hidden">Create Pre-Scheduled Alerts</button> <button id="add_rec" type="button" class="hidden">Create Recurring Alerts</button>
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	<div id="new_sched"  class="hidden">
@@ -144,6 +142,7 @@
 	</div>
 </div>
 
+<!--#########################################-->
 
 <script type="text/javascript">
 	$(document).ready( function() {
@@ -198,6 +197,7 @@
 	  setInterval(displayTime, 1000);
 
 	});
+
 
 	$(document).ready(function(){
 	    $( "#add_sched" ).click(function(){
