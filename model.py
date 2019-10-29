@@ -79,11 +79,14 @@ class AlertSet(db.Model):
 	interval = db.Column(db.Integer, nullable=True)
 	active = db.Column(db.Boolean, default=False)
 	checked_in = db.Column(db.Boolean, default=False)
+	contact_id1 = db.Column(db.Integer, db.ForeignKey('contacts.contact_id'), nullable=True)
+	contact_id2 = db.Column(db.Integer, db.ForeignKey('contacts.contact_id'), nullable=True)
+	contact_id3 = db.Column(db.Integer, db.ForeignKey('contacts.contact_id'), nullable=True)
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<alert_set_id={} user_id={} a_name={} a_desc={} start_time={} start_datetime={} date={} end_date={} notes={} active={} checked_in={}>".format(
-			self.alert_set_id, self.user_id, self.a_name, self.a_desc, self.start_time, self.start_datetime, self.date, self.end_date, self.notes, self.active, self.checked_in)
+		return "<alert_set_id={} user_id={} a_name={} a_desc={} start_time={} start_datetime={} date={} end_date={} notes={} active={} checked_in={} contact_id1={} contact_id2={} contact_id3={}>".format(
+			self.alert_set_id, self.user_id, self.a_name, self.a_desc, self.start_time, self.start_datetime, self.date, self.end_date, self.notes, self.active, self.checked_in, self.contact_id1, self.contact_id2, self.contact_id3)
 
 class Alert(db.Model):
 	"""SafeWalk AlertSet"""
