@@ -104,7 +104,7 @@
 			<!-- What Date would you like this alert set to first be available? (optional)<input type="date" name="date" value=""><br>
 			What is the last date you would like this alert set to be available? (optional)<input type="date" name="end_date" value=""> -->
 			<br><br>
-			<button type="submit">Create Alert Set</button>
+			<button id="sched_set_submit" type="submit">Create Alert Set</button>
 			<br>
 			<a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
 		</form>
@@ -151,7 +151,7 @@
 <!--#########################################-->
 
 
-<form action="/add_alert/{{ alert_set.alert_set_id }}" method="POST" id="set_form">
+<form action="/add_alert" method="POST" id="set_form" class="hidden">
 	<h5>New Scheduled Alert</h5>
 	
 	<!-- <b>What Date/Time should a check-in be required?</b> <input type="datetime-local" name="check_time"><br> -->
@@ -167,7 +167,6 @@
 	<input type=textbox name="check_mess"></input><br>
 <br>
 <button type="submit">Save Alert Set</button>
-<br><a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
 </form>
 <br>
 
@@ -252,6 +251,14 @@
 	        console.log("Add Main Button working");
 	    });
 	});
+	$(document).ready(function(){
+	    $( "#sched_set_submit" ).click(function(){
+	        $( "#set_form" ).show();
+			$( "#new_sched" ).hide()
+	        console.log("Submit Sched Set Button Working");
+	    });
+	});
+
 
 
 
