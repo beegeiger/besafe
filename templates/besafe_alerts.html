@@ -87,7 +87,7 @@
 	<button id="add_sched" type="button" class="hidden">Create Pre-Scheduled Alerts</button> <button id="add_rec" type="button" class="hidden">Create Recurring Alerts</button>
 	
 	
-
+<!--#########################################-->
 	
 	
 	<div id="new_sched"  class="hidden">
@@ -111,7 +111,7 @@
 
 	</div>
 
-
+<!--#########################################-->
 
 
 	
@@ -152,6 +152,7 @@
 
 
 <form id="set_form" class="hidden">
+	Alert Set ID: <input name="alertsetID" type="number">
 	<h5>New Scheduled Alert</h5>
 	
 	<b>What Date/Time should a check-in be required?</b> <input type="datetime-local" name="check_time"><br>
@@ -254,7 +255,7 @@
 	$(document).ready(function(){
 	    $( "#sched_set_submit" ).click(function(){
 	        $( "#set_form" ).show();
-			//$( "#new_sched" ).hide()
+			$( "#new_sched" ).hide()
 	        console.log("Submit Sched Set Button Working");
 	    });
 	});
@@ -299,32 +300,10 @@
 	function addingSet(){
 		console.log('Button is pressed!');	
 		console.log('Form Data: ')
-		console.log($("#add_sched_form").serialize())
-		console.log(typeof $("#add_sched_form").serialize())
-		console.log($("#add_sched_form"), "Just Form")
-		console.log($("#add_sched_form").serialize(), "Just Serialize")
-		console.log( JSON.stringify($("#add_sched_form").serialize()), "JSON")
-		console.log( JSON.stringify($("#add_sched_form").serializeArray()), "JSONarray")
-		//$.ajax({
-			//url: "/add_schedset",
-			//dataType: 'json',
-			//type: 'post',
-			//contentType: 'application/json',
-			//data: JSON.stringify($("#add_sched_form").serialize()),
-			//processData: false,
-			//success: function( data, textStatus, jQxhr ){
-			//	$('#response pre').html( JSON.stringify( data ) );
-			//	console.log("data then value:2");
-			//    console.log(data);
-			//	console.log(data.value);
-			//},
-			//error: function( jqXhr, textStatus, errorThrown ){
-			//	console.log( errorThrown );
-			//}
-		//});
 		$.post("/add_schedset", $("#add_sched_form").serialize(), function(data) {
 			console.log("data then value:");
 			console.log(data);
+			$('input[name="alertsetID"]').val(parseInt(data));
 			console.log(data.value);
 		});
 	};

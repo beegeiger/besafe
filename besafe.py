@@ -366,7 +366,8 @@ def edit_contact(contact_num):
 @app.route("/add_recset", methods=["POST"])
 def add_rec_alertset():
     """Adds a recurring Alert-Set to the dBase"""
-    alert_sets_all = AlertSet.query.all()
+    user = User.query.filter_by(email=session['current_user']).one()
+    alert_sets_all = AlertSet.query.filter_by(user_id=user.user_id).all()
 
     #Gets the alert and alert set info from the form on the add a new rec set page
     name = request.form['set_nam']
@@ -467,7 +468,8 @@ def add_sched_alertset():
     #     date = request.form['date']
     # if len(request.form['end_date']) > 2:
     #     end_date = request.form['end_date']
-
+    user = User.query.filter_by(email=session['current_user']).one()
+    alert_sets_all = AlertSet.query.filter_by(user_id=user.user_id).all()
  
     print("Form: ", request.form)
     #Gets the alert set name, description, and then queries the current user
@@ -475,7 +477,7 @@ def add_sched_alertset():
     print("name: ", name)
     desc = request.form['descri']
     print("descri: ", desc)
-    user = User.query.filter_by(email=session['current_user']).one()
+    
     if len(name)== 0:
         name = "Alert Set " + str(len(alert_sets_all))
     print("name2: ", name, type(name), len(name))
