@@ -122,7 +122,7 @@
 		<h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
 		{% endif %}
 		
-		<form action="/add_recsaddingSet()et" method="POST">
+		<form action="/add_recset" method="POST">
 			<b>What would you like to name this alert set???:</b> <input type=textbox name='set_nam'></input><br>
 			<b>Where are you going and/or what are you doing that you might need this alert?</b><br>
 			<textarea rows="2" cols="50" name="descri"></textarea><br>
@@ -154,7 +154,7 @@
 <form id="set_form" class="hidden">
 	<h5>New Scheduled Alert</h5>
 	
-	<!-- <b>What Date/Time should a check-in be required?</b> <input type="datetime-local" name="check_time"><br> -->
+	<b>What Date/Time should a check-in be required?</b> <input type="datetime-local" name="check_time"><br>
 	What time would you like the app to send an alert if you don't check-in by that time: <input type="time" name="time"><br>
 	(You'll receive texts reminding you to check in 15 minutes before your required check-ins)<br><br>
 	Which contact(s) would you like to be alerted if you miss this check-in? (select up to 3)<br>
@@ -301,7 +301,27 @@
 		console.log('Form Data: ')
 		console.log($("#add_sched_form").serialize())
 		console.log(typeof $("#add_sched_form").serialize())
-		console.log($("#add_sched_form"))
+		console.log($("#add_sched_form"), "Just Form")
+		console.log($("#add_sched_form").serialize(), "Just Serialize")
+		console.log( JSON.stringify($("#add_sched_form").serialize()), "JSON")
+		console.log( JSON.stringify($("#add_sched_form").serializeArray()), "JSONarray")
+		//$.ajax({
+			//url: "/add_schedset",
+			//dataType: 'json',
+			//type: 'post',
+			//contentType: 'application/json',
+			//data: JSON.stringify($("#add_sched_form").serialize()),
+			//processData: false,
+			//success: function( data, textStatus, jQxhr ){
+			//	$('#response pre').html( JSON.stringify( data ) );
+			//	console.log("data then value:2");
+			//    console.log(data);
+			//	console.log(data.value);
+			//},
+			//error: function( jqXhr, textStatus, errorThrown ){
+			//	console.log( errorThrown );
+			//}
+		//});
 		$.post("/add_schedset", $("#add_sched_form").serialize(), function(data) {
 			console.log("data then value:");
 			console.log(data);

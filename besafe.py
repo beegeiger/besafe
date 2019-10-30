@@ -1,5 +1,5 @@
 import flask
-
+from flask_debug import Debug
 import math
 import time
 import json
@@ -167,7 +167,7 @@ def edit_page():
 def edit_profile():
     """Submits the profile edits"""
 
-
+    print("form: ", request.form)
     #Gets info from html form and dbase
     email_input = request.form['email_input']
     fname = request.form['fname']
@@ -469,12 +469,12 @@ def add_sched_alertset():
     #     end_date = request.form['end_date']
 
  
-
+    print("Form: ", request.form)
     #Gets the alert set name, description, and then queries the current user
-    name = request.form['set_name']
+    name = request.form['set_nam']
     print("name: ", name)
     desc = request.form['descri']
-    print("descri: ", descri)
+    print("descri: ", desc)
     user = User.query.filter_by(email=session['current_user']).one()
     if len(name)== 0:
         name = "Alert Set " + str(len(alert_sets_all))
@@ -486,10 +486,10 @@ def add_sched_alertset():
 
     #The just-created alert set is then queried to get the alert_set_id
     alert_set = AlertSet.query.filter(AlertSet.user_id == user.user_id, AlertSet.a_name == name).first()
-
+    print("Type Alert Set :", type(alert_set))
     #The user is then redirected to the scheduled set edit page for this alert set
     print("Got Through Add SchedSet, Here's the alert set: ", alert_set)
-    return alert_set
+    return str(alert_set.alert_set_id)
 
 @app.route("/edit_schedset/<alert_set_id>")
 def edit_schedset_page(alert_set_id):
@@ -860,4 +860,6 @@ if __name__ == "__main__":
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     # connect_to_db(app, 'postgresql:///besafe')
     print("Connected to DB.")
+    Debug(app)
+    app.run(debug=True)
     app.run()
