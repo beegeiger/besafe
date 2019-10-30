@@ -96,7 +96,7 @@
 		{% if contacts|length < 1 %}
 		<h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
 		{% endif %}
-		<form onclick="addingSet()" id="add_sched_form">
+		<form  id="add_sched_form">
 			<b>What would you like to name this alert set???:</b> <input type=textbox name='set_nam'></input><br>
 			<b>Where are you going and/or what are you doing that you might need this alert?</b><br>
 			<textarea rows="2" cols="50" name="descri"></textarea>
@@ -104,7 +104,7 @@
 			<!-- What Date would you like this alert set to first be available? (optional)<input type="date" name="date" value=""><br>
 			What is the last date you would like this alert set to be available? (optional)<input type="date" name="end_date" value=""> -->
 			<br><br>
-			<button id="sched_set_submit" type="button">Create Alert Set</button>
+			<button onclick="addingSet()" id="sched_set_submit" type="button">Create Alert Set</button>
 			<br>
 			<a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
 		</form>
@@ -297,8 +297,12 @@
 
 
 	function addingSet(){
-		console.log('Button is pressed!');
-		$.post("/add_schedset", function(data) {
+		console.log('Button is pressed!');	
+		console.log('Form Data: ')
+		console.log($("#add_sched_form").serialize())
+		console.log(typeof $("#add_sched_form").serialize())
+		console.log($("#add_sched_form"))
+		$.post("/add_schedset", $("#add_sched_form").serialize(), function(data) {
 			console.log("data then value:");
 			console.log(data);
 			console.log(data.value);
