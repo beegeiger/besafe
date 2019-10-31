@@ -351,13 +351,12 @@ def edit_contact(contact_num):
     name = request.form['name']
     phone = request.form['phone']
     email = request.form['email']
-    c_type = request.form['c_type']
     message = request.form['message']
 
     #Queries the contact in question, edits it in the dBase, and commits
     contact = Contact.query.filter_by(contact_id=contact_num).one()
     ((db.session.query(Contact).filter_by(contact_id=contact_num)).update(
-    {'name':name, 'email':email, 'phone':phone, 'c_type':c_type, 'c_message':message}))
+    {'name':name, 'email':email, 'phone':phone, 'c_message':message}))
     db.session.commit()
 
     return redirect("/contacts")
@@ -487,8 +486,10 @@ def save_schedset(alert_set_id):
     """Saves the scheduled alert set beind edited"""
 
     #Gets the alert set details from the form
-    date = request.form['date']
-    end_date = request.form['end_date']
+    # date = request.form['date']
+    # end_date = request.form['end_date']
+    date = None
+    end_date = None
     name = request.form['set_name']
     desc = request.form['descri']
 
