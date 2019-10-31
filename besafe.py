@@ -410,18 +410,6 @@ def add_rec_alertset():
 
     return redirect("/bs_alerts")
 
-@app.route("/edit_recset/<alert_set_id>")
-def edit_recset_page(alert_set_id):
-    """Renders the page to edit a recurring alert set"""
-
-    #Queries the user, alert_set, user's contacts, and associated alerts
-    user = User.query.filter_by(email=session['current_user']).one()
-    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
-    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-    alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
-
-    return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
-
 @app.route("/save_recset/<alert_set_id>", methods=["POST"])
 def save_recset(alert_set_id):
     """Saves the edits to a recurring alert set"""
