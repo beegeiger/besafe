@@ -1,12 +1,32 @@
 {% extends 'base.html' %}
-{% block title %}Edit Profile{% endblock %}
+{% block title %}User Profile{% endblock %}
 {% block head %}
 
 {% endblock %}
 {% block content %}
+
+
+
+
+<div>
+	<h1>Your Profile</h1>
+	</div>
+	<div class="gen_div">
+	<b>E-mail:</b> {{ email }}<br><br>
+	<b>Name:</b> {{ fname }} {{ lname }}<br><br>
+	<b>Timezone:</b> GMT {{ user.timezone }}<br><br>
+	{% if user.phone %}
+	<b>Phone #: </b> {{ user.phone }}<br><br>
+	{% endif %}
+	{% if user.email2 %}
+	<b>Additional E-mail: </b> {{ user.email2 }}<br><br>
+	{% endif %}
+	
+	<button type="button">Edit Profile</button>
+</div>
+
+
 <h2 style="text-align: center;">Edit Your Profile:</h2>
-
-
 
 <div class="container">
 <div class="row" style="width: 100%;">
