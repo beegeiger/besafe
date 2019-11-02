@@ -8,7 +8,7 @@
 
 
 
-<div>
+<div id="profile_div">
 	<h1>Your Profile</h1>
 	</div>
 	<div class="gen_div">
@@ -22,10 +22,10 @@
 	<b>Additional E-mail: </b> {{ user.email2 }}<br><br>
 	{% endif %}
 	
-	<button type="button">Edit Profile</button>
+	<button id="edit_but" type="button">Edit Profile</button>
 </div>
 
-
+<div id="edit_div" class="hidden">
 <h2 style="text-align: center;">Edit Your Profile:</h2>
 
 <div class="container">
@@ -92,6 +92,7 @@
 </div>
 </div>
 </div>
+</div>
 <script>
 document.querySelector('#find_me').addEventListener('click', geoFindMe);
 $(document).ready(function(){
@@ -155,6 +156,14 @@ function timezone(lat, long){
 		return data
 	});
 }
+
+$(document).ready(function(){
+	$( "#edit_but" ).click(function(){
+		$( "#edit_div" ).show();
+		$( "#profile_div" ).hide()
+		console.log("Submit Sched Set Button Working");
+	});
+});
 
 
 </script>
