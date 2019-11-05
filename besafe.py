@@ -818,6 +818,10 @@ def add_geo_point():
     db.session.commit()
     return "success"
 
+@app.route("/map")
+def get_map():
+    """Renders User Map Page"""
+    return render_template("map_page.html")
 
 #####################################################
 
