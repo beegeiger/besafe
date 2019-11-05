@@ -141,15 +141,6 @@ def logout():
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 
-@app.route("/profile")
-def user_profile():
-    """Renders user's profile"""
-
-    user = User.query.filter_by(email=session['current_user']).one()
-
-    return render_template("user_page.html", user=user)
-
-
 
 @app.route("/edit_profile", methods=["GET"])
 @requires_auth
@@ -187,6 +178,7 @@ def edit_profile():
 
 
 @app.route("/bs_alerts")
+@requires_auth
 def besafe_alerts():
     """Renders the main besafe page including a user's alert-sets"""
 
@@ -298,6 +290,7 @@ def scheduled_alerts():
 
 
 @app.route("/contacts")
+@requires_auth
 def user_contacts():
     """Renders the User's 'contacts' Page"""
 
@@ -627,6 +620,7 @@ def deactivate_alertset(alert_set_id):
     return "Alert Set Deactivated"
 
 @app.route("/check_ins")
+@requires_auth
 def checkin_page():
     """Renders the User's check-in page"""
 
