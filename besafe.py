@@ -119,10 +119,7 @@ def log_in():
     """Render's the log-in page if user not in session,
      otherwise redirects to the homepage (Tested)"""
     print('login visited')
-    # if 'current_user' in list(session.keys()):
-    #     return redirect("/")
-    # else:
-    # return render_template("login.html")
+
     uri = "https://besafe.ngrok.io/callback"
     print(type(uri))
     return auth0.authorize_redirect(redirect_uri=uri, audience='https://dev-54k5g1jc.auth0.com/api/v2/')
@@ -131,11 +128,10 @@ def log_in():
 @app.route("/logout")
 def logout():
     """Logs user out and deletes them from the session (Tested)"""
-    # del session['current_user']
-    # flash('Bye! You have been succesfully logged out!')
-    # return redirect("/login")
+
     # Clear session stored data
-    session.clear()
+    session.clear
+
     # Redirect user to logout endpoint
     params = {'returnTo': url_for('go_home', _external=True), 'client_id': '78rUTjeVusqU3vYXyvNpOQiF8jEacf55'}
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
@@ -145,10 +141,12 @@ def logout():
 @app.route("/edit_profile", methods=["GET"])
 @requires_auth
 def edit_page():
-    """Renders the edit profile page"""
+    """Renders the Profile page"""
 
+    #Queries User
     user = User.query.filter_by(email=session['current_user']).one()
 
+    #Returns the Profile Template
     return render_template("edit_profile.html", user=user)
 
 
@@ -157,22 +155,28 @@ def edit_page():
 def edit_profile():
     """Submits the profile edits"""
 
-    print("form: ", request.form)
+
     #Gets info from html form and dbase
     email_input = request.form['email_input']
     fname = request.form['fname']
     lname = request.form['lname']
     phone = request.form['phone']
     timezone = request.form['tzim']
+
+    #Queries User
     user = User.query.filter_by(email=session['current_user']).one()
 
+    #Updates User Object in DB and Commits
     (db.session.query(User).filter(
         User.email == session['current_user']).update(
             {'fname': fname, 'lname': lname, 'email': email_input,
                 'phone': phone,'timezone': timezone}))
     db.session.commit()
+    
     flash('Your Profile was Updated!')
-    return redirect("/")
+    
+    #Refreshes the Profile Page
+    return redirect("/edit_profile")
 
 
 
