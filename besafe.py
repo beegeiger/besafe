@@ -71,11 +71,49 @@ def requires_auth(f):
 
   return decorated
 
-######################################################################3
+######################################################################
+#Helper Functions
+def check_in(user_id, notes):
+    """Helper-function used to log a new check-in from any source"""
+
+    #Date, time, and datetime objects are initiated for convenience
+    time = datetime.datetime.now().time()
+    date = (datetime.datetime.today())
+    datetim = datetime.datetime.now()
+
+    #A new check-in object is created, added, and commited
+    new_check = CheckIn(user_id=user_id, notes=notes, time=time, date=date, datetime=datetim)
+    db.session.add(new_check)
+    db.session.commit()
+    
+    #All active alerts for the user are queried
+    alerts = Alert.query.filter(Alert.user_id == user_id, Alert.active == True).all()
+    
+    #The alerts are looped through and all alerts within an hour are marked as checked-in
+    for alert in alerts:
+        if alert.datetime - datetim < datetime.timedelta(hours=1.5):
+            if alert.interval:
+                print("Alert:")
+                print(alert)
+                (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
+                {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': True})
+                db.session.query(AlertSet).filter_by(alert_set_id=alert.alert_set_id).update({'checked_in': True})
+            else:
+                (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
+                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': True})
+                db.session.query(AlertSet).filter_by(alert_set_id=alert.alert_set_id).update({'checked_in': True})
+    db.session.commit()
+    return "Check In has been Logged!"
+
+######################################################################
 
 # @app.route("/api_key", methods=["POST"])
 # def api_key():
 #     return google_maps_key
+
+
+
+
 
 @app.route("/")
 def go_home():
