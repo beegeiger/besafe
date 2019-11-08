@@ -105,6 +105,74 @@ def check_in(user_id, notes):
     db.session.commit()
     return "Check In has been Logged!"
 
+
+def create_alert(alert_id):
+    """Helper Function for creating an alert's actual message body"""
+
+    #Datetime object for now created for convenience
+    datetim = datetime.datetime.now()
+
+    #The alert in question, the user, the alert set, all other associated alerts, and the recent check-ins are all queried
+    alert = Alert.query.filter_by(alert_id=alert_id).one()
+    user = User.query.filter_by(user_id=alert.user_id).one()
+    alert_set = AlertSet.query.filter_by(alert_set_id=alert.alert_set_id).one()
+    all_alerts = Alert.query.filter(alert.alert_set_id == alert.alert_set_id, alert.datetime > alert_set.start_datetime).all()
+    check_ins = CheckIn.query.filter(checkin.user_id == user.user_id, abs(checkin.datetime - datetim) <  datetime.timedelta(days=1)).all()
+    
+    #An empty dictionary is created to store the associated events for the alert
+    events = {}
+    
+    #A new string that will begin the alert message is created
+    message_body = """This is a Safety Alert sent by {} {} through the SafeWork Project SafeWalk Alert system,
+            found at safeworkproject.org \n \n""".format(user.fname, user.lname)
+    
+    #If there are notes on the alert set, they are added to the message
+    if alert_set.notes:
+        message_body += """The user has included the following messages when they made this alert and checked in \n \n {}""".format(alert_set.message)
+    
+    #For all associated alerts, if there is a message longer than 2 characters, the alert is added to the events dictionary
+    for a_a in all_alerts:
+        if len(a_a.message) > 2:
+            events[a_a.datetime] = a_a
+    
+    #All check-ins are added to the events dictionary
+    for chks in check_ins:
+        events[chks.datetime] = chks
+
+    #Loops through all of the ordered events in the dictionary
+    for key in sorted(events.keys()):
+        #If the event was a scheduled alarm
+        if type(events[key]) == model.Alarm:
+            #Different messages are added depending on whether the alarm was check-in for and if it had a message
+            if events[key].checked_in == True:
+                message_body += "An alarm was scheduled for {} which {} checked-in for.".format(key, user.fname)
+                if events[key].message:
+                    message_body += "The Alarm included the following notes: {} \n \n".format(events[key].message)
+                else:
+                    message_body += "\n \n"
+            else:
+                message_body += "An alarm was scheduled for {} which {} MISSED the checked-in for.".format(key, user.fname)
+                if events[key].message:
+                    message_body += "The Alarm included the following notes: {} \n \n".format(events[key].message)
+                else:
+                    message_body += "\n \n"
+        #If it isn't an alarm, it's a check-in object which is then added to the main message body
+        else:
+            message_body += "{} checked in with the app at {} and included the following message: {}".format(user.fname, key, events[key].notes)
+    
+    #Different messages are added depending on how many contacts are sent the alert
+    if alert.contact_id3:
+        message_body += """Two other contacts have been sent this alert. If you know who it might be,
+                        consider reaching out and co-ordinating your effort to help {}.""".format(user.fname)
+    elif alert.contact_id2:
+        message_body += """One other contact has been sent this alert. If you know who it might be,
+                        consider reaching out and co-ordinating your effort to help {}.""".format(user.fname)
+    else:
+        message_body += """You were the only person sent this alert, so if anything can be done
+                        to help {}, it is up to you! Good luck!!!""".format(user.fname)
+    
+    #The complete message body is then returned
+    return message_body
 ######################################################################
 
 # @app.route("/api_key", methods=["POST"])
