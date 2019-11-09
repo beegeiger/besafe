@@ -173,6 +173,34 @@ def create_alert(alert_id):
     
     #The complete message body is then returned
     return message_body
+
+
+def send_alert_contacts(alert_id, message_body):
+    """Helper Function that actually sends the alerts over e-mail and sms"""
+    
+    #The current alert and user is queried
+    alert = Alert.query.filter_by(alert_id=alert_id).one()
+    user = User.query.filter_by(user_id=alert.user_id).one()
+    
+
+    #An empty list is created and then filled with the contact objects associated with the alert
+    contacts = []
+    contacts += Contact.query.filter_by(contact_id=alert.contact_id1)
+    if alert.contact_id2:
+        contacts += Contact.query.filter_by(contact_id=alert.contact_id2)
+    if alert.contact_id2:
+        contacts += Contact.query.filter_by(contact_id=alert.contact_id3)
+    
+    #For each contact, an optional personal message is added to the message_body and is sent to email and sms
+    for con in contacts:
+        if con.c_message:
+            body = con.c_message + message_body
+        if con.email:
+            send_email(con.email, body)
+        if con.phone:
+            send_sms(con.phone, body)
+    return "Message Sent"
+
 ######################################################################
 
 # @app.route("/api_key", methods=["POST"])
