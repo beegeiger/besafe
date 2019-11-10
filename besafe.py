@@ -201,6 +201,25 @@ def send_alert_contacts(alert_id, message_body):
             send_sms(con.phone, body)
     return "Message Sent"
 
+def send_alert_user(alert_id, message_body):
+    """Helper Function that actually sends the alerts over e-mail and sms"""
+    
+    #The current alert and user is queried
+    alert = Alert.query.filter_by(alert_id=alert_id).one()
+    user = User.query.filter_by(user_id=alert.user_id).one()
+    
+    if user.email2:
+        send_email(user.email2, message_body)
+        print('Sending to email2')
+    elif user.email:
+        send_email(user.email, message_body)
+        print('Sending to email1')
+    if user.phone:
+        send_message(user.phone, message_body)
+        print('Sending to phone')
+    return "Messages Sent"
+
+
 ######################################################################
 
 # @app.route("/api_key", methods=["POST"])
