@@ -219,7 +219,57 @@ def send_alert_user(alert_id, message_body):
         print('Sending to phone')
     return "Messages Sent"
 
+def check_alerts():
+    """A Helper function to run every minute to check if any alerts need to be sent"""
+    
+    print("Checking For Alerts and Reminders Now")
 
+    #Datetime object for now created for convenience
+    datetim = datetime.datetime.now()
+    yester = datetim - datetime.timedelta(days=1)
+
+    with app.app_context():
+        #All currently-active alerts are queried 
+        alerts = Alert.query.filter_by(active=True).all()
+        print(alerts)
+        #If at least one alert is active, the alerts are looped through to see if any need to be sent
+        if len(alerts) > 0:
+            for alert in alerts:
+                #A new variable 'difference' is set to the timedelt between the alert and the current time
+                difference = alert.datetime - datetime.datetime.now()
+                
+                #All recent check-ins are queried and a new counter variable checks is set to 0
+                check_ins = CheckIn.query.filter(CheckIn.user_id == alert.user_id, CheckIn.datetime  >=  yester).all()
+                checks = 0
+                
+                #For each check-in, if it is within 90 minutes before the current time, the checks counter is added by 1
+                for ch in check_ins:
+                    dif = datetime.datetime.now() - alert.datetime
+                    if dif <= datetime.timedelta(hours=1.5) and difference > datetime.timedelta(seconds=0):
+                        checks += 1
+                
+                #If there is no check-in and the alert is within a minute, an alert is sent
+                if abs(difference) <= datetime.timedelta(minutes=1) and abs(difference) > datetime.timedelta(seconds=0) and checks == 0 and alert.sent == False:
+                    print('A CHECK-IN WAS MISSED AND AN ALERT IS BEING SENT NOW!')
+                    message_body = create_alert(alert.alert_id)
+                    send_alert_contacts(alert.alert_id, message_body)
+                    #The alert object is updates to be marked sent and inactive and its commited
+                    (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update({'sent': True, 'active': False})
+                    (db.session.query(AlertSet).filter_by(alert_set_id=alert.alert_set_id)).update({'active': False})
+                    db.session.commit()
+                
+                elif abs(difference) <= datetime.timedelta(minutes=1) and abs(difference) > datetime.timedelta(seconds=0) and checks < 0 and alert.sent == False:
+                    db.session.query(AlertSet).filter_by(alert_set_id=alert.alert_set_id).update({'checked_in': False})
+
+
+                #If there is no check in and it is 15 minutes before an alert, a reminder message is sent
+                elif abs(difference) <= datetime.timedelta(minutes=15) and abs(difference) > datetime.timedelta(minutes=14) and checks == 0 and alert.sent == False:
+                    print('A CHECK-IN REMINDER IS BEING SENT NOW!')
+                    message_body = """Reminder! You have a Check-In Scheduled in 15 minutes. If you don't check-in
+                    by responding to this text, emailing 'safe@safeworkproject.org', or checking in on the site at
+                    'www.safeworkproject.org/check_ins', your pre-set alerts will be sent to your contact(s)!"""
+                    send_alert_user(alert.alert_id, message_body)
+    return
 ######################################################################
 
 # @app.route("/api_key", methods=["POST"])
