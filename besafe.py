@@ -400,6 +400,7 @@ def besafe_alerts():
     else:
         return redirect('/login')
 
+    #Queries Alert Sets, Alerts, Contacts and creates and empty list for the alert sets
     alert_sets = AlertSet.query.filter_by(user_id=user.user_id).all()
     al_sets = []
     alerts = Alert.query.filter_by(user_id=user.user_id).all()
@@ -408,7 +409,7 @@ def besafe_alerts():
 
     #If the user has added no contacts, they are re-routed to the 'getting started' page
     if con_length < 1:
-        return redirect("/sw_getting_started")
+        return redirect("/contacts")
 
     #Loops through all user's alert-sets and initiates variables to keep track of them
     for a_set in alert_sets:
