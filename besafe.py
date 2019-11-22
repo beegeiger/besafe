@@ -639,15 +639,7 @@ def save_recset(alert_set_id):
 def add_sched_alertset():
     """Adds a new scheduled alert set"""
     print("Add Schedset Submitted")
-    #Iniates date and end date variables and sets them to None
-    # date = None
-    # end_date = None
 
-    #If the user enters a date or end_date, the variables are then updated to that value
-    # if len(request.form['date']) > 2:
-    #     date = request.form['date']
-    # if len(request.form['end_date']) > 2:
-    #     end_date = request.form['end_date']
     user = User.query.filter_by(email=session['current_user']).one()
     alert_sets_all = AlertSet.query.filter_by(user_id=user.user_id).all()
  
