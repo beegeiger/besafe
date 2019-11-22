@@ -273,12 +273,6 @@ def check_alerts():
     return
 ######################################################################
 
-# @app.route("/api_key", methods=["POST"])
-# def api_key():
-#     return google_maps_key
-
-
-
 
 
 @app.route("/")
@@ -455,19 +449,9 @@ def besafe_alerts():
                 d1 = now - aset_alerts[0]
 
                 d2 = abs(d1.total_seconds())
-                # days = math.floor(d2 / 86400)
-                # hours = math.floor((d2 - (days * 86400)) / 3600)
-                # minutes = math.floor((d2 - (days * 86400) - (hours * 3600)) / 60)
-                # seconds = math.floor(d2 - (days * 86400) - (hours * 3600) - (minutes * 60))
-                # print(minutes)
-                # a_set.countdown = datetime.time(int(hours), int(minutes), int(seconds))
-                # a_set.days = int(days)
-                # a_set.hours = int(hours)
-                # a_set.minutes = int(minutes)
-                # a_set.seconds = int(seconds)
+
                 a_set.total =int(d2)
-                # if d1 < datetime.timedelta(seconds=0):
-                #     a_set.total = 0
+
 
             else:
                 a_set.next_alarm_dis = now.strftime("%I:%M %p, %m/%d/%Y")
