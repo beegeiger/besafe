@@ -3,3 +3,5 @@ secrets.sh
 secrets.py
 notes.txt
 notes.html
+/ReactApp/node_modules
+/ReactApp/env
