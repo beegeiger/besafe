@@ -22,17 +22,37 @@ const AutoCompleteOption = AutoComplete.Option;
 class ContactForm extends React.Component{
     render() {
         return (
-            <form action="/edit_contact/{{ contact.contact_id }}" method="POST" id="edit_form{{ contactloop.index }}" class="hidden">
-	        <b>Contact Name:</b> <input type=textbox name="name" value='{{ contact.name }}'></input><br>
-	        <b>Phone Number:</b><input type="tel" name="phone" value="{{ contact.phone }}"><br>
-	        <b>Email Address:</b><input type="email" name="email"><br>
-	        <br>
-	        <b>Custom Message For Contact</b>(Optional)<b>:</b><br>
-	        <textarea rows="6" cols="50" name="message">{{ contact.c_message }}</textarea><br>
-
-
-	        <button type="submit">Submit Changes</button>
-</form>
+            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+                <Form.Item label="Contact Name" >
+                    {getFieldDecorator('nickname', {
+                        rules: [{ required: true, message: 'Please input somke name!', whitespace: true }],
+                    })(<Input />)}
+                </Form.Item>
+                <Form.Item label="E-mail">
+                {getFieldDecorator('email', {
+                    rules: [
+                    {
+                        type: 'email',
+                        message: 'The input is not valid E-mail!',
+                    },
+                    {
+                        required: false,
+                        message: 'Please input contact E-mail!',
+                    },
+                    ],
+                })(<Input />)}
+                </Form.Item>
+                <Form.Item label="Phone Number">
+                    {getFieldDecorator('phone', {
+                        rules: [{ required: false, message: 'Please input contact phone number!' }],
+                    })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
+                </Form.Item>
+                <Form.Item label="Message to Contact">
+                    {getFieldDecorator('phone', {
+                        rules: [{ required: true, message: 'Please input a message to your contact!' }],
+                    })(<textarea rows="6" cols="50"></textarea>)}
+                </Form.Item>
+            </Form>
         )
     }
 }
