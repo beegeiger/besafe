@@ -1,4 +1,5 @@
 import { Menu } from 'antd';
+import React from 'react';
 
 class NavBar extends React.Component {
     handleClick = e => {
