@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
+import { prefix } from "../urlprefix"
 import {
   Form,
   Input,
@@ -19,10 +20,15 @@ import {
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 
-class ContactForm extends React.Component{
+export class ContactForm extends React.Component{
     handleSubmit(e) {
         e.preventDefault();
-        
+        var formData = new FormData(form)
+        let uri = "prefix" + "/contacts"
+        fetch(url, {
+            method: 'post',
+            body: formData,
+        })
     }
     render() {
         return (

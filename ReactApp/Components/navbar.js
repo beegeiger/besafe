@@ -1,7 +1,7 @@
 import { Menu } from 'antd';
 import React from 'react';
 
-class NavBar extends React.Component {
+export class NavBar extends React.Component {
     handleClick = e => {
         console.log('click ', e);
         this.setState({
