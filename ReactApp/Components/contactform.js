@@ -20,6 +20,10 @@ const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 
 class ContactForm extends React.Component{
+    handleSubmit(e) {
+        e.preventDefault();
+        
+    }
     render() {
         return (
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
