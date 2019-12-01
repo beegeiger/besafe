@@ -56,11 +56,6 @@ export class ContactForm extends React.Component{
                         rules: [{ required: false, message: 'Please input contact phone number!' }],
                     })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
                 </Form.Item>
-                <Form.Item label="Message to Contact">
-                    {getFieldDecorator('phone', {
-                        rules: [{ required: true, message: 'Please input a message to your contact!' }],
-                    })(<textarea rows="6" cols="50"></textarea>)}
-                </Form.Item>
             </Form>
         )
     }
