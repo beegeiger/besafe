@@ -9,6 +9,15 @@ const config = {
        },
     module: {
           rules: [
+            { test: /\.handlebars$/, loader: "handlebars-loader" },
+            {
+               test: /\.css$/i,
+               use: [
+                 'handlebars-loader', // handlebars loader expects raw resource string
+                 'extract-loader',
+                 'css-loader',
+               ],
+             },
              {
                 test: /\.jsx?$/, // search for js files 
                 exclude: /node_modules/,

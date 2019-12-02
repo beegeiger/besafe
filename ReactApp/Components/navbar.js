@@ -2,12 +2,12 @@ import { Menu } from 'antd';
 import React from 'react';
 
 export class NavBar extends React.Component {
-    handleClick = e => {
-        console.log('click ', e);
-        this.setState({
-            current: e.key,
-        });
-    };
+    // handleClick = e => {
+    //     console.log('click ', e);
+    //     this.setState({
+    //         current: e.key,
+    //     });
+    // };
 
     render() {
         return (
