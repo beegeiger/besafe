@@ -3,8 +3,8 @@ import { Contact } from './contact';
 
 export class Contacts extends React.Component{
     render() {
-        return(
-            
+        const contacts = {% contacts %}
+        return(      
         )
     }
 }
