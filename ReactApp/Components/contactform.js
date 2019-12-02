@@ -34,7 +34,7 @@ export class ContactForm extends React.Component{
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                 <Form.Item label="Contact Name" >
                     {getFieldDecorator('nickname', {
-                        rules: [{ required: true, message: 'Please input somke name!', whitespace: true }],
+                        rules: [{ required: true, message: 'Please input some name!', whitespace: true }],
                     })(<Input />)}
                 </Form.Item>
                 <Form.Item label="E-mail">
