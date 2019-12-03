@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card } from 'antd';
 import { Button } from 'antd';
+import 'antd/dist/antd.css';
+
 
 export class Contact extends React.Component{
     constructor(props) {
@@ -13,9 +15,9 @@ export class Contact extends React.Component{
     render() {
         return(
             <div>
-                <Card title={ this.state.name } extra={<a href="#">More</a>} style={{ width: 300 }}>
-                    <p>E-mail: { this.state.email }</p>
-                    <p>Phone: { this.state.phone }</p>
+                <Card title="Contact Name" style={{ width: 300 }}>
+                    <p>E-mail: </p>
+                    <p>Phone: </p>
                 </Card>
                 <Button>Edit Contact</Button>
                 <Button type="danger">Delete Contact</Button>

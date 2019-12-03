@@ -72,9 +72,9 @@ export class ContactForm extends React.Component{
                 </Form> */}
 
             <form>
-                <b>Contact Name:</b> <input type='textbox' name="name"></input>
-                <b>Phone Number:</b><input type="tel" name="phone"></input>
-                <b>Email Address:</b><input type="email" name="email"></input>
+                <b>Contact Name:</b> <input type='textbox' name="name"></input><br />
+                <b>Phone Number:</b><input type="tel" name="phone"></input><br />
+                <b>Email Address:</b><input type="email" name="email"></input><br />
 
                 {/* <textarea rows="6" cols="50" name="message"></textarea> */}
                 <button type="submit">Save Contact</button>
