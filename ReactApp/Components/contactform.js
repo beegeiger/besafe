@@ -1,6 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { prefix } from "../urlprefix"
+import { createForm } from "rc-form";
 
 import {
   Form,
@@ -34,7 +35,7 @@ export class ContactForm extends React.Component{
         const  autoCompleteResult  = this.state;
         return (
             <div>
-                <Form>
+                {/* <Form>
                     <Form.Item label="Contact Name">
                         {getFieldDecorator('name', {
                             rules: [
@@ -68,19 +69,19 @@ export class ContactForm extends React.Component{
                             rules: [{ required: false, message: 'Please input your contact number!' }],
                         })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
                     </Form.Item>
-                </Form>
+                </Form> */}
 
             <form>
                 <b>Contact Name:</b> <input type='textbox' name="name"></input>
                 <b>Phone Number:</b><input type="tel" name="phone"></input>
                 <b>Email Address:</b><input type="email" name="email"></input>
 
-                <textarea rows="6" cols="50" name="message"></textarea>
-                <button type="submit">Save Contacts</button>
+                {/* <textarea rows="6" cols="50" name="message"></textarea> */}
+                <button type="submit">Save Contact</button>
             </form>
             </div>
         )
     }
 }
 
-export const WrappedContactForm = Form.create({ name: 'new' })(ContactForm);
+// export const WrappedContactForm = createForm()(ContactForm);

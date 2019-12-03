@@ -2,7 +2,7 @@ import React from 'react';
 import { ContactForm } from './Components/contactform';
 import { Form } from 'antd';
 
-const ContactForms = Form.create({ name: 'register' })(ContactForm);
+
 
 class App extends React.Component {
    render() {
