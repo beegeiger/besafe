@@ -310,7 +310,7 @@ def callback_handling():
     db.session.commit()
 
     #Redirects to the User Profile
-    return redirect('/edit_profile')
+    return redirect('/dashboard')
 
 @app.route('/dashboard')
 @requires_auth
@@ -501,6 +501,26 @@ def user_contacts():
 
     return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
 
+
+@app.route("/view_contacts")
+def view_user_contacts():
+    """Renders the User's 'contacts' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+
+    return contacts
+
+@app.route("/contacts_page")
+def user_contacts_page():
+    """Renders the User's 'contacts' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+
+    return render_template("index.html")
 
 @app.route("/contacts", methods=["POST"])
 def add_contact():
