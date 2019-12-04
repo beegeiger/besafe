@@ -1,0 +1,391 @@
+{% extends 'base.html' %}
+{% block tit %}Main SafeWalk Page{% endblock %}
+{% block content %}
+<br>
+<br>
+<h1 style="text-align: center; text-shadow:
+		-1px -1px 0 white,
+		1px -1px 0 white,
+		-1px 1px 0 white,
+		1px 1px 0 white;">Main SafeWalk Page</h1>
+
+<h2>Recurring Alerts*</h2>
+<div class="container-fluid.">
+	<div class="row">
+		<div class="col-2">
+			<p style="font-size: 140%; text-align: left; padding-left: 15%; text-decoration: underline;">Alert Name</p>
+		</div>
+		<div class="col-2">
+			<p style="font-size: 140%; text-align: left; padding-left: 15%; text-decoration: underline;">Activated</p>
+		</div>
+		<div class="col-6" style="display: inline-block; padding: 0 0 0 0;">
+			<div class="col-5" style="display: inline-block;">
+				<p style="font-size: 140%; text-align: left; display: inline-block; padding-left: 10%; text-decoration: underline;">Next Alert Time</p>
+			</div>
+			<div class="col-6" style="display: inline-block;">
+				<p style="font-size: 140%; text-align: left; display: inline-block; padding-left: 10%; text-decoration: underline;">Next Alert Countdown</p>
+			</div>
+		</div>
+		<div class="col-1">
+			<p style="font-size: 120%; text-align: left; padding-left: 10%; text-decoration: underline;">Checked-In?</p>
+		</div>
+
+	</div>
+</div>
+
+
+
+
+{% for set in alert_sets %}
+{% if set.interval %}
+<div class="container-fluid.">
+	<div class="row.alert_display" style="width:100%">
+		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
+        font-weight: bold; font-size: 135%;">
+			<a href="/edit_recset/{{ set.alert_set_id }}">{{ set.a_name }}</a> &nbsp &nbsp
+		</div>
+		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
+			<input id="toggle_rec{{ set.alert_set_id }}" type="checkbox" data-toggle="toggle" data-on="Alert Set Active" data-off="Inactive" {% if set.active == True %}checked{% endif %}>
+		</div>
+		
+
+		<div {% if set.active == False %}class='hidden.col-6' {% else %} class="col-6" {% endif %} id="count_display{{ set.alert_set_id }}" style="display: inline-block; padding: 0 0 0 0;">
+			
+			<div class="col-5" id="al_time{{ set.alert_set_id }}" style="display: inline-block;">	
+			<p id="datetime{{ set.alert_set_id }}" style="font-family: 'Bitter', serif;
+        	font-weight: bold; font-size: 105%; color: red; display: inline-block;">
+			{% if set.active == True %}
+			{{ set.next_alarm_dis }}
+			{% endif %}
+			</p>
+			</div>
+		
+
+			<div {% if set.active == False %} class='hidden' {% else %} class="col-6" {% endif %} id='countdown{{ set.alert_set_id }}' style=" {% if set.active == False %} display: none; {% else %} display: inline-block; {% endif %} font-family: 'Bitter', serif;
+        font-weight: bold; font-size: 105%; color: red;">
+
+			</div>
+		</div>
+		<div class='col-1'style="display: inline-block;" id="checked{{ set.alert_set_id }}">
+			<p {% if set.active == False %} class='hidden' {% else %} class='visible' {%endif%}  id="checked{{ set.alert_set_id }}" style="font-family: 'Bitter', serif; font-weight: bold; font-size: 150%; {% if set.checked_in %} color: green; {% else %} color: red; {% endif %}">
+			{% if set.checked_in == True %}
+			Yes
+			{% else %}
+			No
+			{% endif %}
+			</p>
+		</div>
+			
+	</div>
+</div>
+	<script type="text/javascript">
+	var t{{ set.alert_set_id }} = ({{ set.total }} * 1000)
+
+	$(document).ready( function() {
+
+	  function count{{ set.alert_set_id }}(change = 0) {
+	  	  t{{ set.alert_set_id }} = (t{{ set.alert_set_id }} - 1000);
+	      var t = t{{ set.alert_set_id }};
+		  var seconds = Math.floor( (t/1000) % 60 );
+		  var minutes = Math.floor( (t/1000/60) % 60 );
+		  var hours = Math.floor( (t/(1000*60*60)) % 24 );
+		  var days = Math.floor( t/(1000*60*60*24) );
+
+
+	    if (seconds < 10) {
+	    // Add the "0" digit to the front
+	    // so 9 becomes "09"
+	    seconds = "0" + seconds;
+		}
+
+		if (minutes < 10) {
+	    // Add the "0" digit to the front
+	    // so 9 becomes "09"
+	    minutes = "0" + minutes;
+	    
+		}
+
+	    // This gets a "handle" to the clock div in our HTML
+	    var countDiv = document.getElementById('countdown{{ set.alert_set_id }}');
+
+	    // Then we set the text inside the clock div 
+	    // to the hours, minutes, and seconds of the current time
+
+	    if(t > 0) {
+	    countDiv.innerText = days + " days & " + hours + ":" + minutes + ":" + seconds + " Remaining";
+	  
+	    return {
+	    	'changes': change + 1 
+	    };
+		}
+		else {
+		countDiv.innerText = "0 days and 0:00:00 Remaining";
+	  
+	    return {
+	    	'changes': change 
+	    };
+
+		}
+
+	  }
+
+	  // This runs the displayTime function the first time
+	  var changing = count{{ set.alert_set_id }}().changes;
+
+	  count{{ set.alert_set_id }}(changing);  
+	  setInterval(count{{ set.alert_set_id }}, 1000);
+
+	});
+
+</script>
+
+<script>
+	$(document).ready(function(){
+	    $( "#toggle_rec{{ set.alert_set_id }}" ).change(function(event){
+	    	console.log('Button is pressed!')
+	        if(this.checked) {
+	        	$.get("/activate/{{ set.alert_set_id }}", function(data) {
+	        		document.getElementById("datetime{{ set.alert_set_id }}").innerHTML = data;
+	        		console.log("data then value:");
+	        		console.log(data);
+	        		console.log(data.value);
+	        	});
+	        	console.log("Toggle Button On is working");
+	        	$( "#count_display{{ set.alert_set_id }}" ).show();
+	        	$( "#count_display{{ set.alert_set_id }}" ).removeClass("hidden").addClass("col-6");
+	        	$( "#countdown{{ set.alert_set_id }}").show();
+	        	$( "#countdown{{ set.alert_set_id }}").removeClass("hidden").addClass("col-6");
+	        	$( "#checked{{ set.alert_set_id }}").removeClass("hidden").addClass("visible").show();
+	        	$( "#countdown{{ set.alert_set_id }}").css("display", "inline-block");
+	        }
+
+
+	       	else {
+	       		$.get("/deactivate/{{ set.alert_set_id }}");
+	        	console.log("Toggle Button Off is working");
+	        	$( "#count_display{{ set.alert_set_id }}" ).hide();
+	        	$( "#countdown{{ set.alert_set_id }}").hide();
+	        	$( "#checked{{ set.alert_set_id }}").hide()
+	    	};
+	    
+	});
+	});
+</script>
+{% endif %}
+{% endfor %}
+
+<br>
+<form method="GET" action="/rec_alerts">
+    <button type="submit">Add New Recurring Alert Set</button>
+</form><br><br><br>
+
+<h2>Pre-set/Scheduled Alerts*</h2>
+<div class="container-fluid.">
+	<div class="row">
+		<div class="col-2">
+			<p style="font-size: 150%; text-align: left; padding-left: 15%; text-decoration: underline;">Alert Name</p>
+		</div>
+		<div class="col-2">
+			<p style="font-size: 150%; text-align: left; padding-left: 15%; text-decoration: underline;">Activated</p>
+		</div>
+		<div class="col-7" style="display: inline-block; padding: 0 0 0 0;">
+			<div class="col-5" style="display: inline-block;">
+				<p style="font-size: 150%; text-align: left; display: inline-block; padding-left: 10%; text-decoration: underline;">Next Alert Time</p>
+			</div>
+			<div class="col-6" style="display: inline-block;">
+				<p style="font-size: 150%; text-align: left; display: inline-block; padding-left: 10%; text-decoration: underline;">Next Alert Countdown</p>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+
+{% for set in alert_sets %}
+{% if not set.interval %}
+<div class="container-fluid.">
+	<div class="row.alert_display" style="width:100%">
+		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
+        font-weight: bold; font-size: 150%;">
+			<a href="/edit_schedset/{{ set.alert_set_id }}">{{ set.a_name }}</a> &nbsp &nbsp
+		</div>
+		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
+			<input id="toggle_rec{{ set.alert_set_id }}" type="checkbox" data-toggle="toggle" data-on="Alert Set Active" data-off="Inactive" {% if set.active == True %}checked{% endif %}>
+		</div>
+		
+
+		<div {% if set.active == False %}class='hidden.col-7' {% else %} class="col-7" {% endif %} id="count_display{{ set.alert_set_id }}" style="display: inline-block; padding: 0 0 0 0;">
+			
+			<div class="col-5" id="al_time{{ set.alert_set_id }}" style="display: inline-block;">	
+			<p id="datetime{{ set.alert_set_id }}" style="font-family: 'Bitter', serif;
+        	font-weight: bold; font-size: 120%; color: red; display: inline-block;">
+			{% if set.active == True %}
+			{{ set.next_alarm_dis }}
+			{% endif %}
+			</p>
+			</div>
+		
+
+			<div {% if set.active == False %} class='hidden' {% else %} class="col-6" {% endif %} id='countdown{{ set.alert_set_id }}' style=" {% if set.active == False %} display: none; {% else %} display: inline-block; {% endif %} font-family: 'Bitter', serif;
+        font-weight: bold; font-size: 120%; color: red;">
+
+			</div>
+		</div>
+			
+	</div>
+</div>
+	<script type="text/javascript">
+	var t{{ set.alert_set_id }} = ({{ set.total }} * 1000)
+
+	$(document).ready( function() {
+
+	  function count{{ set.alert_set_id }}(change = 0) {
+	  	  t{{ set.alert_set_id }} = (t{{ set.alert_set_id }} - 1000);
+	      var t = t{{ set.alert_set_id }};
+		  var seconds = Math.floor( (t/1000) % 60 );
+		  var minutes = Math.floor( (t/1000/60) % 60 );
+		  var hours = Math.floor( (t/(1000*60*60)) % 24 );
+		  var days = Math.floor( t/(1000*60*60*24) );
+
+
+	    if (seconds < 10) {
+	    // Add the "0" digit to the front
+	    // so 9 becomes "09"
+	    seconds = "0" + seconds;
+		}
+
+		if (minutes < 10) {
+	    // Add the "0" digit to the front
+	    // so 9 becomes "09"
+	    minutes = "0" + minutes;
+	    
+		}
+
+	    // This gets a "handle" to the clock div in our HTML
+	    var countDiv = document.getElementById('countdown{{ set.alert_set_id }}');
+
+	    // Then we set the text inside the clock div 
+	    // to the hours, minutes, and seconds of the current time
+
+	    if(t > 0) {
+	    countDiv.innerText = days + " days and " + hours + ":" + minutes + ":" + seconds + " Remaining";
+	  
+	    return {
+	    	'changes': change + 1 
+	    };
+		}
+		else {
+		countDiv.innerText = "0 days and 0:00:00 Remaining";
+	  
+	    return {
+	    	'changes': change 
+	    };
+
+		}
+
+	  }
+
+	  // This runs the displayTime function the first time
+	  var changing = count{{ set.alert_set_id }}().changes;
+
+	  count{{ set.alert_set_id }}(changing);  
+	  setInterval(count{{ set.alert_set_id }}, 1000);
+
+	});
+
+</script>
+
+<script>
+	$(document).ready(function(){
+	    $( "#toggle_rec{{ set.alert_set_id }}" ).change(function(event){
+	    	console.log('Button is pressed!')
+	        if(this.checked) {
+	        	$.get("/activate/{{ set.alert_set_id }}", function(data) {
+	        		document.getElementById("datetime{{ set.alert_set_id }}").innerHTML = data;
+	        		console.log("data then value:");
+	        		console.log(data);
+	        		console.log(data.value);
+	        	});
+	        	console.log("Toggle Button On is working");
+	        	$( "#count_display{{ set.alert_set_id }}" ).show();
+	        	$( "#count_display{{ set.alert_set_id }}" ).removeClass("hidden").addClass("col-7");
+	        	$( "#countdown{{ set.alert_set_id }}").show();
+	        	$( "#countdown{{ set.alert_set_id }}").removeClass("hidden").addClass("col-6");
+	        	$( "#countdown{{ set.alert_set_id }}").css("display", "inline-block");
+	        }
+
+
+	       	else {
+	       		$.get("/deactivate/{{ set.alert_set_id }}");
+	        	console.log("Toggle Button Off is working");
+	        	$( "#count_display{{ set.alert_set_id }}" ).hide();
+	        	$( "#countdown{{ set.alert_set_id }}").hide();
+	    	};
+	    
+	});
+	});
+</script>
+{% endif %}
+{% endfor %}
+
+<br>
+<form method="GET" action="/sched_alerts">
+    <button type="submit">Add New Scheduled Alert Set</button>
+</form>
+
+
+
+
+
+
+
+<script>
+	$(document).ready(function(){
+	    $( "#title_but" ).click(function(){
+	        console.log("Toggle Button is working");
+	    });
+	});
+</script>
+
+<br>
+<h3> Your Personal ID Code: </h3>
+<p style="margin: auto; text-align: center;">If you want to check in from a phone # or e-mail address not associated with your account, include this secret 4-digit code (6 if you include the parentheses) so you can be indentified.</p>
+<p style="margin: auto; text-align: center;">Remember to include the parentheses, "(xxxx)" with no spaces when you include this code. The 4-digit code alone, "xxxx" will not work.</p>
+<div id="user_code_div" style="align-items: center; text-align: center; outline: 3px solid white; height: 50px; width: 300px; margin: auto; font-size: 35px;">{% if user.user_code %} ( {{ user.user_code }} ) {% endif %}</div>
+<button onclick="new_code()" id="gen_code" type="button" style="display: flex; justify-content: center; margin: auto; margin-top: 5px; text-align: center;">Generate New Code</button>
+<p style="margin: auto; text-align: center;">Press this Button to Generate a New Code. If a user code already exists, the old user code will no longer be valid.</p>
+<br><br><br>
+	<b>*Adding an Alert Set: Do you want your alert set to require recurring check-ins (by a certain time interval) or pre-set check-ins with scheduled pre-set times?</b> Recurring check-ins are best if you aren't sure of your schedule when you go out to work (like with most who work the street). Pre-set check-ins are best if you have a known schedule and/or date with a client. In that case, you can require check-ins shortly after arriving, when the date should end, and/or some period after that (in case you aren't sure of the end time).<br>
+</div>
+</div>
+</div>
+
+<script>
+function new_code(){
+	console.log('Gen Button is pressed!');
+	$.post("/user_code", function(data) {
+		document.getElementById("user_code_div").innerHTML = "(" + data + ")";
+		console.log("data then value:");
+		console.log(data);
+		console.log(data.value);
+	});
+}
+
+	// $(document).ready(function(){
+	//     document.getElementById("gen_code").click(function(event){
+	//     	console.log('Gen Button is pressed!');
+	//         if(this.checked) {
+	//         	$.get("/user_code", function(data) {
+	//         		document.getElementById("user_code_div").innerHTML = "(" + data + ")";
+	//         		console.log("data then value:");
+	//         		console.log(data);
+	//         		console.log(data.value);
+	//         	});
+	//     	}
+	//     });
+	// });    	
+
+</script>
+{% endblock %}

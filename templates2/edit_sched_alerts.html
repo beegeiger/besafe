@@ -1,0 +1,148 @@
+{% extends 'safewalk_base.html' %}
+{% block tit %}Edit Scheduled Alert{% endblock %}
+{% block safewalk %}
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+{% endblock %}
+{% block content %}
+<div class="gen_div" id="title_div">
+<h1>Alert Set: {{ alert_set.a_name }}</h1>
+<h2>Alert Set Description: {{ alert_set.a_desc }}</h2>
+{% if alert_set.date %}
+<h3>Start Date: {{ alert_set.date }}</h3>
+{% endif %}
+{% if alert_set.end_date %}
+<h3>End Date: {{ alert_set.end_date }}</h3>
+{% endif %}
+<button type="button" id="title_but">Edit Name/Description/Dates</button>
+</div>
+
+
+<div class="gen_div">
+<form action="/edit_set/{{ alert_set.alert_set_id }}" method="POST" id="set_form" class="hidden">
+	<b>What would you like to name this alert set?:</b> <input type=textbox name="set_name" value="{{ alert_set.a_name }}"></input><br>
+	<b>Where are you going and/or what are you doing that you might need this alert?</b><br>
+	<textarea rows="2" cols="50" name="descri">{{ alert_set.a_desc }}</textarea><br>
+	<br>
+	What Date would you like this alert set to first be available? (optional)<input type="date" name="date" value="{{ alert_set.date }}"><br>
+	What is the last date you would like this alert set to be available? (optional)<input type="date" name="end_date" value="{{ alert_set.end_date }}"><br><br>
+	<button type="submit">Save Alert Set</button>
+</form><br><br>
+
+
+{% for alert in alerts %}
+{% set alertloop = loop %}
+<div id="alert_info{{ alert.alert_id }}">
+<h5>Alert {{ alertloop.index }}</h5>
+Time: {{ alert.time }}<br>
+Contacts:
+{% for contact in contacts %}
+{% if contact.contact_id==alert.contact_id1 %}
+{{ contact.name }} &nbsp &nbsp &nbsp
+{% endif %}
+{% if contact.contact_id==alert.contact_id2 %}
+{{ contact.name }} &nbsp &nbsp &nbsp
+{% endif %}
+{% if contact.contact_id==alert.contact_id3 %}
+{{ contact.name }} &nbsp &nbsp &nbsp
+{% endif %}
+{% endfor %}
+<br>
+Message: {{ alert.message }}<br>
+<button type="button" id="edit_al_but{{ alert.alert_id }}">Edit Alert</button>
+</div>
+<br><br>
+
+<form id="edit_form{{ alert.alert_id }}" class="hidden" action="/edit_al/{{ alert.alert_id }}" method="post">
+	<h5>Edit Scheduled Alert {{ alertloop.index }}</h5>
+	
+	<!-- <b>What Date/Time should a check-in be required?</b> <input type="datetime-local" name="check_time"><br> -->
+	Time: <input type="time" name="time" value="{{ alert.time }}"><br>
+	Contacts:<br>
+		{% for contact in contacts %}
+	{% set contactloop = loop %}
+	<input type="checkbox" name="contact" id="contact{{ alert.alert_id }}" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
+	{% endfor %}<br>
+	    <a href="/contacts">Add/Edit/View Your Contacts</a><br>
+	<b>Message:</b> 
+	<input type=textbox name="check_mess" value="{{ alert.message }}"></input><br>
+<br>
+<button type="submit">Save Alert</button>
+<br><br>
+</form>
+
+<script>
+	$(document).ready(function(){
+	    $( "#edit_al_but{{ alert.alert_id }}" ).click(function(){
+	        $( "#alert_info{{ alert.alert_id }}" ).hide();
+	        $( "#edit_form{{ alert.alert_id }}" ).show();
+	        console.log("Alert {{ alert.alert_id }} Button is working");
+	    });
+	});
+
+	$('#edit_form{{ alert.alert_id }}').submit(function (evt) {
+    	evt.preventDefault();
+    	var checkboxes = document.getElementById("contact{{ alert.alert_id }}");  
+    	console.log("checkboxes:")
+    	console.log(checkboxes.checked)
+        // var numberOfCheckedItems = 0;  
+        // for(var i = 0; i < checkboxes.length; i++){  
+        //     if(checkboxes.checked == True) { 
+        //         numberOfCheckedItems++;  
+        // 	}
+        // }	
+        // console.log("Checked Items:")
+        // console.log(numberOfCheckedItems)
+        if(checkboxes.checked == true){
+        	$('#edit_form{{ alert.alert_id }}').unbind('submit').submit();
+        }
+        else{
+        	// $("#edit_form{{ alert.alert_id }}").submit();
+        	// $('#edit_form{{ alert.alert_id }}').ajaxForm(function() { 
+         //        alert("Thank you"); 
+         //    }); 
+        	// console.log("Should be sending post request");
+        	alert('You need to select at least one contact!');
+        	console.log("should be flashing");
+        }
+	});
+</script>
+
+{% endfor %}
+
+
+
+
+
+
+
+<form action="/add_alert/{{ alert_set.alert_set_id }}" method="POST" id="set_form">
+	<h5>New Scheduled Alert</h5>
+	
+	<!-- <b>What Date/Time should a check-in be required?</b> <input type="datetime-local" name="check_time"><br> -->
+	What time would you like the app to send an alert if you don't check-in by that time: <input type="time" name="time"><br>
+	(You'll receive texts reminding you to check in 15 minutes before your required check-ins)<br><br>
+	Which contact(s) would you like to be alerted if you miss this check-in? (select up to 3)<br>
+		{% for contact in contacts %}
+	{% set contactloop = loop %}
+	<input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
+	{% endfor %}<br>
+	    <a href="/contacts">Add/Edit/View Your Contacts</a><br>
+	<b>Special message to contacts if this specific check-in is missed:</b> 
+	<input type=textbox name="check_mess"></input><br>
+<br>
+<button type="submit">Save Alert Set</button>
+<br><a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
+</form>
+<br>
+
+</div>
+<script>
+	$(document).ready(function(){
+	    $( "#title_but" ).click(function(){
+	        $( "#title_div" ).hide();
+	        $( "#set_form" ).show();
+	        console.log("Title Button is working");
+	    });
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}User Contacts{% endblock %}
+{% block content %}
+<div class="gen_div">
+<h1>Your Contacts</h1>
+</div>
+
+{% for contact in contacts %}
+{% set contactloop = loop %}
+<div id="contact_div{{ contactloop.index }}">
+<h5>Contact {{ contactloop.index }}</h5>
+Name: {{ contact.name }}<br>
+Phone: {{ contact.phone }}<br>
+Email: {{ contact.email }}<br>
+Message {{ contact.c_message }}<br><br>
+
+<a href="/del_contact/{{ contact.contact_id }}" id="del_button{{ contactloop.index }}">Delete Contact</a>
+<button type="button" id="edit_button{{ contactloop.index }}">Edit Contact</button>
+
+
+</div>
+<form action="/edit_contact/{{ contact.contact_id }}" method="POST" id="edit_form{{ contactloop.index }}" class="hidden">
+	<b>Contact Name:</b> <input type=textbox name="name" value='{{ contact.name }}'></input><br>
+	<b>Phone Number:</b><input type="tel" name="phone" value="{{ contact.phone }}"><br>
+	<b>Email Address:</b><input type="email" name="email"><br>
+	<br>
+	<b>Custom Message For Contact</b>(Optional)<b>:</b><br>
+	<textarea rows="6" cols="50" name="message">{{ contact.c_message }}</textarea><br>
+
+
+	<button type="submit">Submit Changes</button>
+</form>
+
+<script>
+	$(document).ready(function(){
+	    $( "#edit_button{{ contactloop.index }}" ).click(function(){
+	        $( "#contact_div{{ contactloop.index }}" ).hide();
+	        $( "#edit_form{{ contactloop.index }}" ).show();
+	        console.log("Reply Button is working");
+	    });
+	});
+</script>
+{% endfor %}
+
+<form action="/contacts" method="POST">
+	<b>Contact Name:</b> <input type=textbox name="name"></input><br>
+	<b>Phone Number:</b><input type="tel" name="phone"><br>
+	<b>Email Address:</b><input type="email" name="email"><br>
+	<b>Custom Message For Contact</b>(Optional)<b>:</b><br>
+	<textarea rows="6" cols="50" name="message"></textarea><br>
+
+
+	<button type="submit">Save Contacts</button>
+	<br>
+<a href="/sw_main">Go Back to the Main SafeWalk Alerts Page</a>
+<br><br>
+<a href="/sw_getting_started">Go Back to the Getting Started with SafeWalk Page</a>
+</form>
+
+{% endblock %}
