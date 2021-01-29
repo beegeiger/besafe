@@ -12,8 +12,8 @@
 	<h1>Your Profile</h1>
 	</div>
 	<div class="gen_div">
-	<b>E-mail:</b> {{ email }}<br><br>
-	<b>Name:</b> {{ fname }} {{ lname }}<br><br>
+	<b>E-mail:</b> {{ user.email }}<br><br>
+	<b>Name:</b> {{ user.fname }} {{ user.lname }}<br><br>
 	<b>Timezone:</b> GMT {{ user.timezone }}<br><br>
 	{% if user.phone %}
 	<b>Phone #: </b> {{ user.phone }}<br><br>
