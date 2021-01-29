@@ -1042,6 +1042,7 @@ if __name__ == "__main__":
     # start_runner()
     print("should be working")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.config.from_object('configurations.DevelopmentConfig')
     # connect_to_db(app, 'postgresql:///besafe')
     print("Connected to DB.")
     Debug(app)
