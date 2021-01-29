@@ -323,7 +323,7 @@ def dashboard():
 @app.route("/login", methods=["GET"])
 def log_in():
     """Render's the log-in page if user not in session,
-     otherwise redirects to the homepage (Tested)"""
+     otherwise redirects to the homepage (Still Works as of 1/21)"""
     print('login visited')
 
     uri = "https://besafe.ngrok.io/callback"
@@ -530,14 +530,14 @@ def add_contact():
     name = request.form['name']
     phone = request.form['phone']
     email = request.form['email']
-    c_type = request.form['c_type']
+    #c_type = request.form['c_type']
     message = request.form['message']
 
     #Queries the current user
     user = User.query.filter_by(email=session['current_user']).one()
 
     #Creates the new Contact object, adds it to the dBase and commits the addition
-    new_contact = Contact(user_id=user.user_id, name=name, email=email, phone=phone, c_type=c_type, c_message=message)
+    new_contact = Contact(user_id=user.user_id, name=name, email=email, phone=phone, c_message=message)
     db.session.add(new_contact)
     db.session.commit()
 
