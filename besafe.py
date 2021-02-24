@@ -737,6 +737,7 @@ def edit_schedal(alert_id):
 @app.route("/add_alert/<alert_set_id>", methods=["POST"])
 def add_sched_alert(alert_set_id):
     """Saves a new scheduled alert"""
+    user = User.query.filter_by(email=session['current_user']).one()
     alert_set = AlertSet.query.filter(AlertSet.user_id == user.user_id, AlertSet.alert_set_id == alert_set_id).first()
     #Queries the current user
     user = User.query.filter_by(email=session['current_user']).one()
@@ -1046,5 +1047,5 @@ if __name__ == "__main__":
     # connect_to_db(app, 'postgresql:///besafe')
     print("Connected to DB.")
     Debug(app)
-    app.run(debug=True)
+    app.run(debug=True, port=3600)
     app.run()
