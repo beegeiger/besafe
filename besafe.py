@@ -601,7 +601,17 @@ def add_rec_alertset():
     db.session.commit()
     alert_set_q = AlertSet.query.order_by(AlertSet.start_datetime.desc()).first()
 
-   
+@app.route("/edit_recset/<alert_set_id>")
+def edit_recset_page(alert_set_id):
+    """Renders the page to edit a recurring alert set"""
+
+    #Queries the user, alert_set, user's contacts, and associated alerts
+    user = User.query.filter_by(email=session['current_user']).one()
+    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+    alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
+
+    return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
 
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
     contact1 = int(contacts[0])
@@ -756,6 +766,7 @@ def add_sched_alert(alert_set_id):
     #Creates a new alert object, adds it to the dBase, commits, and redirects back to the edit page
     new_alert = Alert(alert_set_id=alert_set_id, user_id=user.user_id, contact_id1=contact1,
                       contact_id2=contact2, contact_id3=contact3, time=time)
+    print("New Alert Just added: ", new_alert)
     db.session.add(new_alert)
     db.session.commit()
     return "Alert Added"
