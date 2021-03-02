@@ -16,6 +16,7 @@ from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_
 import requests
 import logging
 
+
 from functools import wraps
 from os import environ as env
 from werkzeug.exceptions import HTTPException
@@ -32,6 +33,8 @@ from six.moves.urllib.parse import urlencode
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
+
+import template_rendering
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///besafe'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy()
@@ -275,10 +278,10 @@ def check_alerts():
 
 
 
-@app.route("/")
-def go_home():
-    """Renders the besafe homepage. (Tested)"""
-    return render_template("homepage.html")
+# @app.route("/")
+# def go_home():
+#     """Renders the besafe homepage. (Tested)"""
+#     return render_template("homepage.html")
 
 @app.route('/callback')
 def callback_handling():
