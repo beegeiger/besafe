@@ -9,13 +9,13 @@ import datetime
 import threading
 from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, flash,
-                   session, jsonify)
+                   session, jsonify, Blueprint)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
 from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_db, db
 import requests
 import logging
-
+from besafe_views_bp import views_bp
 
 from functools import wraps
 from os import environ as env
@@ -33,8 +33,8 @@ from six.moves.urllib.parse import urlencode
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
+app.register_blueprint(views_bp)
 
-import template_rendering
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///besafe'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy()
