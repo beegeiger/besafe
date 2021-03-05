@@ -9,3 +9,4 @@ views_bp = Blueprint('views_bp', __name__, template_folder='templates',
 def go_home():
     """Renders the besafe homepage. (Tested)"""
     return render_template("homepage.html")
+
