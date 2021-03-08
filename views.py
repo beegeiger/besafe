@@ -32,7 +32,7 @@ from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
 
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
-
+from auth import requires_auth
 @app.route("/")
 def go_home():
     """Renders the besafe homepage. (Tested)"""
