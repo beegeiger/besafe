@@ -155,4 +155,16 @@ def scheduled_alerts():
     user = User.query.filter_by(email=session['current_user']).one()
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
 
-    return render_template("scheduled_alerts.html", contacts=contacts, timezone=user.timezone)    
+    return render_template("scheduled_alerts.html", contacts=contacts, timezone=user.timezone)
+
+@app.route("/contacts", methods=["GET"])
+@requires_auth
+def user_contacts():
+    """Renders the User's 'contacts' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+
+    return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
+

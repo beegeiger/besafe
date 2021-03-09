@@ -493,16 +493,16 @@ def edit_profile():
 #     return render_template("scheduled_alerts.html", contacts=contacts, timezone=user.timezone)
 
 
-@app.route("/contacts")
-@requires_auth
-def user_contacts():
-    """Renders the User's 'contacts' Page"""
+# @app.route("/contacts")
+# @requires_auth
+# def user_contacts():
+#     """Renders the User's 'contacts' Page"""
 
-    #Queries the current user and their contact info
-    user = User.query.filter_by(email=session['current_user']).one()
-    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+#     #Queries the current user and their contact info
+#     user = User.query.filter_by(email=session['current_user']).one()
+#     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
 
-    return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
+#     return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
 
 
 @app.route("/view_contacts")
@@ -514,16 +514,6 @@ def view_user_contacts():
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
 
     return contacts
-
-@app.route("/contacts_page")
-def user_contacts_page():
-    """Renders the User's 'contacts' Page"""
-
-    #Queries the current user and their contact info
-    user = User.query.filter_by(email=session['current_user']).one()
-    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-
-    return render_template("index.html")
 
 @app.route("/contacts", methods=["POST"])
 def add_contact():
@@ -603,6 +593,7 @@ def add_rec_alertset():
     db.session.add(new_alert_set)
     db.session.commit()
     alert_set_q = AlertSet.query.order_by(AlertSet.start_datetime.desc()).first()
+    return
 
 @app.route("/edit_recset/<alert_set_id>")
 def edit_recset_page(alert_set_id):
