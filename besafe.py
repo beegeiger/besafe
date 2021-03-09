@@ -838,15 +838,15 @@ def deactivate_alertset(alert_set_id):
     db.session.commit()
     return "Alert Set Deactivated"
 
-@app.route("/check_ins")
-@requires_auth
-def checkin_page():
-    """Renders the User's check-in page"""
+# @app.route("/check_ins")
+# @requires_auth
+# def checkin_page():
+#     """Renders the User's check-in page"""
 
-    #The current user and check-ins are queried and the page is rendered
-    user = User.query.filter_by(email=session['current_user']).one()
-    check_ins = CheckIn.query.filter_by(user_id=user.user_id).all()
-    return render_template("checkins_page.html", check_ins=check_ins, timezone=user.timezone)
+#     #The current user and check-ins are queried and the page is rendered
+#     user = User.query.filter_by(email=session['current_user']).one()
+#     check_ins = CheckIn.query.filter_by(user_id=user.user_id).all()
+#     return render_template("checkins_page.html", check_ins=check_ins, timezone=user.timezone)
 
 @app.route("/add_check_in", methods=["POST"])
 def add_new_checkin():
