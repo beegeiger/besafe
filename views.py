@@ -34,7 +34,7 @@ from six.moves.urllib.parse import urlencode
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 from auth import requires_auth
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def go_home():
     """Renders the besafe homepage. (Tested)"""
     return render_template("homepage.html")
@@ -57,7 +57,7 @@ def edit_page():
     #Returns the Profile Template
     return render_template("edit_profile.html", user=user)    
 
-@app.route("/bs_alerts")
+@app.route("/bs_alerts", methods=["GET"])
 @requires_auth
 def besafe_alerts():
     """Renders the main besafe page including a user's alert-sets"""
@@ -135,3 +135,24 @@ def besafe_alerts():
 
 
     return render_template("besafe_alerts.html", alert_sets=alert_sets, alerts=alerts, timezone=user.timezone, user=user, contacts=contacts)
+
+@app.route("/sw_getting_started", methods=["GET"])
+def get_started():
+    """Renders the 'Getting Started with besafe' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+    con_length = len(contacts)
+
+    return render_template("getting_started_besafe.html", contacts=contacts, con_length=con_length, timezone=user.timezone)
+
+@app.route("/sched_alerts", methods=["GET"])
+def scheduled_alerts():
+    """Renders the 'Create a Scheduled Alert-Set' Page"""
+
+    #Queries the current user and their contact info
+    user = User.query.filter_by(email=session['current_user']).one()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+
+    return render_template("scheduled_alerts.html", contacts=contacts, timezone=user.timezone)    
