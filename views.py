@@ -39,7 +39,7 @@ def go_home():
     """Renders the besafe homepage. (Tested)"""
     return render_template("homepage.html")
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=["GET"])
 @requires_auth
 def dashboard():
     return render_template('dashboard.html',
