@@ -33,7 +33,26 @@ from six.moves.urllib.parse import urlencode
 
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 from auth import requires_auth
+
 @app.route("/")
 def go_home():
     """Renders the besafe homepage. (Tested)"""
     return render_template("homepage.html")
+
+@app.route('/dashboard')
+@requires_auth
+def dashboard():
+    return render_template('dashboard.html',
+                           userinfo=session['profile'],
+                           userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
+
+@app.route("/edit_profile", methods=["GET"])
+@requires_auth
+def edit_page():
+    """Renders the Profile page"""
+
+    #Queries User
+    user = User.query.filter_by(email=session['current_user']).one()
+
+    #Returns the Profile Template
+    return render_template("edit_profile.html", user=user)    

@@ -315,12 +315,12 @@ def callback_handling():
     #Redirects to the User Profile
     return redirect('/dashboard')
 
-@app.route('/dashboard')
-@requires_auth
-def dashboard():
-    return render_template('dashboard.html',
-                           userinfo=session['profile'],
-                           userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
+# @app.route('/dashboard')
+# @requires_auth
+# def dashboard():
+#     return render_template('dashboard.html',
+#                            userinfo=session['profile'],
+#                            userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
 
 @app.route("/login", methods=["GET"])
@@ -347,16 +347,16 @@ def logout():
 
 
 
-@app.route("/edit_profile", methods=["GET"])
-@requires_auth
-def edit_page():
-    """Renders the Profile page"""
+# @app.route("/edit_profile", methods=["GET"])
+# @requires_auth
+# def edit_page():
+#     """Renders the Profile page"""
 
-    #Queries User
-    user = User.query.filter_by(email=session['current_user']).one()
+#     #Queries User
+#     user = User.query.filter_by(email=session['current_user']).one()
 
-    #Returns the Profile Template
-    return render_template("edit_profile.html", user=user)
+#     #Returns the Profile Template
+#     return render_template("edit_profile.html", user=user)
 
 
 
