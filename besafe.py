@@ -15,7 +15,7 @@ from sqlalchemy import (update, asc, desc)
 from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_db, db
 import requests
 import logging
-from besafe_views_bp import views_bp
+from views import views_bp
 from auth import requires_auth
 from functools import wraps
 from os import environ as env

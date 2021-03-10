@@ -1,4 +1,3 @@
-from besafe import app
 import flask
 from flask_debug import Debug
 import math
@@ -10,7 +9,7 @@ import datetime
 import threading
 from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, flash,
-                   session, jsonify)
+                   session, jsonify, Blueprint)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
 from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_db, db
@@ -34,19 +33,22 @@ from six.moves.urllib.parse import urlencode
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 from auth import requires_auth
 
-@app.route("/", methods=["GET"])
+views_bp = Blueprint('views_bp', __name__, template_folder='templates',
+    static_folder='static')
+
+@views_bp.route("/", methods=["GET"])
 def go_home():
     """Renders the besafe homepage. (Tested)"""
     return render_template("homepage.html")
 
-@app.route('/dashboard', methods=["GET"])
+@views_bp.route('/dashboard', methods=["GET"])
 @requires_auth
 def dashboard():
     return render_template('dashboard.html',
                            userinfo=session['profile'],
                            userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
-@app.route("/edit_profile", methods=["GET"])
+@views_bp.route("/edit_profile", methods=["GET"])
 @requires_auth
 def edit_page():
     """Renders the Profile page"""
@@ -57,7 +59,7 @@ def edit_page():
     #Returns the Profile Template
     return render_template("edit_profile.html", user=user)    
 
-@app.route("/bs_alerts", methods=["GET"])
+@views_bp.route("/bs_alerts", methods=["GET"])
 @requires_auth
 def besafe_alerts():
     """Renders the main besafe page including a user's alert-sets"""
@@ -136,7 +138,7 @@ def besafe_alerts():
 
     return render_template("besafe_alerts.html", alert_sets=alert_sets, alerts=alerts, timezone=user.timezone, user=user, contacts=contacts)
 
-@app.route("/sw_getting_started", methods=["GET"])
+@views_bp.route("/sw_getting_started", methods=["GET"])
 def get_started():
     """Renders the 'Getting Started with besafe' Page"""
 
@@ -147,7 +149,7 @@ def get_started():
 
     return render_template("getting_started_besafe.html", contacts=contacts, con_length=con_length, timezone=user.timezone)
 
-@app.route("/sched_alerts", methods=["GET"])
+@views_bp.route("/sched_alerts", methods=["GET"])
 def scheduled_alerts():
     """Renders the 'Create a Scheduled Alert-Set' Page"""
 
@@ -157,7 +159,7 @@ def scheduled_alerts():
 
     return render_template("scheduled_alerts.html", contacts=contacts, timezone=user.timezone)
 
-@app.route("/contacts", methods=["GET"])
+@views_bp.route("/contacts", methods=["GET"])
 @requires_auth
 def user_contacts():
     """Renders the User's 'contacts' Page"""
@@ -168,7 +170,7 @@ def user_contacts():
 
     return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
 
-@app.route("/check_ins", methods=["GET"])
+@views_bp.route("/check_ins", methods=["GET"])
 @requires_auth
 def checkin_page():
     """Renders the User's check-in page"""
