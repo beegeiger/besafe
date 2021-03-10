@@ -16,21 +16,11 @@ from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_
 import requests
 import logging
 
-
 from functools import wraps
 from os import environ as env
 from werkzeug.exceptions import HTTPException
 from dotenv import load_dotenv, find_dotenv
-from flask import Flask
-from flask import jsonify
-from flask import redirect
-from flask import render_template
-from flask import session
-from flask import url_for
-from authlib.flask.client import OAuth
-from six.moves.urllib.parse import urlencode
 
-from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 from auth import requires_auth
 
 views_bp = Blueprint('views_bp', __name__, template_folder='templates',
