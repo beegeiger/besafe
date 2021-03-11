@@ -23,12 +23,4 @@ from dotenv import load_dotenv, find_dotenv
 
 from auth import requires_auth
 
-alerts_sched_bp = Blueprint('alerts_sched_bp', __name__)
-
-############################################################3
-"""Scheduled AlertSets Paths"""
-
-
-
-###################################################################
-"""Scheduled Alerts Paths"""
+incoming_bp = Blueprint('incoming_bp', __name__)

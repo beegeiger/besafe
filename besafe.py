@@ -29,13 +29,14 @@ from Components.alerts.alerts_rec import alerts_rec_bp
 from Components.alerts.alerts_sched import alerts_sched_bp
 from Components.contacts import contacts_bp
 from Components.profile import profile_bp
+from Components.incoming import incoming_bp
 from Components.helpers import (check_in, create_alert, send_alert_contacts,
                     send_alert_user, check_alerts)
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
 app.register_blueprint(views_bp, alert_sets_bp, alerts_sched_bp,
-                     alerts_rec_bp, profile_bp, contact_bp)
+                     alerts_rec_bp, profile_bp, contact_bp, incoming_bp)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///besafe'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -507,149 +508,149 @@ auth0 = oauth.register(
 #     return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
 
 
-@app.route("/contacts", methods=["POST"])
-def add_contact():
-    """Adds a user's new contact's info to the dBase"""
+# @app.route("/contacts", methods=["POST"])
+# def add_contact():
+#     """Adds a user's new contact's info to the dBase"""
 
-    #Creates variables from the form on the contacts page
-    name = request.form['name']
-    phone = request.form['phone']
-    email = request.form['email']
-    #c_type = request.form['c_type']
-    message = request.form['message']
+#     #Creates variables from the form on the contacts page
+#     name = request.form['name']
+#     phone = request.form['phone']
+#     email = request.form['email']
+#     #c_type = request.form['c_type']
+#     message = request.form['message']
 
-    #Queries the current user
-    user = User.query.filter_by(email=session['current_user']).one()
+#     #Queries the current user
+#     user = User.query.filter_by(email=session['current_user']).one()
 
-    #Creates the new Contact object, adds it to the dBase and commits the addition
-    new_contact = Contact(user_id=user.user_id, name=name, email=email, phone=phone, c_message=message)
-    db.session.add(new_contact)
-    db.session.commit()
+#     #Creates the new Contact object, adds it to the dBase and commits the addition
+#     new_contact = Contact(user_id=user.user_id, name=name, email=email, phone=phone, c_message=message)
+#     db.session.add(new_contact)
+#     db.session.commit()
 
-    return redirect("/contacts")
-
-
-@app.route("/del_contact/<contact_num>")
-def delete_contact(contact_num):
-    """Deletes a user's contact from the dBase"""
-
-    #Queries the contact in question, deletes it from the dBase, and commits
-    contact = Contact.query.filter_by(contact_id=contact_num).one()
-    db.session.delete(contact)
-    db.session.commit()
-
-    return redirect("/contacts")
+#     return redirect("/contacts")
 
 
-@app.route("/edit_contact/<contact_num>", methods=["POST"])
-def edit_contact(contact_num):
-    """Edit's a contact's info"""
+# @app.route("/del_contact/<contact_num>")
+# def delete_contact(contact_num):
+#     """Deletes a user's contact from the dBase"""
 
-    #Creates variables from the form on the contacts page
-    name = request.form['name']
-    phone = request.form['phone']
-    email = request.form['email']
-    message = request.form['message']
+#     #Queries the contact in question, deletes it from the dBase, and commits
+#     contact = Contact.query.filter_by(contact_id=contact_num).one()
+#     db.session.delete(contact)
+#     db.session.commit()
 
-    #Queries the contact in question, edits it in the dBase, and commits
-    contact = Contact.query.filter_by(contact_id=contact_num).one()
-    ((db.session.query(Contact).filter_by(contact_id=contact_num)).update(
-    {'name':name, 'email':email, 'phone':phone, 'c_message':message}))
-    db.session.commit()
-
-    return redirect("/contacts")
+#     return redirect("/contacts")
 
 
-@app.route("/add_recset", methods=["POST"])
-def add_rec_alertset():
-    """Adds a recurring Alert-Set to the dBase"""
-    user = User.query.filter_by(email=session['current_user']).one()
-    alert_sets_all = AlertSet.query.filter_by(user_id=user.user_id).all()
+# @app.route("/edit_contact/<contact_num>", methods=["POST"])
+# def edit_contact(contact_num):
+#     """Edit's a contact's info"""
 
-    #Gets the alert and alert set info from the form on the add a new rec set page
-    name = request.form['set_nam']
-    desc = request.form['descri']
-    interval = request.form['interval']
-    contacts = request.form.getlist('contact')
-    print("name1: ", name, type(name), len(name))
+#     #Creates variables from the form on the contacts page
+#     name = request.form['name']
+#     phone = request.form['phone']
+#     email = request.form['email']
+#     message = request.form['message']
 
-    if len(name)== 0:
-        name = "Alert Set " + str(len(alert_sets_all))
-    print("name2: ", name, type(name), len(name))
-    #Queries the current user
-    user = User.query.filter_by(email=session['current_user']).one()
+#     #Queries the contact in question, edits it in the dBase, and commits
+#     contact = Contact.query.filter_by(contact_id=contact_num).one()
+#     ((db.session.query(Contact).filter_by(contact_id=contact_num)).update(
+#     {'name':name, 'email':email, 'phone':phone, 'c_message':message}))
+#     db.session.commit()
 
-    dt = datetime.datetime.now()
-    #Creates a new alert set, adds it to the dBase, commits, and then queries the just-created alert set
-    new_alert_set = AlertSet(user_id=user.user_id, start_datetime=dt, a_desc=desc, interval=interval, a_name=name)
-    db.session.add(new_alert_set)
-    db.session.commit()
-    alert_set_q = AlertSet.query.order_by(AlertSet.start_datetime.desc()).first()
-    return
+#     return redirect("/contacts")
 
-@app.route("/edit_recset/<alert_set_id>")
-def edit_recset_page(alert_set_id):
-    """Renders the page to edit a recurring alert set"""
 
-    #Queries the user, alert_set, user's contacts, and associated alerts
-    user = User.query.filter_by(email=session['current_user']).one()
-    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
-    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-    alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
+# @app.route("/add_recset", methods=["POST"])
+# def add_rec_alertset():
+#     """Adds a recurring Alert-Set to the dBase"""
+#     user = User.query.filter_by(email=session['current_user']).one()
+#     alert_sets_all = AlertSet.query.filter_by(user_id=user.user_id).all()
 
-    return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
+#     #Gets the alert and alert set info from the form on the add a new rec set page
+#     name = request.form['set_nam']
+#     desc = request.form['descri']
+#     interval = request.form['interval']
+#     contacts = request.form.getlist('contact')
+#     print("name1: ", name, type(name), len(name))
 
-    #Initiates 3 contact variables, sets the first to the first contact and the next two to None
-    contact1 = int(contacts[0])
-    contact2 = None
-    contact3 = None
+#     if len(name)== 0:
+#         name = "Alert Set " + str(len(alert_sets_all))
+#     print("name2: ", name, type(name), len(name))
+#     #Queries the current user
+#     user = User.query.filter_by(email=session['current_user']).one()
 
-    #If more than one contact is associated with the alert set, the following variables are set to them
-    if len(contacts) > 1:
-        contact2 = int(contacts[1])
-    if len(contacts) > 2:
-        contact3 = int(contacts[2])
+#     dt = datetime.datetime.now()
+#     #Creates a new alert set, adds it to the dBase, commits, and then queries the just-created alert set
+#     new_alert_set = AlertSet(user_id=user.user_id, start_datetime=dt, a_desc=desc, interval=interval, a_name=name)
+#     db.session.add(new_alert_set)
+#     db.session.commit()
+#     alert_set_q = AlertSet.query.order_by(AlertSet.start_datetime.desc()).first()
+#     return
 
-    #A new alert (associated with the alert set) is created, added, and commited to the dBase
-    new_alert = Alert(alert_set_id=alert_set_q.alert_set_id, user_id=user.user_id, contact_id1=contact1,
-                      contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc)
-    db.session.add(new_alert)
-    db.session.commit()
+# @app.route("/edit_recset/<alert_set_id>")
+# def edit_recset_page(alert_set_id):
+#     """Renders the page to edit a recurring alert set"""
 
-    return redirect("/bs_alerts")
+#     #Queries the user, alert_set, user's contacts, and associated alerts
+#     user = User.query.filter_by(email=session['current_user']).one()
+#     alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
+#     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+#     alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
 
-@app.route("/save_recset/<alert_set_id>", methods=["POST"])
-def save_recset(alert_set_id):
-    """Saves the edits to a recurring alert set"""
+#     return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
 
-    #Gets the alert and alert set info from the form
-    name = request.form['set_name']
-    desc = request.form['descri']
-    interval = request.form['interval']
-    contacts = request.form.getlist('contact')
+#     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
+#     contact1 = int(contacts[0])
+#     contact2 = None
+#     contact3 = None
 
-    #The Alert-Set is updated in the dBase with the new data
-    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
-    {'a_name': name, 'a_desc': desc, 'interval': interval})
+#     #If more than one contact is associated with the alert set, the following variables are set to them
+#     if len(contacts) > 1:
+#         contact2 = int(contacts[1])
+#     if len(contacts) > 2:
+#         contact3 = int(contacts[2])
 
-    #Initiates 3 contact variables, sets the first to the first contact and the next two to None
-    contact1 = int(contacts[0])
-    contact2 = None
-    contact3 = None
+#     #A new alert (associated with the alert set) is created, added, and commited to the dBase
+#     new_alert = Alert(alert_set_id=alert_set_q.alert_set_id, user_id=user.user_id, contact_id1=contact1,
+#                       contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc)
+#     db.session.add(new_alert)
+#     db.session.commit()
 
-    #If more than one contact is associated with the alert set, the following variables are set to them
-    if len(contacts) > 1:
-        contact2 = int(contacts[1])
-    if len(contacts) > 2:
-        contact3 = int(contacts[2])
+#     return redirect("/bs_alerts")
 
-    #The alert associated with the alert set is then updated and all of the changes are committed
-    (db.session.query(Alert).filter_by(alert_set_id=alert_set_id)).update(
-    {'message': desc, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
-    db.session.commit()
+# @app.route("/save_recset/<alert_set_id>", methods=["POST"])
+# def save_recset(alert_set_id):
+#     """Saves the edits to a recurring alert set"""
 
-    #The user is then re-routed to the main besafe page
-    return redirect("/sw_main")
+#     #Gets the alert and alert set info from the form
+#     name = request.form['set_name']
+#     desc = request.form['descri']
+#     interval = request.form['interval']
+#     contacts = request.form.getlist('contact')
+
+#     #The Alert-Set is updated in the dBase with the new data
+#     (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
+#     {'a_name': name, 'a_desc': desc, 'interval': interval})
+
+#     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
+#     contact1 = int(contacts[0])
+#     contact2 = None
+#     contact3 = None
+
+#     #If more than one contact is associated with the alert set, the following variables are set to them
+#     if len(contacts) > 1:
+#         contact2 = int(contacts[1])
+#     if len(contacts) > 2:
+#         contact3 = int(contacts[2])
+
+#     #The alert associated with the alert set is then updated and all of the changes are committed
+#     (db.session.query(Alert).filter_by(alert_set_id=alert_set_id)).update(
+#     {'message': desc, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
+#     db.session.commit()
+
+#     #The user is then re-routed to the main besafe page
+#     return redirect("/sw_main")
 
 @app.route("/add_schedset", methods=["POST"])
 def add_sched_alertset():
@@ -757,78 +758,78 @@ def add_sched_alert(alert_set_id):
     db.session.commit()
     return "Alert Added"
 
-@app.route("/activate/<alert_set_id>")
-def activate_alertset(alert_set_id):
-    """Activates an alert set"""
+# @app.route("/activate/<alert_set_id>")
+# def activate_alertset(alert_set_id):
+#     """Activates an alert set"""
 
-    #The alert set in question is queried
-    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
+#     #The alert set in question is queried
+#     alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
     
-    #Variables set to the current date, time, and datetime are created for convenience
-    time = datetime.datetime.now().time()
-    date = (datetime.datetime.today())
-    dt = datetime.datetime.now()
+#     #Variables set to the current date, time, and datetime are created for convenience
+#     time = datetime.datetime.now().time()
+#     date = (datetime.datetime.today())
+#     dt = datetime.datetime.now()
     
-    #An empty list is created to store the datetimes of the alerts associated with the alert set
-    dt_list = []
+#     #An empty list is created to store the datetimes of the alerts associated with the alert set
+#     dt_list = []
     
-    #If there is no start date, the start date is set to today
-    if alert_set.date == None:
-        db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id).update({'date': date, 'start_datetime': dt})
+#     #If there is no start date, the start date is set to today
+#     if alert_set.date == None:
+#         db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id).update({'date': date, 'start_datetime': dt})
     
-    #If the alert set is scheduled (not recurring), the alert times are added to the the dt_list
-    if alert_set.interval == None:
-        alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
-        for alert in alerts:
-            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time})
-            if alert.date == None:
-                dtime = datetime.datetime.combine(date, alert.time)
-                db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'date': date, 'datetime': dtime})
-                dt_list.append(dtime)
-            else:
-                dtime = datetime.datetime.combine(alert.date, alert.time)
-                db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime})
-                dt_list.append(dtime)
+#     #If the alert set is scheduled (not recurring), the alert times are added to the the dt_list
+#     if alert_set.interval == None:
+#         alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
+#         for alert in alerts:
+#             db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time})
+#             if alert.date == None:
+#                 dtime = datetime.datetime.combine(date, alert.time)
+#                 db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'date': date, 'datetime': dtime})
+#                 dt_list.append(dtime)
+#             else:
+#                 dtime = datetime.datetime.combine(alert.date, alert.time)
+#                 db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime})
+#                 dt_list.append(dtime)
     
-    #If the alert set is recurring, the alert time is set to now + the time interval
-    else:
-        print("Interval = " + str(alert_set.interval))
-        print("Rec Activated")
-        # dtime = datetime.datetime.combine(date, time)
-        # dt_list.append(dtime)
-        dtime_int = dt + datetime.timedelta(minutes=alert_set.interval)
-        alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
-        db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time, 'time': dtime_int.time(), 'datetime': dtime_int})
-        dt_list.append(dtime_int)
+#     #If the alert set is recurring, the alert time is set to now + the time interval
+#     else:
+#         print("Interval = " + str(alert_set.interval))
+#         print("Rec Activated")
+#         # dtime = datetime.datetime.combine(date, time)
+#         # dt_list.append(dtime)
+#         dtime_int = dt + datetime.timedelta(minutes=alert_set.interval)
+#         alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
+#         db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time, 'time': dtime_int.time(), 'datetime': dtime_int})
+#         dt_list.append(dtime_int)
     
-    #The alert set is updated to be active and its commited
-    db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id).update({'active': True, 'start_time': time, 'start_datetime': dt})
-    db.session.commit()
+#     #The alert set is updated to be active and its commited
+#     db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id).update({'active': True, 'start_time': time, 'start_datetime': dt})
+#     db.session.commit()
     
-    #The alert datetime list is sorted and the earliest time is then sent back to the page
-    dt_list.sort()
-    alarm_dt = dt_list[0].strftime("%I:%M %p, %m/%d/%Y")
-    return str(alarm_dt)
+#     #The alert datetime list is sorted and the earliest time is then sent back to the page
+#     dt_list.sort()
+#     alarm_dt = dt_list[0].strftime("%I:%M %p, %m/%d/%Y")
+#     return str(alarm_dt)
 
-@app.route("/deactivate/<alert_set_id>")
-def deactivate_alertset(alert_set_id):
-    """Deactivates an alert set"""
+# @app.route("/deactivate/<alert_set_id>")
+# def deactivate_alertset(alert_set_id):
+#     """Deactivates an alert set"""
 
-    #The alert set is queried and updated
-    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
-    {'active': False})
+#     #The alert set is queried and updated
+#     (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
+#     {'active': False})
     
-    #All alerts associated with the alert set are queried and updated, and it's all commited
-    alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
-    for alert in alerts:
-        if alert.interval:
-            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
-            {'active': False, 'checked_in': False, 'time': None, 'datetime': None})
-        else:
-            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
-            {'active': False, 'checked_in': False,'datetime': None})
-    db.session.commit()
-    return "Alert Set Deactivated"
+#     #All alerts associated with the alert set are queried and updated, and it's all commited
+#     alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
+#     for alert in alerts:
+#         if alert.interval:
+#             db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
+#             {'active': False, 'checked_in': False, 'time': None, 'datetime': None})
+#         else:
+#             db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
+#             {'active': False, 'checked_in': False,'datetime': None})
+#     db.session.commit()
+#     return "Alert Set Deactivated"
 
 # @app.route("/check_ins")
 # @requires_auth
