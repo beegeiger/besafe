@@ -23,8 +23,8 @@ from dotenv import load_dotenv, find_dotenv
 
 from auth import requires_auth
 
-views_bp = Blueprint('views_bp', __name__, template_folder='templates',
-    static_folder='static')
+views_bp = Blueprint('views_bp', __name__, template_folder='../templates',
+    static_folder='../static')
 
 @views_bp.route("/", methods=["GET"])
 def go_home():
