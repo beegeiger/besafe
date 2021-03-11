@@ -170,3 +170,7 @@ def checkin_page():
     check_ins = CheckIn.query.filter_by(user_id=user.user_id).all()
     return render_template("checkins_page.html", check_ins=check_ins, timezone=user.timezone)
 
+@views_bp.route("/map")
+def get_map():
+    """Renders User Map Page"""
+    return render_template("map_page.html")
