@@ -24,15 +24,18 @@ from dotenv import load_dotenv, find_dotenv
 
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
-from alerts.alert_sets import alert_set_bp
-from alerts.alerts_rec import alerts_rec_bp
-from alerts.alerts_sched import alerts_sched_bp
-from helpers import (check_in, create_alert, send_alert_contacts,
+from Components.alerts.alert_sets import alert_set_bp
+from Components.alerts.alerts_rec import alerts_rec_bp
+from Components.alerts.alerts_sched import alerts_sched_bp
+from Components.contacts import contacts_bp
+from Components.profile import profile_bp
+from Components.helpers import (check_in, create_alert, send_alert_contacts,
                     send_alert_user, check_alerts)
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
-app.register_blueprint(views_bp, alert_sets_bp, alerts_sched_bp, alerts_rec_bp)
+app.register_blueprint(views_bp, alert_sets_bp, alerts_sched_bp,
+                     alerts_rec_bp, profile_bp, contact_bp)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///besafe'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
