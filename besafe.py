@@ -76,6 +76,37 @@ auth0 = oauth.register(
     },
 )
 
+@app.route('/callback')
+def callback_handling():
+    # Handles response from token endpoint
+    auth0.authorize_access_token()
+    resp = auth0.get('userinfo')
+    userinfo = resp.json()
+    # Store the user information in flask session.
+    session['jwt_payload'] = userinfo
+    session['profile'] = {
+        'user_id': userinfo['sub'],
+        'name': userinfo['name'],
+        'picture': userinfo['picture'],
+        'email': userinfo['email']
+    }
+
+    #Sets the 'current_user' value in the session to the user's e-mail
+    session['current_user'] = userinfo['email']
+
+    #User Table is Queried to see if User already exists in dB
+    user = User.query.filter_by(email=userinfo['email']).all()
+    
+    #If the user isn't in the dBase, they are added
+    if user == []:
+        new_user = User(name=userinfo['name'], email=userinfo['email'], username=userinfo['nickname'], fname=userinfo['given_name'], lname=userinfo['family_name'], created_at=datetime.datetime.now())
+        db.session.add(new_user)
+    
+    #The dBase changes are committed
+    db.session.commit()
+
+    #Redirects to the User Profile
+    return redirect('/dashboard')
 ################################################################
 
 if __name__ == "__main__":
