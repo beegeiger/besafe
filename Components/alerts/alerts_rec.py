@@ -53,7 +53,7 @@ def add_rec_alertset():
     db.session.add(new_alert_set)
     db.session.commit()
     alert_set_q = AlertSet.query.order_by(AlertSet.start_datetime.desc()).first()
-    return
+    return redirect("/bs_alerts")
 
 @alerts_rec_bp.route("/edit_recset/<alert_set_id>")
 def edit_recset_page(alert_set_id):
