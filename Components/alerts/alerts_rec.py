@@ -53,20 +53,7 @@ def add_rec_alertset():
     db.session.add(new_alert_set)
     db.session.commit()
     alert_set_q = AlertSet.query.order_by(AlertSet.start_datetime.desc()).first()
-    return redirect("/bs_alerts")
-
-@alerts_rec_bp.route("/edit_recset/<alert_set_id>")
-def edit_recset_page(alert_set_id):
-    """Renders the page to edit a recurring alert set"""
-
-    #Queries the user, alert_set, user's contacts, and associated alerts
-    user = User.query.filter_by(email=session['current_user']).one()
-    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
-    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-    # alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
-
-    #return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
-
+    
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
     contact1 = int(contacts[0].contact_id)
     contact2 = None
@@ -79,12 +66,13 @@ def edit_recset_page(alert_set_id):
         contact3 = int(contacts[2].contact_id)
 
     #A new alert (associated with the alert set) is created, added, and commited to the dBase
-    new_alert = Alert(alert_set_id=alert_set_id, user_id=user.user_id, contact_id1=contact1,
+    new_alert = Alert(alert_set_id=alert_set_q.alert_set_id, user_id=user.user_id, contact_id1=contact1,
                       contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc)
     db.session.add(new_alert)
     db.session.commit()
 
-    return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=new_alert, timezone=user.timezone)
+    return redirect("/bs_alerts")
+
 
 @alerts_rec_bp.route("/save_recset/<alert_set_id>", methods=["POST"])
 def save_recset(alert_set_id):
@@ -117,7 +105,7 @@ def save_recset(alert_set_id):
     db.session.commit()
 
     #The user is then re-routed to the main besafe page
-    return redirect("/sw_main")
+    return redirect("/bs_alerts")
 
 ###################################################################
 """Recurring Alerts Paths"""
