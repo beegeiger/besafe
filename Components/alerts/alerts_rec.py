@@ -63,28 +63,28 @@ def edit_recset_page(alert_set_id):
     user = User.query.filter_by(email=session['current_user']).one()
     alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).one()
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-    alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
+    # alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
 
-    return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
+    #return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
 
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
-    contact1 = int(contacts[0])
+    contact1 = int(contacts[0].contact_id)
     contact2 = None
     contact3 = None
 
     #If more than one contact is associated with the alert set, the following variables are set to them
     if len(contacts) > 1:
-        contact2 = int(contacts[1])
+        contact2 = int(contacts[1].contact_id)
     if len(contacts) > 2:
-        contact3 = int(contacts[2])
+        contact3 = int(contacts[2].contact_id)
 
     #A new alert (associated with the alert set) is created, added, and commited to the dBase
-    new_alert = Alert(alert_set_id=alert_set_q.alert_set_id, user_id=user.user_id, contact_id1=contact1,
+    new_alert = Alert(alert_set_id=alert_set_id, user_id=user.user_id, contact_id1=contact1,
                       contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc)
     db.session.add(new_alert)
     db.session.commit()
 
-    return redirect("/bs_alerts")
+    return render_template("edit_recurring_alerts.html", alert_set=alert_set, contacts=contacts, alert=new_alert, timezone=user.timezone)
 
 @alerts_rec_bp.route("/save_recset/<alert_set_id>", methods=["POST"])
 def save_recset(alert_set_id):
