@@ -29,26 +29,7 @@ profile_bp = Blueprint('profile_bp', __name__)
 
 
 
-@profile_bp.route("/login", methods=["GET"])
-def log_in():
-    """Render's the log-in page if user not in session,
-     otherwise redirects to the homepage (Still Works as of 1/21)"""
-    print('login visited')
 
-    uri = "https://besafe.ngrok.io/callback"
-    print(type(uri))
-    return auth0.authorize_redirect(redirect_uri=uri, audience='https://dev-54k5g1jc.auth0.com/api/v2/')
-
-@profile_bp.route("/logout")
-def logout():
-    """Logs user out and deletes them from the session (Tested)"""
-
-    # Clear session stored data
-    session.clear
-
-    # Redirect user to logout endpoint
-    params = {'returnTo': url_for('go_home', _external=True), 'client_id': '78rUTjeVusqU3vYXyvNpOQiF8jEacf55'}
-    return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 @profile_bp.route("/edit_profile", methods=["POST"])
 def edit_profile():
