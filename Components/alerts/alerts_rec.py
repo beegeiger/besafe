@@ -55,19 +55,19 @@ def add_rec_alertset():
     alert_set_q = AlertSet.query.order_by(AlertSet.start_datetime.desc()).first()
     
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
-    contact1 = int(contacts[0].contact_id)
+    contact1 = int(contacts[0])
     contact2 = None
     contact3 = None
 
     #If more than one contact is associated with the alert set, the following variables are set to them
     if len(contacts) > 1:
-        contact2 = int(contacts[1].contact_id)
+        contact2 = int(contacts[1])
     if len(contacts) > 2:
-        contact3 = int(contacts[2].contact_id)
+        contact3 = int(contacts[2])
 
     #A new alert (associated with the alert set) is created, added, and commited to the dBase
     new_alert = Alert(alert_set_id=alert_set_q.alert_set_id, user_id=user.user_id, contact_id1=contact1,
-                      contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc)
+                      contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc, time=datetime.datetime.now().time())
     db.session.add(new_alert)
     db.session.commit()
 
