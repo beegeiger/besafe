@@ -1,4 +1,4 @@
-{% extends 'safewalk_base.html' %}
+{% extends 'base.html' %}
 {% block tit %}Edit Scheduled Alert{% endblock %}
 {% block safewalk %}
 <script src="http://malsup.github.com/jquery.form.js"></script> 
@@ -52,7 +52,7 @@ Message: {{ alert.message }}<br>
 </div>
 <br><br>
 
-<form id="edit_form{{ alert.alert_id }}" class="hidden" action="/edit_al/{{ alert.alert_id }}" method="post">
+<form id="edit_form{{ alert.alert_id }}" class="hidden" action="/save_recset/{{ alert.alert_id }}" method="post">
 	<h5>Edit Scheduled Alert {{ alertloop.index }}</h5>
 	
 	<!-- <b>What Date/Time should a check-in be required?</b> <input type="datetime-local" name="check_time"><br> -->
