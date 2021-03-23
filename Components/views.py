@@ -183,7 +183,7 @@ def edit_recset_page(alert_set_id):
     alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
     print(Alert.query.filter_by(alert_set_id=alert_set_id).all())
 
-    return render_template("edit_rec_alerts.html", alert_set=alert_set, contacts=contacts, alerts=alerts, timezone=user.timezone)
+    return render_template("recurring_alerts.html", alert_set=alert_set, contacts=contacts, alerts=alerts, timezone=user.timezone)
 
 @views_bp.route("/map")
 def get_map():
