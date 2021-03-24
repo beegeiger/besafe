@@ -141,13 +141,13 @@ def get_started():
 
 @views_bp.route("/sched_alerts", methods=["GET"])
 def scheduled_alerts():
-    """Renders the 'Create a Scheduled Alert-Set' Page"""
+    """Renders the 'Edit a Scheduled Alert-Set' Page"""
 
     #Queries the current user and their contact info
     user = User.query.filter_by(email=session['current_user']).one()
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
 
-    return render_template("scheduled_alerts.html", contacts=contacts, timezone=user.timezone)
+    return render_template("edit_sched_alerts.html", contacts=contacts, timezone=user.timezone)
 
 @views_bp.route("/contacts", methods=["GET"])
 @requires_auth
@@ -180,10 +180,10 @@ def edit_recset_page(alert_set_id):
     print(AlertSet.query.filter_by(alert_set_id=alert_set_id).all())
     alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).first()
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-    alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
+    alert = Alert.query.filter_by(alert_set_id=alert_set_id).first()
     print(Alert.query.filter_by(alert_set_id=alert_set_id).all())
 
-    return render_template("recurring_alerts.html", alert_set=alert_set, contacts=contacts, alerts=alerts, timezone=user.timezone)
+    return render_template("edit_rec_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
 
 @views_bp.route("/map")
 def get_map():
