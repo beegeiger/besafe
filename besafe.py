@@ -9,7 +9,7 @@ import datetime
 import threading
 from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, flash,
-                   session, jsonify, Blueprint)
+                   session, jsonify, Blueprint, url_for)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
 from model import User, Contact, AlertSet, Alert, CheckIn, ReqCheck, connect_to_db, db
@@ -93,6 +93,7 @@ def callback_handling():
 
     #Sets the 'current_user' value in the session to the user's e-mail
     session['current_user'] = userinfo['email']
+    print("Session: ")
 
     #User Table is Queried to see if User already exists in dB
     user = User.query.filter_by(email=userinfo['email']).all()
@@ -126,7 +127,7 @@ def logout():
     session.clear
 
     # Redirect user to logout endpoint
-    params = {'returnTo': url_for('go_home', _external=True), 'client_id': '78rUTjeVusqU3vYXyvNpOQiF8jEacf55'}
+    params = {'returnTo': url_for('views_bp.go_home', _external=True), 'client_id': '78rUTjeVusqU3vYXyvNpOQiF8jEacf55'}
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 ################################################################
 
