@@ -96,7 +96,7 @@
 		{% if contacts|length < 1 %}
 		<h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
 		{% endif %}
-		<form  id="add_sched_form">
+		<form  id="add_sched_form" action="/add_schedset">
 			<b>What would you like to name this alert set???:</b> <input type=textbox name='set_nam'></input><br>
 			<b>Where are you going and/or what are you doing that you might need this alert?</b><br>
 			<textarea rows="2" cols="50" name="descri"></textarea>
@@ -110,27 +110,14 @@
 			<!-- What Date would you like this alert set to first be available? (optional)<input type="date" name="date" value=""><br>
 			What is the last date you would like this alert set to be available? (optional)<input type="date" name="end_date" value=""> -->
 			<br><br>
-			<button onclick="addingSet()" id="sched_set_submit" type="button">Create Alert Set</button>
+			What time would you like the app to send an alert if you don't check-in by that time (your first alert)? <input type="time" name="time">
+			<br>
+			<button id="sched_set_submit" type="submit">Create Alert Set</button>
 			<br>
 			<a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
 		</form>
 
 	</div>
-
-<!--#########################################-->
-
-
-<form id="set_form" class="hidden">
-	Alert Set ID: <!-- <input name="alertsetID" type="textbox"> -->
-	<h5>New Scheduled Alert</h5>
-	
-
-	What time would you like the app to send an alert if you don't check-in by that time: <input type="time" name="time"><br>
-<br>
-<button type="button" onclick="addingAlert()">Save Alert</button>
-</form>
-<br>
-
 
 <!--#########################################-->
 	
@@ -294,26 +281,26 @@
 
 
 
-	function addingSet(){
-		console.log('Button is pressed!');	
-		console.log('Form Data: ')
-		$.post("/add_schedset", $("#add_sched_form").serialize(), function(data) {
-			console.log("data then value:");
-			console.log(data);
-			$('input[name="alertsetID"]').val(data);
-			console.log(data.value);
-		});
-	};
-	function addingAlert(){
-		console.log('Button is pressed!');	
-		console.log('Form Data: ')
-		path = "/add_alert/" + ($('[name=alertsetID]').val())
-		$.post(path, $("#set_form").serialize(), function(data) {
-			console.log("data then value:");
-			console.log(data);
-			$('input[name="alertsetID"]').val(parseInt(data));
-			console.log(data.value);
-		});
-	};
+	// function addingSet(){
+	// 	console.log('Button is pressed!');	
+	// 	console.log('Form Data: ')
+	// 	$.post("/add_schedset", $("#add_sched_form").serialize(), function(data) {
+	// 		console.log("data then value:");
+	// 		console.log(data);
+	// 		$('input[name="alertsetID"]').val(data);
+	// 		console.log(data.value);
+	// 	});
+	// };
+	// function addingAlert(){
+	// 	console.log('Button is pressed!');	
+	// 	console.log('Form Data: ')
+	// 	path = "/add_alert/" + ($('[name=alertsetID]').val())
+	// 	$.post(path, $("#set_form").serialize(), function(data) {
+	// 		console.log("data then value:");
+	// 		console.log(data);
+	// 		$('input[name="alertsetID"]').val(parseInt(data));
+	// 		console.log(data.value);
+	// 	});
+	// };
 </script>
 {% endblock %}
