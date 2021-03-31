@@ -41,6 +41,8 @@ def add_sched_alertset():
     name = request.form['set_nam']
     print("name: ", name)
     desc = request.form['descri']
+    time = request.form['time']
+    contacts = request.form.getlist('contact')
     print("descri: ", desc)
     
     if len(name)== 0:
@@ -56,6 +58,25 @@ def add_sched_alertset():
     print("Type Alert Set :", type(alert_set))
     #The user is then redirected to the scheduled set edit page for this alert set
     print("Got Through Add SchedSet, Here's the alert set: ", alert_set)
+
+    #Initiates 3 contact variables, sets the first to the first contact and the next two to None
+    contact1 = int(contacts[0])
+    contact2 = None
+    contact3 = None
+
+    #If more than one contact is associated with the alert set, the following variables are set to them
+    if len(contacts) > 1:
+        contact2 = int(contacts[1])
+    if len(contacts) > 2:
+        contact3 = int(contacts[2])
+
+
+    new_alert = Alert(alert_set_id=alert_set.alert_set_id, user_id=user.user_id, contact_id1=contact1,
+                      contact_id2=contact2, contact_id3=contact3, message=desc, time=time)
+    print("From /add_recset: alert_set_q, new_alert, alert_set_qall", alert_set_q, new_alert, alert_set_qall)
+    db.session.add(new_alert)
+    db.session.commit()
+
     return str(alert_set.alert_set_id)
 
 
