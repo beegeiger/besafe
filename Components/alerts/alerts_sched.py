@@ -73,11 +73,11 @@ def add_sched_alertset():
 
     new_alert = Alert(alert_set_id=alert_set.alert_set_id, user_id=user.user_id, contact_id1=contact1,
                       contact_id2=contact2, contact_id3=contact3, message=desc, time=time)
-    print("From /add_recset: alert_set_q, new_alert, alert_set_qall", alert_set_q, new_alert, alert_set_qall)
+    
     db.session.add(new_alert)
     db.session.commit()
 
-    return str(alert_set.alert_set_id)
+    return redirect("/edit_schedset/" + str(alert_set.alert_set_id))
 
 
 @alerts_sched_bp.route("/edit_set/<alert_set_id>", methods=["POST"])
