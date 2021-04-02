@@ -185,6 +185,21 @@ def edit_recset_page(alert_set_id):
 
     return render_template("edit_rec_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
 
+@views_bp.route("/edit_schedset/<alert_set_id>", methods=["GET"])
+def edit_schedset_page(alert_set_id):
+    """Renders the page to edit a recurring alert set"""
+
+    #Queries the user, alert_set, user's contacts, and associated alerts
+    user = User.query.filter_by(email=session['current_user']).one()
+    print("Edit Schedset Path with alert_set_id: ", alert_set_id)
+    print(AlertSet.query.filter_by(alert_set_id=alert_set_id).all())
+    alert_set = AlertSet.query.filter_by(alert_set_id=alert_set_id).first()
+    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+    alert = Alert.query.filter_by(alert_set_id=alert_set_id).first()
+    print(Alert.query.filter_by(alert_set_id=alert_set_id).all())
+
+    return render_template("edit_sched_alerts.html", alert_set=alert_set, contacts=contacts, alert=alert, timezone=user.timezone)
+
 @views_bp.route("/map")
 def get_map():
     """Renders User Map Page"""
