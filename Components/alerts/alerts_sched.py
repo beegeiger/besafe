@@ -156,4 +156,4 @@ def add_sched_alert(alert_set_id):
     print("New Alert Just added: ", new_alert)
     db.session.add(new_alert)
     db.session.commit()
-    return "Alert Added"
+    return redirect("/edit_schedset/" + str(alert_set.alert_set_id))
