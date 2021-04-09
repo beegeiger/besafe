@@ -1,65 +1,39 @@
 {% extends '../besafe_alerts.html' %}
 {% block new_rec_modal %}
+<div id="new_rec_modal2" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+      
+        <h1 style="text-align: center;">Create New Recurring Alert Set</h1>
 
-<div class="modal-content">
-    <span class="close">&times;</span>
-  
-    <h1 style="text-align: center;">Create New Recurring Alert Set</h1>
+        {% if contacts|length < 1 %}
+        <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
+        {% endif %}
+        
+        <form action="/add_recset" method="POST">
+            <b>What would you like to name this alert set???:</b> <input type=textbox name='set_nam'></input><br>
+            <b>Where are you going and/or what are you doing that you might need this alert?</b><br>
+            <textarea rows="2" cols="50" name="descri"></textarea><br>
+            
+        <div id="recurring">
+            <b>How often would you like to require checking in with the app? (in minutes):</b> 
+            <input type="number" name="interval" placeholder="120" min="45" max="1500" required><br> 
+            (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br>
+            
+            Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)<br>
+            {% for contact in contacts %}
+            {% set contactloop = loop %}
+            <input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
+            {% endfor %}<br>
+            <a href="/contacts">Add/Edit/View Your Contacts</a>
+            
+        </div>
 
-    {% if contacts|length < 1 %}
-    <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
-    {% endif %}
-    
-    <form action="/add_recset" method="POST">
-        <b>What would you like to name this alert set???:</b> <input type=textbox name='set_nam'></input><br>
-        <b>Where are you going and/or what are you doing that you might need this alert?</b><br>
-        <textarea rows="2" cols="50" name="descri"></textarea><br>
-        
-    <div id="recurring">
-        <b>How often would you like to require checking in with the app? (in minutes):</b> 
-        <input type="number" name="interval" placeholder="120" min="45" max="1500" required><br> 
-        (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br>
-        
-        Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)<br>
-        {% for contact in contacts %}
-        {% set contactloop = loop %}
-        <input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
-        {% endfor %}<br>
-        <a href="/contacts">Add/Edit/View Your Contacts</a>
-        
+        <button type="submit">Save Alert Set</button>
+        <br>
+        <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
+        </form>
     </div>
-
-    <button type="submit">Save Alert Set</button>
-    <br>
-    <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
-    </form>
 </div>
 
-
-<script type="text/javascript">
-    var modal = document.getElementById("new_rec_modal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("add_rec");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on the button, open the modal
-    btn.onclick = function() {
-    modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-    modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-    }
-</script>
 {% endblock %}
