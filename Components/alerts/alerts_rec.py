@@ -69,7 +69,7 @@ def add_rec_alertset():
     #A new alert (associated with the alert set) is created, added, and commited to the dBase
     new_alert = Alert(alert_set_id=alert_set_q.alert_set_id, user_id=user.user_id, contact_id1=contact1,
                       contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc, time=datetime.datetime.now().time())
-    print("From /add_recset: alert_set_q, new_alert, alert_set_qall", alert_set_q, new_alert, alert_set_qall)
+    print("From /add_recset: alert_set_q, new_alert :", alert_set_q, new_alert)
     db.session.add(new_alert)
     db.session.commit()
 
