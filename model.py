@@ -95,7 +95,7 @@ class Alert(db.Model):
 	__tablename__ = "alerts"
 
 	alert_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	alert_set_id = db.Column(db.Integer, db.ForeignKey('alertsets.alert_set_id'))
+	a_name = db.Column(db.String(96))
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 	contact_id1 = db.Column(db.Integer, db.ForeignKey('contacts.contact_id'))
 	contact_id2 = db.Column(db.Integer, db.ForeignKey('contacts.contact_id'), nullable=True)
@@ -112,8 +112,8 @@ class Alert(db.Model):
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<alert_id={} alert_set_id={} user_id={} contact_id1={} contact_id2={} contact_id3={} active={} sent={} time={} date={} start_time={} message={} datetime={} checked_in={}>".format(
-			self.alert_id, self.alert_set_id, self.user_id, self.contact_id1, self.contact_id2, self.contact_id3, self.active, self.sent, self.time, self.date, self.start_time, self.message, self.datetime, self.checked_in)
+		return "<alert_id={} a_name={} user_id={} contact_id1={} contact_id2={} contact_id3={} active={} sent={} time={} date={} start_time={} message={} datetime={} checked_in={}>".format(
+			self.alert_id, a_name.alert_set_id, self.user_id, self.contact_id1, self.contact_id2, self.contact_id3, self.active, self.sent, self.time, self.date, self.start_time, self.message, self.datetime, self.checked_in)
 
 class CheckIn(db.Model):
 	"""SafeWalk Check-Ins"""
