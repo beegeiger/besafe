@@ -63,13 +63,13 @@
 			</div>
 		
 
-			<div {% if set.active == False %} class='hidden' {% else %} class="col-6" {% endif %} id='countdown{{ set.alert_set_id }}' style=" {% if al.active == False %} display: none; {% else %} display: inline-block; {% endif %} font-family: 'Bitter', serif;
+			<div {% if set.active == False %} class='hidden' {% else %} class="col-6" {% endif %} id='countdown{{ al.alert_id }}' style=" {% if al.active == False %} display: none; {% else %} display: inline-block; {% endif %} font-family: 'Bitter', serif;
         font-weight: bold; font-size: 105%; color: red;">
 
 			</div>
 		</div>
-		<div class='col-1'style="display: inline-block;" id="checked{{ set.alert_set_id }}">
-			<p {% if set.active == False %} class='hidden' {% else %} class='visible' {%endif%}  id="checked{{ set.alert_set_id }}" style="font-family: 'Bitter', serif; font-weight: bold; font-size: 150%; {% if al.checked_in %} color: green; {% else %} color: red; {% endif %}">
+		<div class='col-1'style="display: inline-block;" id="checked{{ al.alert_id }}">
+			<p {% if set.active == False %} class='hidden' {% else %} class='visible' {%endif%}  id="checked{{ al.alert_id }}" style="font-family: 'Bitter', serif; font-weight: bold; font-size: 150%; {% if al.checked_in %} color: green; {% else %} color: red; {% endif %}">
 			{% if al.checked_in == True %}
 			Yes
 			{% else %}
@@ -82,16 +82,16 @@
 	</div>
 </div>
 
-<div id="edit_alert_modal" class="modal">
+<div id="new_alert_modal{{ al.alert_id }}" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h1 style="text-align: center;">New Scheduled Alert Set</h1>
+        <h1 style="text-align: center;">New Alert</h1>
 
         {% if contacts|length < 1 %}
         <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
         {% endif %}
-        <form  id="add_sched_form" action="/add_schedset" method="POST">
-            <b>What would you like to name this alert set???:</b> <input type=textbox name='set_nam'></input><br>
+        <form  id="add_alert_form" action="/add_alert" method="POST">
+            <b>What would you like to name this alert set???:</b> <input type=textbox name='a_name'></input><br>
             <b>Where are you going and/or what are you doing that you might need this alert?</b><br>
             <textarea rows="2" cols="50" name="descri"></textarea>
             <br>
@@ -111,7 +111,9 @@
             <b>How often (in minutes) would you like to require checking in with the app after the first alert? (leave blank for a one-time alert):</b> 
 	            <input type="number" name="interval" placeholder="120" min="45" max="1500"><br> 
 	            (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br><br>
-            <button id="sched_set_submit" type="submit">Save Alert</button>
+            <button id="sched_set_submit" type="submit">
+            	Create Alert
+            </button>
             <br>
             <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
         </form>
@@ -129,13 +131,13 @@
 <div id="new_alert_modal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h1 style="text-align: center;">New Scheduled Alert Set</h1>
+        <h1 style="text-align: center;">New Alert</h1>
 
         {% if contacts|length < 1 %}
         <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
         {% endif %}
-        <form  id="add_sched_form" action="/add_schedset" method="POST">
-            <b>What would you like to name this alert set???:</b> <input type=textbox name='set_nam'></input><br>
+        <form  id="add_alert_form" action="/add_alert" method="POST">
+            <b>What would you like to name this alert set???:</b> <input type=textbox name='a_name'></input><br>
             <b>Where are you going and/or what are you doing that you might need this alert?</b><br>
             <textarea rows="2" cols="50" name="descri"></textarea>
             <br>
