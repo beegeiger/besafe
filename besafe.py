@@ -24,7 +24,7 @@ from dotenv import load_dotenv, find_dotenv
 
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
-from Components.alerts.alert_sets import alert_set_bp
+from Components.alerts import alerts_bp
 from Components.alerts.alerts_rec import alerts_rec_bp
 from Components.alerts.alerts_sched import alerts_sched_bp
 from Components.contacts import contacts_bp
@@ -45,7 +45,7 @@ app.register_blueprint(incoming_bp)
 app.register_blueprint(contacts_bp)
 app.register_blueprint(profile_bp)
 app.register_blueprint(alerts_rec_bp)
-app.register_blueprint(alert_set_bp)
+app.register_blueprint(alerts_bp)
 app.register_blueprint(alerts_sched_bp)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///besafe'
