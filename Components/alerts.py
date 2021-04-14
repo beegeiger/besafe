@@ -63,35 +63,28 @@ def activate_alertset(alert_id):
         # dtime = datetime.datetime.combine(date, time)
         # dt_list.append(dtime)
         dtime_int = dt + datetime.timedelta(minutes=alert_set.interval)
-        alert = Alert.query.filter_by(alert_set_id=alert_set_id).one()
         db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time, 'time': dtime_int.time(), 'datetime': dtime_int})
         dt_list.append(dtime_int)
     
-    #The alert set is updated to be active and its commited
-    db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id).update({'active': True, 'start_time': time, 'start_datetime': dt})
+    #Session is Commited
     db.session.commit()
     
     #The alert datetime list is sorted and the earliest time is then sent back to the page
     dt_list.sort()
     alarm_dt = dt_list[0].strftime("%I:%M %p, %m/%d/%Y")
-    return str(alarm_dt)
+    return alert
 
 @alerts_bp.route("/deactivate/<alert_id>")
-def deactivate_alertset(alert_set_id):
+def deactivate_alertset(alert_id):
     """Deactivates an alert set"""
 
-    #The alert set is queried and updated
-    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
-    {'active': False})
-    
     #All alerts associated with the alert set are queried and updated, and it's all commited
-    alerts = Alert.query.filter_by(alert_set_id=alert_set_id).all()
-    for alert in alerts:
-        if alert.interval:
-            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
-            {'active': False, 'checked_in': False, 'time': None, 'datetime': None})
-        else:
-            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
-            {'active': False, 'checked_in': False,'datetime': None})
+    alert = Alert.query.filter_by(alert_id=alert_id).one()
+    if alert.interval:
+        db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
+        {'active': False, 'checked_in': False, 'time': None, 'datetime': None})
+    else:
+        db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
+        {'active': False, 'checked_in': False,'datetime': None})
     db.session.commit()
     return "Alert Set Deactivated"
