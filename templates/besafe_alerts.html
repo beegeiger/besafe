@@ -82,7 +82,7 @@
 	</div>
 </div>
 
-<div id="new_alert_modal{{ al.alert_id }}" class="modal">
+<div id="edit_alert_modal{{ al.alert_id }}" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h1 style="text-align: center;">New Alert</h1>
@@ -90,29 +90,29 @@
         {% if contacts|length < 1 %}
         <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
         {% endif %}
-        <form  id="add_alert_form" action="/add_alert" method="POST">
-            <b>What would you like to name this alert set???:</b> <input type=textbox name='a_name'></input><br>
+        <form  id="add_alert_form" action="/save_alert" method="POST">
+            <b>What would you like to name this alert set???:</b> <input type=textbox name='a_name' value='{{ al.a_name }}'></input><br>
             <b>Where are you going and/or what are you doing that you might need this alert?</b><br>
-            <textarea rows="2" cols="50" name="descri"></textarea>
+            <textarea rows="2" cols="50" name="descri" value='{{ al.message }}'></textarea>
             <br>
 
             <a href="/contacts">Add/Edit/View Your Contacts</a>
             <!-- What Date would you like this alert set to first be available? (optional)<input type="date" name="date" value=""><br>
             What is the last date you would like this alert set to be available? (optional)<input type="date" name="end_date" value=""> -->
             <br><br>
-            What time would you like the app to send an alert if you don't check-in by that time (your first alert)? <input type="time" name="time">
+            What time would you like the app to send an alert if you don't check-in by that time (your first alert)? <input type="time" name="time" value='{{ al.time }}'>
             <br>
             Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)
             <br>
             {% for contact in contacts %}
-            {% set contactloop = loop %}
-            <input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
-            {% endfor %}<br><br>
+		    {% set contactloop = loop %}
+		    <input type="checkbox" name="contact" value="{{ contact.contact_id }}" {% if contact.contact_id == al.contact_id1 or contact.contact_id == al.contact_id2 or contact.contact_id == al.contact_id3%}checked{% endif %}>{{ contact.name }} &nbsp &nbsp
+		    {% endfor %}<br><br>
             <b>How often (in minutes) would you like to require checking in with the app after the first alert? (leave blank for a one-time alert):</b> 
-	            <input type="number" name="interval" placeholder="120" min="45" max="1500"><br> 
+	            <input type="number" name="interval" placeholder="120" min="45" max="1500" value='{{ al.interval }}'><br> 
 	            (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br><br>
-            <button id="sched_set_submit" type="submit">
-            	Create Alert
+            <button id="save_al_submit" type="submit">
+            	Save Alert
             </button>
             <br>
             <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
