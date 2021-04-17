@@ -135,15 +135,24 @@ def add_alert():
 def save_recset(alert_id):
     """Saves the edits to a recurring alert set"""
 
-    #Gets the alert and alert set info from the form
-    name = request.form['set_name']
+    """Adds a recurring Alert-Set to the dBase"""
+    user = User.query.filter_by(email=session['current_user']).one()
+    alerts_all = Alert.query.filter_by(user_id=user.user_id).all()
+
+    #Gets the alert and alert set info from the form on the add a new rec set page
+    name = request.form['set_nam']
     desc = request.form['descri']
     interval = request.form['interval']
     contacts = request.form.getlist('contact')
+    time = request.form['time']
+    print("name1: ", name, type(name), len(name))
 
-    #The Alert-Set is updated in the dBase with the new data
-    (db.session.query(AlertSet).filter_by(alert_set_id=alert_set_id)).update(
-    {'a_name': name, 'a_desc': desc, 'interval': interval})
+    if len(name)== 0:
+        name = "Alert " + str(len(alert_sets_all))
+    print("name2: ", name, type(name), len(name))
+    #Queries the current user
+
+    dt = datetime.datetime.now()
 
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
     contact1 = int(contacts[0])
@@ -158,7 +167,7 @@ def save_recset(alert_id):
 
     #The alert associated with the alert set is then updated and all of the changes are committed
     (db.session.query(Alert).filter_by(alert_set_id=alert_set_id)).update(
-    {'message': desc, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
+    {'message': desc, 'a_name': name, 'time': time, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
     db.session.commit()
 
     #The user is then re-routed to the main besafe page
