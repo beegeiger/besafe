@@ -45,14 +45,14 @@
 	
 		</div>
 		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
-			<input id="toggle_rec{{ set.alert_set_id }}" type="checkbox" data-toggle="toggle" data-on="Alert Set Active" data-off="Inactive" {% if set.active == True %}checked{% endif %}>
+			<input id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %}>
 		</div>
 		
 
-		<div {% if set.active == False %}class='hidden.col-6' {% else %} class="col-6" {% endif %} id="count_display{{ set.alert_set_id }}" style="display: inline-block; padding: 0 0 0 0;">
+		<div {% if al.active == False %}class='hidden.col-6' {% else %} class="col-6" {% endif %} id="count_display{{ al.alert_id }}" style="display: inline-block; padding: 0 0 0 0;">
 			
-			<div class="col-5" id="al_time{{ set.alert_set_id }}" style="display: inline-block;">	
-			<p id="datetime{{ set.alert_set_id }}" style="font-family: 'Bitter', serif;
+			<div class="col-5" id="al_time{{ al.alert_id }}" style="display: inline-block;">	
+			<p id="datetime{{ al.alert_id }}" style="font-family: 'Bitter', serif;
         	font-weight: bold; font-size: 105%; color: red; display: inline-block;">
 			{% if al.active == True %}
 			{{ al.next_alarm_dis }}
@@ -61,13 +61,13 @@
 			</div>
 		
 
-			<div {% if set.active == False %} class='hidden' {% else %} class="col-6" {% endif %} id='countdown{{ al.alert_id }}' style=" {% if al.active == False %} display: none; {% else %} display: inline-block; {% endif %} font-family: 'Bitter', serif;
+			<div {% if al.active == False %} class='hidden' {% else %} class="col-6" {% endif %} id='countdown{{ al.alert_id }}' style=" {% if al.active == False %} display: none; {% else %} display: inline-block; {% endif %} font-family: 'Bitter', serif;
         font-weight: bold; font-size: 105%; color: red;">
 
 			</div>
 		</div>
 		<div class='col-1'style="display: inline-block;" id="checked{{ al.alert_id }}">
-			<p {% if set.active == False %} class='hidden' {% else %} class='visible' {%endif%}  id="checked{{ al.alert_id }}" style="font-family: 'Bitter', serif; font-weight: bold; font-size: 150%; {% if al.checked_in %} color: green; {% else %} color: red; {% endif %}">
+			<p {% if al.active == False %} class='hidden' {% else %} class='visible' {%endif%}  id="checked{{ al.alert_id }}" style="font-family: 'Bitter', serif; font-weight: bold; font-size: 150%; {% if al.checked_in %} color: green; {% else %} color: red; {% endif %}">
 			{% if al.checked_in == True %}
 			Yes
 			{% else %}
