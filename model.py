@@ -114,7 +114,7 @@ class Alert(db.Model):
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
 		return "<alert_id={} a_name={} user_id={} contact_id1={} contact_id2={} contact_id3={} active={} sent={} time={} date={} start_time={} message={} datetime={} checked_in={} notes={}>".format(
-			self.alert_id, a_name.alert_set_id, self.user_id, self.contact_id1, self.contact_id2, self.contact_id3, self.active, self.sent, self.time, self.date, self.start_time, self.message, self.datetime, self.checked_in, self.notes)
+			self.alert_id, self.alert_set_id, self.user_id, self.contact_id1, self.contact_id2, self.contact_id3, self.active, self.sent, self.time, self.date, self.start_time, self.message, self.datetime, self.checked_in, self.notes)
 
 class CheckIn(db.Model):
 	"""SafeWalk Check-Ins"""

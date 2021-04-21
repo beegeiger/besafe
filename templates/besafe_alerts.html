@@ -120,11 +120,12 @@
 </div>
 
 <script type="text/javascript">
-	var modal{{ al.alarm_id }} = document.getElementById("edit_alert_modal{{ al.alert_id }}");
+	console.log("Alert: ", {{ al }});
+	var modal{{ al.alert_id }} = document.getElementById("edit_alert_modal{{ al.alert_id }}");
 	// Get the button that opens the modal
-	var btn{{ al.alarm_id }} = document.getElementById("edit_alert{{ al.alert_id }}");
+	var btn{{ al.alert_id }} = document.getElementById("edit_alert{{ al.alert_id }}");
 	// Get the <span> element that closes the modal
-	var span{{ al.alarm_id }} = document.getElementsById("close{{ al.alert_id }}")[0];
+	var span{{ al.alert_id }} = document.getElementsById("close{{ al.alert_id }}")[0];
 	// When the user clicks on the button, open the modal
 	btn{{ al.alert_id }}.onclick = function() {
 	modal{{ al.alert_id }}.style.display = "block";
