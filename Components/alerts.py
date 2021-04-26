@@ -104,7 +104,7 @@ def add_alert():
     print("name1: ", name, type(name), len(name))
 
     if len(name)== 0:
-        name = "Alert " + str(len(alert_sets_all))
+        name = "Alert " + str(len(alerts_all))
     print("name2: ", name, type(name), len(name))
     #Queries the current user
 
@@ -148,7 +148,7 @@ def save_recset(alert_id):
     print("name1: ", name, type(name), len(name))
 
     if len(name)== 0:
-        name = "Alert " + str(len(alert_sets_all))
+        name = "Alert " + str(len(alerts_all))
     print("name2: ", name, type(name), len(name))
     #Queries the current user
 
@@ -166,7 +166,7 @@ def save_recset(alert_id):
         contact3 = int(contacts[2])
 
     #The alert associated with the alert set is then updated and all of the changes are committed
-    (db.session.query(Alert).filter_by(alert_set_id=alert_set_id)).update(
+    (db.session.query(Alert).filter_by(alert_id=alert_id)).update(
     {'message': desc, 'a_name': name, 'time': time, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
     db.session.commit()
 
