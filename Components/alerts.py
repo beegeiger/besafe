@@ -122,7 +122,7 @@ def add_alert():
         contact3 = int(contacts[2])
 
     #A new alert (associated with the alert set) is created, added, and commited to the dBase
-    new_alert = Alert(user_id=user.user_id, contact_id1=contact1,
+    new_alert = Alert(user_id=user.user_id, contact_id1=contact1, a_name=name,
                       contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc, time=time)
 
     db.session.add(new_alert)
