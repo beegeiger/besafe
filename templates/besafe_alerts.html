@@ -41,7 +41,7 @@
         font-weight: bold; font-size: 135%;">
 			<button id="edit_alert{{ al.alert_id }}">
 			{{ al.a_name }}
-			</button> &nbsp &nbsp
+			</button>
 	
 		</div>
 		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
@@ -88,7 +88,7 @@
         {% if contacts|length < 1 %}
         <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
         {% endif %}
-        <form  id="add_alert_form" action="/save_alert" method="POST">
+        <form  id="save_alert_form{{ al.alert_id }}" action="/save_alert" method="POST">
             <b>What would you like to name this alert set???:</b> <input type=textbox name='a_name' value='{{ al.a_name }}'></input><br>
             <b>Where are you going and/or what are you doing that you might need this alert?</b><br>
             <textarea rows="2" cols="50" name="descri" value='{{ al.message }}'></textarea>
@@ -109,7 +109,7 @@
             <b>How often (in minutes) would you like to require checking in with the app after the first alert? (leave blank for a one-time alert):</b> 
 	            <input type="number" name="interval" placeholder="120" min="45" max="1500" value='{{ al.interval }}'><br> 
 	            (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br><br>
-            <button id="save_al_submit" type="submit">
+            <button id="save_al_submit{{ al.alert_id }}" type="submit">
             	Save Alert
             </button>
             <br>
@@ -120,7 +120,6 @@
 </div>
 
 <script type="text/javascript">
-	console.log("Alert: ", {{ al }});
 	var modal{{ al.alert_id }} = document.getElementById("edit_alert_modal{{ al.alert_id }}");
 	// Get the button that opens the modal
 	var btn{{ al.alert_id }} = document.getElementById("edit_alert{{ al.alert_id }}");
