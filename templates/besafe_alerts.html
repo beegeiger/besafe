@@ -135,12 +135,12 @@
 	console.log("Modal Specific Span close triggered.")
 	}
 	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-	if (event.target == modal{{ al.alert_id }}) {
-		modal{{ al.alert_id }}.style.display = "none";
-		console.log("Modal Specific Window close triggered.")
-	}
-	}
+	// window.onclick = function(event) {
+	// if (event.target == modal{{ al.alert_id }}) {
+	// 	modal{{ al.alert_id }}.style.display = "none";
+	// 	console.log("Modal Specific Window close triggered.")
+	// }
+	// }
 </script>
 {% endfor %}
 
@@ -273,6 +273,7 @@
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
 	if (event.target in allModals) {
+		console.log("allModals", allModals)
 		event.target.style.display = "none";
 		console.log("New Alert Window close triggered.");
 	}
