@@ -256,7 +256,6 @@
 	// Get the modal
 	var modal = document.getElementById("new_alert_modal");
 
-	var allModals = document.getElementsByClassName("modal");
 	// Get the button that opens the modal
 	var btn = document.getElementById("add_new_alert");
 	// Get the <span> element that closes the modal
@@ -271,12 +270,17 @@
 		console.log("New Alert Span close triggered.");
 	}
 	// When the user clicks anywhere outside of the modal, close it
+	var i;
 	window.onclick = function(event) {
-	if (event.target in allModals) {
+		let allModals = document.getElementsByClassName("modal");
 		console.log("allModals", allModals)
-		event.target.style.display = "none";
-		console.log("New Alert Window close triggered.");
-	}
+		for (i = 0; i < allModals.length; i++) {
+			console.log("current modal: ", allModals[i])
+			if (allModals[i].style.display == "block") {
+				document.getElementById(allModals[i].id).hide();
+				console.log("New Alert Window close triggered.");
+			}
+		}
 	}
 
 
