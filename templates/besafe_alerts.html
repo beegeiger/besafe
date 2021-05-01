@@ -270,18 +270,6 @@
 		console.log("New Alert Span close triggered.");
 	}
 	// When the user clicks anywhere outside of the modal, close it
-	var i;
-	window.onclick = function(event) {
-		let allModals = document.getElementsByClassName("modal");
-		console.log("allModals", allModals)
-		for (i = 0; i < allModals.length; i++) {
-			console.log("current modal: ", allModals[i])
-			if (allModals[i].style.display == "block") {
-				document.getElementById(allModals[i].id).hide();
-				console.log("New Alert Window close triggered.");
-			}
-		}
-	}
 
 
 
