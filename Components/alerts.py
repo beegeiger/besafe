@@ -140,7 +140,7 @@ def save_recset(alert_id):
     alerts_all = Alert.query.filter_by(user_id=user.user_id).all()
 
     #Gets the alert and alert set info from the form on the add a new rec set page
-    name = request.form['set_nam']
+    name = request.form['a_name']
     desc = request.form['descri']
     interval = request.form['interval']
     contacts = request.form.getlist('contact')
