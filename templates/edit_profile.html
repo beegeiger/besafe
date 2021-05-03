@@ -108,24 +108,25 @@ $(document).ready(function(){
 		console.log("Man TZ Button working");
 	});
 });
-   function geoFindMe() {
+function geoFindMe() {
 
-const status = document.querySelector('#status');
-const status2 = document.querySelector('#status2');
+	const status = document.querySelector('#status');
+	const status2 = document.querySelector('#status2');
 
-document.querySelector('#find_me').addEventListener('click', geoFindMe);
+	document.querySelector('#find_me').addEventListener('click', geoFindMe);
 
-status.textContent = '';
+	status.textContent = '';
 
-function success(position) {
-  const latitude  = position.coords.latitude;
-  const longitude = position.coords.longitude;
+	function success(position) {
+	  const latitude  = position.coords.latitude;
+	  const longitude = position.coords.longitude;
+	  console.log("Lat and Long: ", latitude, longitude)
 
-  
-  status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-  timezone(latitude, longitude);
-//   setInterval(postapp, 60*1000);
-  console.log("location found");
+	  
+	  status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+	  timezone(latitude, longitude);
+	//   setInterval(postapp, 60*1000);
+	  console.log("location found");
 }
 
 
