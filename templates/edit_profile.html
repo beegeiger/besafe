@@ -6,7 +6,9 @@
 {% block content %}
 
 
-
+{% if not user.timezone %}
+<h1>You must add a timezone before using this application.</h1>
+{% endif %}
 
 <div id="profile_div">
 	<h1>Your Profile</h1>

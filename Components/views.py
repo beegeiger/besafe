@@ -74,6 +74,8 @@ def besafe_alerts():
     if con_length < 1:
         return redirect("/contacts")
 
+    if user.timezone == None:
+        return redirect("/edit_profile")
     #Loops through all user's alert-sets and initiates variables to keep track of them
     # for a_set in alert_sets:
 
