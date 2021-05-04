@@ -1,6 +1,7 @@
 /env
 secrets.sh
 secrets.py
+secrets.js
 notes.txt
 notes.html
 /ReactApp/node_modules
