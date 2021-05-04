@@ -100,6 +100,7 @@ def callback_handling():
     if user == []:
         new_user = User(name=userinfo['name'], email=userinfo['email'], username=userinfo['nickname'], fname=userinfo['given_name'], lname=userinfo['family_name'], created_at=datetime.datetime.now())
         db.session.add(new_user)
+        return redirect('/edit_profile')
     
     #The dBase changes are committed
     db.session.commit()
