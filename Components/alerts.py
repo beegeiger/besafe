@@ -103,6 +103,11 @@ def add_alert():
     time = request.form['time']
     print("name1: ", name, type(name), len(name))
 
+    if time == "":
+        time = None
+    if interval == "":
+        interval = None
+
     if len(name)== 0:
         name = "Alert " + str(len(alerts_all))
     print("name2: ", name, type(name), len(name))
