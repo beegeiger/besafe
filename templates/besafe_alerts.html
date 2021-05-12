@@ -1,20 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}BeSafe Check-In/Alert Page{% endblock %}
-{% block head %}
-<script>
-	function validateForm(a) {
-	  let formName = arguments[0]
-	  let x = document.forms[formName]["time"].value;
-	  let y = document.forms[formName]["interval"].value;
-	  console.log("FormName, x, y: ", formName, x, y);
-	  if (x == "" && y == "") {
-	    alert("A scheduled time or an interval between check-ins is required to save alert.");
-	    return false;
-	  }	else {
-	  	document.getElementById(formName).submit();
-	  }
-	}
-</script>	
+{% block head %}	
 {% endblock %}
 {% block content %}
 <h1>BeSafe Safety Warning System Page</h1>
@@ -147,13 +133,6 @@
 	modal{{ al.alert_id }}.style.display = "none";
 	console.log("Modal Specific Span close triggered.")
 	}
-	// When the user clicks anywhere outside of the modal, close it
-	// window.onclick = function(event) {
-	// if (event.target == modal{{ al.alert_id }}) {
-	// 	modal{{ al.alert_id }}.style.display = "none";
-	// 	console.log("Modal Specific Window close triggered.")
-	// }
-	// }
 </script>
 {% endfor %}
 
@@ -290,6 +269,9 @@
 	  if (x == "" && y == "") {
 	    alert("A scheduled time or an interval between check-ins is required to save alert.");
 	    return false;
+	  } else {
+	  	console.log("Else in Validate form triggered!")
+	  	document.getElementById(formName).submit();
 	  }
 	}
 
