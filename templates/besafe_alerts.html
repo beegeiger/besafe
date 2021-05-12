@@ -263,9 +263,11 @@
 	}
 	// When the user clicks anywhere outside of the modal, close it
 
-	function validateForm(formName) {
-	  var x = document.forms[formName]["time"].value;
-	  var y = document.forms[formName]["interval"].value;
+	function validateForm(form) {
+	  let formName = form.name;
+	  console.log("ValidateForm triggered, Formname: ", formName)
+	  let x = document.forms[formName]["time"].value;
+	  let y = document.forms[formName]["interval"].value;
 	  if (x == "" && y == "") {
 	    alert("A scheduled time or an interval between check-ins is required to save alert.");
 	    return false;

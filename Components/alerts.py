@@ -159,6 +159,11 @@ def save_recset(alert_id):
 
     dt = datetime.datetime.now()
 
+    if time == "":
+        time = None
+    if interval == "":
+        interval = None
+
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
     contact1 = int(contacts[0])
     contact2 = None
