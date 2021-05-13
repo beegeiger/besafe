@@ -137,7 +137,7 @@ def add_alert():
 
 
 @alerts_bp.route("/save_alert/<alert_id>", methods=["POST"])
-def save_recset(alert_id):
+def save_alert(alert_id):
     """Saves the edits to a recurring alert set"""
 
     """Adds a recurring Alert-Set to the dBase"""
@@ -178,6 +178,18 @@ def save_recset(alert_id):
     #The alert associated with the alert set is then updated and all of the changes are committed
     (db.session.query(Alert).filter_by(alert_id=alert_id)).update(
     {'message': desc, 'a_name': name, 'time': time, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
+    db.session.commit()
+
+    #The user is then re-routed to the main besafe page
+    return redirect("/bs_alerts")
+
+
+@alerts_bp.route("/delete_alert/<alert_id>", methods=["POST"])
+def delete_alert(alert_id):
+    """Saves the edits to a recurring alert set"""
+
+    #The alert associated with the alert set is then deleted
+    (db.session.query(Alert).filter_by(alert_id=alert_id)).delete()
     db.session.commit()
 
     #The user is then re-routed to the main besafe page
