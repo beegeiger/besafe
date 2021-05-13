@@ -111,9 +111,14 @@
             <button id="save_al_submit{{ al.alert_id }}" type="submit">
             	Save Alert
             </button>
-            <br>
-            <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
         </form>
+        <form action="/delete_alert/{{ al.alert_id }}" method="POST">    
+        <button id="delete_alert{{ al.alert_id }}" type="submit">
+        	Save Alert
+        </button>
+        <br>
+        <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
+    
 
     </div>
 </div>
