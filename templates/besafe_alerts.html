@@ -34,12 +34,12 @@
 <!--#########################################-->
 
 {% for al in alerts %}
-<div {% if al.active == False %} class="hidden" {% endif %} id="alertDiv{{ al.alert_id }}">
+<div {% if al.active == False %} class="hidden" {% endif %} id="alertDiv{{ al.alert_id }}" style="border-style: solid;">
 	<p>Alert: {{ al.a_name }}</p>
 	{% if al.active == True %}
 	<p>Currently Active</p>
 	{% if al.interval %}
-	<p>Checked in  Times so Far</p>
+	<p>Checked in {% al.checked_in %} Times so Far</p>
 	{% endif %}
 	{% else %}
 	<p>Alert Time Passed, Alert Sent</p>

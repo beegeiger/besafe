@@ -108,7 +108,7 @@ class Alert(db.Model):
 	start_time = db.Column(db.Time, nullable=True)
 	message = db.Column(db.String(1028), nullable=True)
 	datetime = db.Column(db.DateTime, nullable=True)
-	checked_in = db.Column(db.Boolean, default=False)
+	checked_in = db.Column(db.Integer, default=0)
 	notes = db.Column(db.String(2056), nullable=True)
 
 	def __repr__(self):
