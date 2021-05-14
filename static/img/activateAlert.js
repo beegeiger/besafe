@@ -1,12 +1,12 @@
 //Logic For Front End Alert Activation//
 
-var t{{ set.alert_set_id }} = ({{ set.total }} * 1000)
+var t{{ al.alert_id }} = ({{ al.total }} * 1000)
 
 $(document).ready( function() {
 
-  function count{{ set.alert_set_id }}(change = 0) {
-      t{{ set.alert_set_id }} = (t{{ set.alert_set_id }} - 1000);
-      var t = t{{ set.alert_set_id }};
+  function count{{ al.alert_id }}(change = 0) {
+      t{{ al.alert_id }} = (t{{ al.alert_id }} - 1000);
+      var t = t{{ al.alert_id }};
       var seconds = Math.floor( (t/1000) % 60 );
       var minutes = Math.floor( (t/1000/60) % 60 );
       var hours = Math.floor( (t/(1000*60*60)) % 24 );
@@ -27,7 +27,7 @@ $(document).ready( function() {
     }
 
     // This gets a "handle" to the clock div in our HTML
-    var countDiv = document.getElementById('countdown{{ set.alert_set_id }}');
+    var countDiv = document.getElementById('countdown{{ al.alert_id }}');
 
     // Then we set the text inside the clock div 
     // to the hours, minutes, and seconds of the current time
@@ -51,10 +51,10 @@ $(document).ready( function() {
   }
 
   // This runs the displayTime function the first time
-  var changing = count{{ set.alert_set_id }}().changes;
+  var changing = count{{ al.alert_id }}().changes;
 
-  count{{ set.alert_set_id }}(changing);  
-  setInterval(count{{ set.alert_set_id }}, 1000);
+  count{{ al.alert_id }}(changing);  
+  setInterval(count{{ al.alert_id }}, 1000);
 
 });
 
@@ -64,31 +64,31 @@ $(document).ready( function() {
 
 
 $(document).ready(function(){
-    $( "#toggle_rec{{ set.alert_set_id }}" ).change(function(event){
+    $( "#toggle_rec{{ al.alert_id }}" ).change(function(event){
         console.log('Button is pressed!')
         if(this.checked) {
-            $.get("/activate/{{ set.alert_set_id }}", function(data) {
-                document.getElementById("datetime{{ set.alert_set_id }}").innerHTML = data;
+            $.get("/activate/{{ al.alert_id }}", function(data) {
+                document.getElementById("datetime{{ al.alert_id }}").innerHTML = data;
                 console.log("data then value:");
                 console.log(data);
                 console.log(data.value);
             });
             console.log("Toggle Button On is working");
-            $( "#count_display{{ set.alert_set_id }}" ).show();
-            $( "#count_display{{ set.alert_set_id }}" ).removeClass("hidden").addClass("col-6");
-            $( "#countdown{{ set.alert_set_id }}").show();
-            $( "#countdown{{ set.alert_set_id }}").removeClass("hidden").addClass("col-6");
-            $( "#checked{{ set.alert_set_id }}").removeClass("hidden").addClass("visible").show();
-            $( "#countdown{{ set.alert_set_id }}").css("display", "inline-block");
+            $( "#count_display{{ al.alert_id }}" ).show();
+            $( "#count_display{{ al.alert_id }}" ).removeClass("hidden").addClass("col-6");
+            $( "#countdown{{ al.alert_id }}").show();
+            $( "#countdown{{ al.alert_id }}").removeClass("hidden").addClass("col-6");
+            $( "#checked{{ al.alert_id }}").removeClass("hidden").addClass("visible").show();
+            $( "#countdown{{ al.alert_id }}").css("display", "inline-block");
         }
 
 
         else {
-            $.get("/deactivate/{{ set.alert_set_id }}");
+            $.get("/deactivate/{{ al.alert_id }}");
             console.log("Toggle Button Off is working");
-            $( "#count_display{{ set.alert_set_id }}" ).hide();
-            $( "#countdown{{ set.alert_set_id }}").hide();
-            $( "#checked{{ set.alert_set_id }}").hide()
+            $( "#count_display{{ al.alert_id }}" ).hide();
+            $( "#countdown{{ al.alert_id }}").hide();
+            $( "#checked{{ al.alert_id }}").hide()
         };
     
 });
