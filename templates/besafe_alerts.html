@@ -34,6 +34,21 @@
 <!--#########################################-->
 
 {% for al in alerts %}
+<div class="hidden" id="alertDiv{{ al.alert_id }}">
+	<p>Alert: {{ al.a_name }}</p>
+	{% if al.active == True %}
+	<p>Currently Active</p>
+	{% if al.interval %}
+	<p>Checked in  Times so Far</p>
+	{% endif %}
+	{% else %}
+	<p>Currently Inactive, Alert Sent</p>
+	{% endif %}
+	<p>Next Alert Time: </p>
+	<p>Countdown To Alert: </p>
+</div>
+
+
 <div class="container-fluid.">
 	<div class="row.alert_display" style="width:100%">
 		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
