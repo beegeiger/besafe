@@ -34,7 +34,7 @@
 <!--#########################################-->
 
 {% for al in alerts %}
-<div class="hidden" id="alertDiv{{ al.alert_id }}">
+<div {% if al.active == False %} class="hidden" {% endif %} id="alertDiv{{ al.alert_id }}">
 	<p>Alert: {{ al.a_name }}</p>
 	{% if al.active == True %}
 	<p>Currently Active</p>
@@ -42,10 +42,17 @@
 	<p>Checked in  Times so Far</p>
 	{% endif %}
 	{% else %}
-	<p>Currently Inactive, Alert Sent</p>
+	<p>Alert Time Passed, Alert Sent</p>
 	{% endif %}
-	<p>Next Alert Time: </p>
+	<p id="datetime{{ al.alert_id }}">Next Alert Time: 			
+	{% if al.active == True %}
+	{{ al.next_alarm_dis }}
+	{% endif %}
+	</p>
 	<p>Countdown To Alert: </p>
+	<div {% if al.active == False %} class='hidden' {% else %} class="col-6" {% endif %} id='countdown{{ al.alert_id }}' style=" {% if al.active == False %} display: none; {% else %} display: inline-block; {% endif %} font-family: 'Bitter', serif;
+        font-weight: bold; font-size: 105%; color: red;">
+	</div>
 </div>
 
 
