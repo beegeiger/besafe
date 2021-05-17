@@ -42,12 +42,21 @@ def dashboard():
 @requires_auth
 def edit_page():
     """Renders the Profile page"""
-
+    print("Edit Profile Session: ", session)
+    print("Session[currentuser]: ", session['current_user'])
     #Queries User
     user = User.query.filter_by(email=session['current_user']).one()
 
     #Returns the Profile Template
-    return render_template("edit_profile.html", user=user)    
+    return render_template("edit_profile.html", user=user)
+
+@views_bp.route("/new_profile", methods=["GET"])
+@requires_auth
+def new_page():
+    """Renders the Profile page"""
+
+    #Returns the Profile Template
+    return render_template("edit_profile.html")      
 
 @views_bp.route("/bs_alerts", methods=["GET"])
 @requires_auth

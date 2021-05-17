@@ -82,10 +82,10 @@ def deactivate_alertset(alert_id):
     alert = Alert.query.filter_by(alert_id=alert_id).one()
     if alert.interval:
         db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
-        {'active': False, 'checked_in': False, 'time': None, 'datetime': None})
+        {'active': False, 'checked_in': 0, 'time': None, 'datetime': None})
     else:
         db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
-        {'active': False, 'checked_in': False,'datetime': None})
+        {'active': False, 'checked_in': 0,'datetime': None})
     db.session.commit()
     return "Alert Set Deactivated"
 
