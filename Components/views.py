@@ -133,6 +133,7 @@ def besafe_alerts():
     # for a_s in alert_sets:
     #     if len(a_s.a_name) > 14:
     #         a_s.a_name = a_s.a_name[:9] + "..." + a_s.a_name[-4:]
+    print("Alerts: ", alerts)
     return render_template("besafe_alerts.html", alerts=alerts, timezone=user.timezone, user=user, contacts=contacts)
 
 @views_bp.route("/sw_getting_started", methods=["GET"])

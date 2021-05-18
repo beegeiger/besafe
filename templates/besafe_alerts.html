@@ -135,9 +135,10 @@
             </button>
         </form>
         <form action="/delete_alert/{{ al.alert_id }}" method="POST">    
-        <button id="delete_alert{{ al.alert_id }}" type="submit">
-        	Save Alert
-        </button>
+	        <button id="delete_alert{{ al.alert_id }}" type="submit">
+	        	Delete Alert
+	        </button>
+    	</form>
         <br>
         <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
     
@@ -161,7 +162,7 @@
 	console.log("Modal Specific Span close triggered.")
 	}
 </script>
-<script src="/static/img/activateAlert.js"></script>
+<!-- <script src="/static/img/activateAlert.js"></script> -->
 {% endfor %}
 
 <!--#########################################-->
