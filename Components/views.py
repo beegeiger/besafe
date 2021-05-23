@@ -85,54 +85,43 @@ def besafe_alerts():
 
     if user.timezone == None:
         return redirect("/edit_profile")
+    
     #Loops through all user's alert-sets and initiates variables to keep track of them
-    # for a_set in alert_sets:
+    for alert in alerts:
 
-    #     aset_alerts = []
-    #     a_set.total = 0
+        alert_time = []
+        alert.total = 0
 
-    #     #Loops through the alerts and adds the datetime for each to the aset_alerts list
-    #     for alert in alerts:
-    #         if alert.active == False:
-    #             if a_set.alert_set_id == alert.alert_set_id and a_set.interval and alert.active == False:
-    #                 tim = now + datetime.timedelta(minutes=a_set.interval)
-    #                 aset_alerts.append(tim)
+        if alert.active == False:
+            if alert.time:
+                dtime = datetime.datetime.combine(date, alert.time)
+                alert_time.append(dtime)
+            else:
+                tim = now + datetime.timedelta(minutes=alert.interval)
+                alert_time.append(tim)
+        else:
+            alert_time.append(alert.datetime)
+            
 
-    #             elif a_set.alert_set_id == alert.alert_set_id and a_set.interval and alert.active == True:
-    #                 aset_alerts.append(alert.datetime)
+        """If there is at least one alert for each alert-set, the earliest alert and
+        the total number of seconds until that alert are saved to the alert-set object"""
+        if len(alert_time) >= 1:
+            alert.next_alarm = alert_time[0]
+            alert.next_alarm_dis = alert_time[0].strftime("%I:%M %p, %m/%d/%Y")
+            d1 = now - alert_time[0]
+            d2 = abs(d1.total_seconds())
+            alert.total =int(d2)
 
-    #             elif a_set.alert_set_id == alert.alert_set_id and alert.active == True:
-    #                 dtime = alert.datetime
-    #                 aset_alerts.append(dtime)
-    #             elif a_set.alert_set_id == alert.alert_set_id and alert.active == False:
-    #                 dtime = datetime.datetime.combine(date, alert.time)
-    #                 aset_alerts.append(dtime)
+        else:
+            print("Alert ", alert.alert_id, " has no datetime added to ther alert_time[] list!")
+            #If there are no alerts, the current datetime is used as a placeholder
+            alert.next_alarm_dis = now.strftime("%I:%M %p, %m/%d/%Y")
 
-    #     """If there is at least one alert for each alert-set, the earliest alert and
-    #     the total number of seconds until that alert are saved to the alert-set object"""
-    #     if len(aset_alerts) >= 1:
-    #         if aset_alerts[0] != []:
-
-    #             aset_alerts.sort()
-
-    #             a_set.next_alarm = aset_alerts[0]
-    #             a_set.next_alarm_dis = aset_alerts[0].strftime("%I:%M %p, %m/%d/%Y")
-    #             d1 = now - aset_alerts[0]
-
-    #             d2 = abs(d1.total_seconds())
-
-    #             a_set.total =int(d2)
+    for alert in alerts:
+        if len(alert.a_name) > 14:
+            alert.a_name = alert.a_name[:9] + "..." + alert.a_name[-4:]
 
 
-    #         else:
-    #             a_set.next_alarm_dis = now.strftime("%I:%M %p, %m/%d/%Y")
-
-    #     #If there are no alerts, the current datetime is used as a placeholder
-    #     else:a_set.next_alarm_dis = now.strftime("%I:%M %p, %m/%d/%Y")
-
-    # for a_s in alert_sets:
-    #     if len(a_s.a_name) > 14:
-    #         a_s.a_name = a_s.a_name[:9] + "..." + a_s.a_name[-4:]
     print("Alerts: ", alerts)
     return render_template("besafe_alerts.html", alerts=alerts, timezone=user.timezone, user=user, contacts=contacts)
 
