@@ -85,7 +85,7 @@ def deactivate_alertset(alert_id):
         db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
         {'active': False, 'checked_in': 0,'datetime': None})
     db.session.commit()
-    return "Alert Set Deactivated"
+    return redirect("/bs_alerts")
 
 @alerts_bp.route("/add_alert", methods=["POST"])
 def add_alert():

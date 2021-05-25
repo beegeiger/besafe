@@ -66,11 +66,11 @@
 	
 		</div>
 		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
-			<input id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %}>
+			<input id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
 		</div>
 		
 
-		<div {% if al.active == False %}class='hidden.col-6' {% else %} class="col-6" {% endif %} id="count_display{{ al.alert_id }}" style="display: inline-block; padding: 0 0 0 0;">
+		<div {% if al.active == False %}class='hidden.col-6.alert_display' {% else %} class="col-6.alert_display" {% endif %} id="count_display{{ al.alert_id }}" style="display: inline-block; padding: 0 0 0 0;" name="{{ al.alert_id }}">
 			
 			<div class="col-5" id="al_time{{ al.alert_id }}" style="display: inline-block;">	
 			<p id="datetime{{ al.alert_id }}" style="font-family: 'Bitter', serif;
@@ -259,7 +259,14 @@ $(document).ready(function(){
 </script>
 
 {% endfor %}
-
+<script type="text/javascript">
+	document.querySelectorAll('.display_toggle').forEach(item => {
+	  item.addEventListener('click', event => {
+	    //handle click
+	    
+	  })
+	})
+</script>
 <!--#########################################-->
 
 <button id="add_new_alert" type="button">
