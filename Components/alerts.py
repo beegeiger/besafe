@@ -42,7 +42,7 @@ def activate_alertset(alert_id):
     
     #If there is no start date, the start date is set to today
     if alert.date == None:
-        db.session.query(Alert).filter_by(alert_id=alert_id).update({'date': date, 'start_datetime': dt})
+        db.session.query(Alert).filter_by(alert_id=alert_id).update({'date': date})
     
     #If the alert set is scheduled (not recurring), the alert times are added to the the dt_list
     if alert.interval == None:
@@ -58,11 +58,9 @@ def activate_alertset(alert_id):
     
     #If the alert set is recurring, the alert time is set to now + the time interval
     else:
-        print("Interval = " + str(alert_set.interval))
-        print("Rec Activated")
         # dtime = datetime.datetime.combine(date, time)
         # dt_list.append(dtime)
-        dtime_int = dt + datetime.timedelta(minutes=alert_set.interval)
+        dtime_int = dt + datetime.timedelta(minutes=alert.interval)
         db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time, 'time': dtime_int.time(), 'datetime': dtime_int})
         dt_list.append(dtime_int)
     
@@ -72,7 +70,7 @@ def activate_alertset(alert_id):
     #The alert datetime list is sorted and the earliest time is then sent back to the page
     dt_list.sort()
     alarm_dt = dt_list[0].strftime("%I:%M %p, %m/%d/%Y")
-    return alert
+    return redirect("/bs_alerts")
 
 @alerts_bp.route("/deactivate/<alert_id>")
 def deactivate_alertset(alert_id):
