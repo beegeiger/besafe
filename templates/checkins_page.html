@@ -1,0 +1,98 @@
+{% extends 'safewalk_base.html' %}
+{% block tit %}Your Check-In's{% endblock %}
+{% block safewalk %}
+<div class="gen_div">
+<h1>Check-In Now!</h1>
+<form id="check-form" action="/add_check_in" method="POST">
+	Include a short message about where you are, if you are safe, and/or what your plans are:<br>
+	<textarea rows="6" cols="50" name="check_text"></textarea><br>
+	<input onclick="geoFindMe()" id="check-click" type=submit value="Check-In Now">
+</form>
+</div>
+<br><br>
+<div class="gen_div">
+<h1>Your Previous Check-Ins</h1>
+</div>
+<div class="gen_div">
+{% for check in check_ins %}
+{{ check.datetime }} &nbsp &nbsp
+{{ check.notes }}<br>
+{% endfor %}
+
+
+<a href="/sw_main">Go Back to Main SafeWalk Page</a>
+<br>
+<br>
+<button id = "find-me">Show my location</button><br/>
+<p id = "status"></p>
+
+</div>
+
+
+
+
+
+<script>
+
+    function postapp(lat, lon) {
+        $.post("/geo_point", 
+            {"lat": lat, "long": lon}
+            )
+        console.log("lat/lon sent")
+    }
+
+   function geoFindMe() {
+
+  const status = document.querySelector('#status');
+
+
+
+  status.textContent = '';
+
+  function success(position) {
+    const latitude  = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    
+    status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+    postapp(latitude, longitude);
+    setInterval(postapp, 60*1000);
+    console.log("location found");
+  }
+
+
+  function error() {
+    status.textContent = 'Unable to retrieve your location';
+  }
+
+  if (!navigator.geolocation) {
+    status.textContent = 'Geolocation is not supported by your browser';
+  } else {
+    status.textContent = 'Locating…';
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+  
+
+}
+$(document).ready(function () {
+    $('#check-form').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url : $(this).attr('/add_check_in') || window.location.pathname,
+            type: "POST",
+            data: $(this).serialize(),
+            success: function (data) {
+                $("#form_output").html(data);
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+});
+document.querySelector('#check-click').addEventListener('click', geoFindMe);
+document.querySelector('#check-click').addEventListener('click', geoFindMe);
+
+
+</script>
+{% endblock %}
