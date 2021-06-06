@@ -36,11 +36,13 @@ class User(db.Model):
 	created_at = db.Column(db.DateTime, nullable=True)
 	timezone = db.Column(db.String(48))
 	phone = db.Column(db.String(28), nullable=True)
+	safe_code = db.Column(db.String(64), nullable=True)
+	danger_code = db.Column(db.String(64), nullable=True)
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<user_id={} username={} name={} fname={} lname={} email={} email2={} created_at={} timezone={} phone={}>".format(
-			self.user_id, self.username, self.name, self.fname, self.lname, self.email, self.email2, self.created_at, self.timezone, self.phone)
+		return "<user_id={} username={} name={} fname={} lname={} email={} email2={} created_at={} timezone={} phone={} safe_code={} danger_code={}>".format(
+			self.user_id, self.username, self.name, self.fname, self.lname, self.email, self.email2, self.created_at, self.timezone, self.phone, self.safe_code, self.danger_code)
 
 
 
