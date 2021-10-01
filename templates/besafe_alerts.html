@@ -220,8 +220,7 @@ $(document).ready( function() {
 
 });
 
-
-
+alertDiv{{ al.alert_id }}
 
 
 
@@ -236,12 +235,15 @@ $(document).ready(function(){
                 console.log(data.value);
             });
             console.log("Toggle Button On is working");
-            $( "#count_display{{ al.alert_id }}" ).show();
+   
             $( "#count_display{{ al.alert_id }}" ).removeClass("hidden").addClass("col-6");
+            $( "#count_display{{ al.alert_id }}" ).show();
             $( "#countdown{{ al.alert_id }}").show();
             $( "#countdown{{ al.alert_id }}").removeClass("hidden").addClass("col-6");
             $( "#checked{{ al.alert_id }}").removeClass("hidden").addClass("visible").show();
             $( "#countdown{{ al.alert_id }}").css("display", "inline-block");
+            $( "#alertDiv{{ al.alert_id }}" ).removeClass("hidden").addClass("col-6");
+            $( "#alertDiv{{ al.alert_id }}" ).show();
         }
 
 

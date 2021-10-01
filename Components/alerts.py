@@ -70,7 +70,7 @@ def activate_alertset(alert_id):
     #The alert datetime list is sorted and the earliest time is then sent back to the page
     dt_list.sort()
     alarm_dt = dt_list[0].strftime("%I:%M %p, %m/%d/%Y")
-    return redirect("/bs_alerts")
+    return str(alarm_dt)
 
 @alerts_bp.route("/deactivate/<alert_id>")
 def deactivate_alertset(alert_id):
