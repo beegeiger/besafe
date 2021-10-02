@@ -73,9 +73,8 @@ def create_alert(alert_id):
             found at besafe.org \n \n""".format(user.fname, user.lname)
     
     #For all associated alerts, if there is a message longer than 2 characters, the alert is added to the events dictionary
-    for a_a in all_alerts:
-        if len(a_a.message) > 2:
-            events[a_a.datetime] = a_a
+    if len(alert.message) > 2:
+        events[alert.datetime] = alert.message
     
     #All check-ins are added to the events dictionary
     for chks in check_ins:
