@@ -36,7 +36,7 @@
 {% for al in alerts %}
 <div {% if al.active == False %} class="hidden" {% endif %} id="alertDiv{{ al.alert_id }}" style="border-style: solid;">
 	<p>Alert: {{ al.a_name }}</p>
-	{% if al.active == True %}
+	{% if al.active == true %}
 	<p>Currently Active</p>
 	{% if al.interval %}
 	<p>Checked in {{ al.checked_in }} Times so Far</p>
@@ -234,13 +234,6 @@ $(document).ready(function(){
                 console.log(data.value);
             });
             console.log("Toggle Button On is working");
-   
-            $( "#count_display{{ al.alert_id }}" ).removeClass("hidden").addClass("col-6");
-            $( "#count_display{{ al.alert_id }}" ).show();
-            $( "#countdown{{ al.alert_id }}").show();
-            $( "#countdown{{ al.alert_id }}").removeClass("hidden").addClass("col-6");
-            $( "#checked{{ al.alert_id }}").removeClass("hidden").addClass("visible").show();
-            $( "#countdown{{ al.alert_id }}").css("display", "inline-block");
             $( "#alertDiv{{ al.alert_id }}" ).removeClass("hidden").addClass("col-6");
             $( "#alertDiv{{ al.alert_id }}" ).show();
         }
