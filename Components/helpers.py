@@ -48,11 +48,9 @@ def check_in(user_id, notes):
                 print(alert)
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
                 {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': True})
-                db.session.query(AlertSet).filter_by(alert_set_id=alert.alert_set_id).update({'checked_in': True})
             else:
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
                 {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': True})
-                db.session.query(AlertSet).filter_by(alert_set_id=alert.alert_set_id).update({'checked_in': True})
     db.session.commit()
     return "Check In has been Logged!"
 
@@ -65,20 +63,14 @@ def create_alert(alert_id):
     #The alert in question, the user, the alert set, all other associated alerts, and the recent check-ins are all queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
     user = User.query.filter_by(user_id=alert.user_id).one()
-    alert_set = AlertSet.query.filter_by(alert_set_id=alert.alert_set_id).one()
-    all_alerts = Alert.query.filter(alert.alert_set_id == alert.alert_set_id, alert.datetime > alert_set.start_datetime).all()
     check_ins = CheckIn.query.filter(checkin.user_id == user.user_id, abs(checkin.datetime - datetim) <  datetime.timedelta(days=1)).all()
     
     #An empty dictionary is created to store the associated events for the alert
     events = {}
     
     #A new string that will begin the alert message is created
-    message_body = """This is a Safety Alert sent by {} {} through the SafeWork Project SafeWalk Alert system,
-            found at safeworkproject.org \n \n""".format(user.fname, user.lname)
-    
-    #If there are notes on the alert set, they are added to the message
-    if alert_set.notes:
-        message_body += """The user has included the following messages when they made this alert and checked in \n \n {}""".format(alert_set.message)
+    message_body = """This is a Safety Alert sent by {} {} through the Check In With Me Be Safe Alert System,
+            found at besafe.org \n \n""".format(user.fname, user.lname)
     
     #For all associated alerts, if there is a message longer than 2 characters, the alert is added to the events dictionary
     for a_a in all_alerts:
@@ -205,11 +197,7 @@ def check_alerts():
                     send_alert_contacts(alert.alert_id, message_body)
                     #The alert object is updates to be marked sent and inactive and its commited
                     (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update({'sent': True, 'active': False})
-                    (db.session.query(AlertSet).filter_by(alert_set_id=alert.alert_set_id)).update({'active': False})
                     db.session.commit()
-                
-                elif abs(difference) <= datetime.timedelta(minutes=1) and abs(difference) > datetime.timedelta(seconds=0) and checks < 0 and alert.sent == False:
-                    db.session.query(AlertSet).filter_by(alert_set_id=alert.alert_set_id).update({'checked_in': False})
 
 
                 #If there is no check in and it is 15 minutes before an alert, a reminder message is sent
