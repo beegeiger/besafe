@@ -73,9 +73,8 @@ def create_alert(alert_id):
             found at besafe.org \n \n""".format(user.fname, user.lname)
     
     #For all associated alerts, if there is a message longer than 2 characters, the alert is added to the events dictionary
-    for a_a in all_alerts:
-        if len(a_a.message) > 2:
-            events[a_a.datetime] = a_a
+    if len(alert.message) > 2:
+        events[alert.datetime] = alert
     
     #All check-ins are added to the events dictionary
     for chks in check_ins:
@@ -86,7 +85,7 @@ def create_alert(alert_id):
         #If the event was a scheduled alarm
         if type(events[key]) == model.Alarm:
             #Different messages are added depending on whether the alarm was check-in for and if it had a message
-            if events[key].checked_in == True:
+            if events[key].checked_in > 0:
                 message_body += "An alarm was scheduled for {} which {} checked-in for.".format(key, user.fname)
                 if events[key].message:
                     message_body += "The Alarm included the following notes: {} \n \n".format(events[key].message)
@@ -118,7 +117,7 @@ def create_alert(alert_id):
 
 
 def send_alert_contacts(alert_id, message_body):
-    """Helper Function that actually sends the alerts over e-mail and sms"""
+    """Helper Function that actually sends the alerts to contacts over e-mail and sms"""
     
     #The current alert and user is queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
@@ -144,7 +143,7 @@ def send_alert_contacts(alert_id, message_body):
     return "Message Sent"
 
 def send_alert_user(alert_id, message_body):
-    """Helper Function that actually sends the alerts over e-mail and sms"""
+    """Helper Function that actually sends alerts to user over e-mail and sms"""
     
     #The current alert and user is queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
