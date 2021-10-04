@@ -42,15 +42,15 @@ def check_in(user_id, notes):
     
     #The alerts are looped through and all alerts within an hour are marked as checked-in
     for alert in alerts:
-        if alert.datetime - datetim < datetime.timedelta(hours=1.5):
+        if alert.datetime - datetim < datetime.timedelta(hours=1):
             if alert.interval:
                 print("Alert:")
                 print(alert)
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
-                {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': True})
+                {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': (alert.checked_in += 1)})
             else:
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
-                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': True})
+                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': (alert.checked_in += 1)})
     db.session.commit()
     return "Check In has been Logged!"
 
