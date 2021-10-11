@@ -111,12 +111,20 @@ def callback_handling():
     #Redirects to the User Profile
     return redirect('/dashboard')
 
-@app.route("/login", methods=["GET"])
-def log_in():
+@app.route("/login/<special>", methods=["GET"])
+def log_in(special=""):
     """Render's the log-in page if user not in session,
      otherwise redirects to the homepage (Still Works as of 1/21)"""
     print('login visited')
-
+    if special == "development":
+        session['current_user'] = 'developer@placeholder.com'
+        user = User.query.filter_by(email='developer@placeholder.com).all()
+        if user == []:
+          new_user = User(name='dev', email='developer@placeholder.com', username='dev', fname='Dev', lname='Eveloper', created_at=datetime.datetime.now())
+          db.session.add(new_user)
+        db.session.commit()
+        print("Callback NewUser: ", new_user)
+        return redirect('/edit_profile')
     uri = "https://besafe.ngrok.io/callback"
     print(type(uri))
     return auth0.authorize_redirect(redirect_uri=uri, audience='https://dev-54k5g1jc.auth0.com/api/v2/')
