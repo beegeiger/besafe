@@ -119,9 +119,6 @@ def log_in(special=""):
     if special == "development":
         session['current_user'] = 'developer@placeholder.com'
         user = User.query.filter_by(email='developer@placeholder.com).all()
-        if user == []:
-          new_user = User(name='dev', email='developer@placeholder.com', username='dev', fname='Dev', lname='Eveloper', created_at=datetime.datetime.now())
-          db.session.add(new_user)
         db.session.commit()
         print("Callback NewUser: ", new_user)
         return redirect('/edit_profile')
