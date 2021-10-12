@@ -150,6 +150,16 @@ class Feedback(db.Model):
 
 ################################################################################
 
+def starter_data():
+	new_user = User(user_id=999, name='dev', email='developer@placeholder.com', username='dev', fname='Dev', lname='Eveloper', created_at=datetime.datetime.now())
+        db.session.add(new_user)
+	db.session.commit()
+	contact1 = Contact(user_id = 999, name='Sneezy', email='Sneezy@placeholder.com', phone="5555555569')
+	contact2 = Contact(user_id = 999, name='Dopey', email='Dopey@placeholder.com', phone="5555555519')
+	db.session.add_all([contact1, contact2])
+	db.commit()
+	return
+			   
 def example_data():
 	"""Example data to be used for testing."""
 	#Deleting tables in case this file has been run before
@@ -183,6 +193,7 @@ def connect_to_db(app, db_uri='postgresql:///besafe'):
 	with app.app_context():
 		db.drop_all()
 		db.create_all()
+		db.starter_data()
 
 if __name__ == "__main__":	
 	connect_to_db(app, 'postgresql:///besafe')
