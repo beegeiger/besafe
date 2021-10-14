@@ -115,12 +115,11 @@ def callback_handling():
 def log_in(special=""):
     """Render's the log-in page if user not in session,
      otherwise redirects to the homepage (Still Works as of 1/21)"""
-    print('login visited')
+    #Backdoor Login For Developers...To be deleted before deployment
     if special == "development":
+        #The placeholder developer email is added to session
         session['current_user'] = 'developer@placeholder.com'
-        user = User.query.filter_by(email='developer@placeholder.com).all()
         db.session.commit()
-        print("Callback NewUser: ", new_user)
         return redirect('/edit_profile')
     uri = "https://besafe.ngrok.io/callback"
     print(type(uri))
