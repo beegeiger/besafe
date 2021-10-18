@@ -7,8 +7,6 @@ The basic BeSafe system is being built from the original Safework SafeWalk syste
 
 The BeSafe System is built based on a basic Python3 Flask application and uses jquery and ajax to render site pages. It uses the Auth0 API to login via a new account with an e-mail, facebook login, and google login. In the past, the Twilio API was used for SMS and the Mailgun API was used for email, but before the project is redeployed the cost and ease of use of API's will be re-evaluated.
 
-The BeSafe project was developed using Ubuntu 18.1, but should be able to be run on anything 16.1 or higher.
-
 ### Prerequisites
 
 -Running a Linux System (Developed and Tested on Ubuntu 18.04)
