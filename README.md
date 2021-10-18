@@ -1,4 +1,4 @@
-## BeSafe (CheckInWithMe) Safety System\
+## BeSafe (CheckInWithMe) Safety System
 #besafe #CheckInWithMe #SexWorker #Python #Flask
 
 The BeSafe system is built to be hosted on the new CheckInWithMe website (yet to launch). The site will allow users to pre-set scheduled check-ins with the site. Then approaching the scheduled check-in time, a user can check in with the site using SMS, e-mail, or the application itself in a browser. If a user checks in at the appointed time, nothing happens. However, if the check-in is missed, a pre-set message wuth the user's location/activities will be sent to pre-set friends/family to warn them to try to get in contact with the user. In this initial version, check-ins made with the browser can also include single gps coordinates of the check-in location that will be added to the message. In future versions, including Android and iOS apps, more comprehensive (though optional) gps tracking will be included.
@@ -15,7 +15,7 @@ The BeSafe project was developed using Ubuntu 18.1, but should be able to be run
 
 -System can be run on Python 3.6.5+
 
-## Installing
+## Installing and Running
 
 -Clone/Download the repo from https://github.com/beegeiger/besafe
 
@@ -33,7 +33,13 @@ The BeSafe project was developed using Ubuntu 18.1, but should be able to be run
 
 -The app should be running on your local system!
 
-### Notes on Running
+### Notes on Running and Loggin In
+
+-The application uses the Auth0 API to login. For development, you can either set up secure login, or you can use the development backdoor (recommended). Instructions for both options are directly below.
+
+-To get a full login-experience (optional), you need to acquire an Auth0 API key (as well as a facebook and/or google API key). Once you have that, Auth0 will only accept requests from an https uri. If you already have a uri with a TLS cert you can use for testing, add that uri to the Auth0 settings along with the application endpoint(s). Alternatively, using ngrok (or a comparable service), you can run your server through an ngrok proxy to give it an https uri. Make sure that you access the server through the ngrok url and not directly through localhost or Auth0 will not recognize it as a secure uri. Unfortunately, the free ngrok account doesn't give you a permanent uri, so if you use a free account, you will need to update the Auth0 endpoints every time you run the ngrok proxy so it matches the new origin. For that reason, a paid ngrok account is recomended for anyone interested in using this method in the long run.
+
+-The alternative login flow for development (recomended) requires no additional API keys or accounts. Simply run the server using the steps described above in the beginning of the "Installing and Running" section. Then, once the homepage is rendered in your browser through localhost, simply visit [your localhost address and port]/login/development and you will be logged in using an account that bypasses Auth0 directly and logs you in as a a dummy developer user (with no password or security) that has two dummy contacts associated with it (created in model.py). This should allow you to test most/all aspects of the application without messing with any external API's. You can modify this login method by changing the dummy account and contacts in the model.py file and/or editing the /login path found in besafe.py.
 
 ### Built With
 
