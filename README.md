@@ -1,4 +1,4 @@
-**BeSafe (CheckInWithMe) Safety System**\
+## BeSafe (CheckInWithMe) Safety System\
 #besafe #CheckInWithMe #SexWorker #Python #Flask
 
 The BeSafe system is built to be hosted on the new CheckInWithMe website (yet to launch). The site will allow users to pre-set scheduled check-ins with the site. Then approaching the scheduled check-in time, a user can check in with the site using SMS, e-mail, or the application itself in a browser. If a user checks in at the appointed time, nothing happens. However, if the check-in is missed, a pre-set message wuth the user's location/activities will be sent to pre-set friends/family to warn them to try to get in contact with the user. In this initial version, check-ins made with the browser can also include single gps coordinates of the check-in location that will be added to the message. In future versions, including Android and iOS apps, more comprehensive (though optional) gps tracking will be included.
@@ -15,7 +15,7 @@ The BeSafe project was developed using Ubuntu 18.1, but should be able to be run
 
 -System can be run on Python 3.6.5+
 
-### Installing
+## Installing
 
 -Clone/Download the repo from https://github.com/beegeiger/besafe
 
@@ -33,8 +33,8 @@ The BeSafe project was developed using Ubuntu 18.1, but should be able to be run
 
 -The app should be running on your local system!
 
-## Notes on Running
+### Notes on Running
 
-## Built With
+### Built With
 
 * [Flask](http://flask.pocoo.org/) - The web framework used
