@@ -111,12 +111,16 @@ def callback_handling():
     #Redirects to the User Profile
     return redirect('/dashboard')
 
-@app.route("/login", methods=["GET"])
-def log_in():
+@app.route("/login/<special>", methods=["GET"])
+def log_in(special=""):
     """Render's the log-in page if user not in session,
      otherwise redirects to the homepage (Still Works as of 1/21)"""
-    print('login visited')
-
+    #Backdoor Login For Developers...To be deleted before deployment
+    if special == "development":
+        #The placeholder developer email is added to session
+        session['current_user'] = 'developer@placeholder.com'
+        db.session.commit()
+        return redirect('/edit_profile')
     uri = "https://besafe.ngrok.io/callback"
     print(type(uri))
     return auth0.authorize_redirect(redirect_uri=uri, audience='https://dev-54k5g1jc.auth0.com/api/v2/')

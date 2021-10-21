@@ -42,15 +42,15 @@ def check_in(user_id, notes):
     
     #The alerts are looped through and all alerts within an hour are marked as checked-in
     for alert in alerts:
-        if alert.datetime - datetim < datetime.timedelta(hours=1.5):
+        if alert.datetime - datetim < datetime.timedelta(hours=1):
             if alert.interval:
                 print("Alert:")
                 print(alert)
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
-                {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': True})
+                {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': (alert.checked_in += 1)})
             else:
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
-                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': True})
+                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': (alert.checked_in += 1)})
     db.session.commit()
     return "Check In has been Logged!"
 
@@ -74,7 +74,11 @@ def create_alert(alert_id):
     
     #For all associated alerts, if there is a message longer than 2 characters, the alert is added to the events dictionary
     if len(alert.message) > 2:
+<<<<<<< HEAD
         events[alert.datetime] = alert.message
+=======
+        events[alert.datetime] = alert
+>>>>>>> 570c7d23e4336b99033871a403953ac9c302b38c
     
     #All check-ins are added to the events dictionary
     for chks in check_ins:
@@ -85,7 +89,7 @@ def create_alert(alert_id):
         #If the event was a scheduled alarm
         if type(events[key]) == model.Alarm:
             #Different messages are added depending on whether the alarm was check-in for and if it had a message
-            if events[key].checked_in == True:
+            if events[key].checked_in > 0:
                 message_body += "An alarm was scheduled for {} which {} checked-in for.".format(key, user.fname)
                 if events[key].message:
                     message_body += "The Alarm included the following notes: {} \n \n".format(events[key].message)
@@ -117,7 +121,7 @@ def create_alert(alert_id):
 
 
 def send_alert_contacts(alert_id, message_body):
-    """Helper Function that actually sends the alerts over e-mail and sms"""
+    """Helper Function that actually sends the alerts to contacts over e-mail and sms"""
     
     #The current alert and user is queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
@@ -143,7 +147,7 @@ def send_alert_contacts(alert_id, message_body):
     return "Message Sent"
 
 def send_alert_user(alert_id, message_body):
-    """Helper Function that actually sends the alerts over e-mail and sms"""
+    """Helper Function that actually sends alerts to user over e-mail and sms"""
     
     #The current alert and user is queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
