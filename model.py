@@ -154,11 +154,11 @@ def starter_data():
 	"""A user and 2 associated contacts are added for the developer backdoor login. Function call should be deleted before deployment."""
 	#Developer User Created and Added to dBase
 	new_user = User(user_id=999, name='dev', email='developer@placeholder.com', username='dev', fname='Dev', lname='Eveloper', created_at=datetime.datetime.now())
-        db.session.add(new_user)
+	db.session.add(new_user)
 	db.session.commit()
 	#Two placeholder contacts are created associated with developer user and added
-	contact1 = Contact(user_id = 999, name='Sneezy', email='Sneezy@placeholder.com', phone="5555555569')
-	contact2 = Contact(user_id = 999, name='Dopey', email='Dopey@placeholder.com', phone="5555555519')
+	contact1 = Contact(user_id = 999, name='Sneezy', email='Sneezy@placeholder.com', phone='5555555569')
+	contact2 = Contact(user_id = 999, name='Dopey', email='Dopey@placeholder.com', phone='5555555519')
 	db.session.add_all([contact1, contact2])
 	db.commit()
 	return
@@ -168,18 +168,13 @@ def example_data():
 	#Deleting tables in case this file has been run before
 	User.query.delete()
 	Flag.query.delete()
-
-	
 	#Example Users
 	u1 = User(password=bcrypt.hashpw("12356".encode(), bcrypt.gensalt()), username="LaceyKittey", fname="Lacey", lname="Kittey", email="lkitty@.com", created_at=datetime.now(), edited_at=datetime.now())
 	u2 = User(password=bcrypt.hashpw("abcdef".encode(), bcrypt.gensalt()), username="HappyDoc", fname="Happy", lname="Doc", email="HDoc@.com", created_at=datetime.now(), edited_at=datetime.now())
 	u3 = User(password=bcrypt.hashpw("Testing".encode(), bcrypt.gensalt()), username="Testing", fname="Dev", lname="Tester", email="Testing@gmail.com", created_at=datetime.now(), edited_at=datetime.now())
-	
-
-
 	db.session.add_all([u1, u2, u3])
 	db.session.commit()
-
+	return
 # i = inspect(model)
 # i.relationships
 # referred_classes = [r.mapper.class_ for r in i.relationships]
