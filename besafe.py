@@ -33,7 +33,7 @@ from Components.incoming import incoming_bp
 from Components.check_ins import check_ins_bp
 from Components.helpers import (check_in, create_alert, send_alert_contacts,
                     send_alert_user, check_alerts)
-from secrets import oauth_client_secret, oauth_client_id, google_maps_key
+#from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
 app.register_blueprint(views_bp)
@@ -62,17 +62,17 @@ app.jinja_env.undefined = StrictUndefined
 ################################################################
 oauth = OAuth(app)
 
-auth0 = oauth.register(
-    'auth0',
-    client_id=oauth_client_id,
-    client_secret=oauth_client_secret,
-    api_base_url='https://dev-54k5g1jc.auth0.com',
-    access_token_url='https://dev-54k5g1jc.auth0.com/oauth/token',
-    authorize_url='https://dev-54k5g1jc.auth0.com/authorize',
-    client_kwargs={
-        'scope': 'openid profile email',
-    },
-)
+# auth0 = oauth.register(
+#     'auth0',
+#     client_id=oauth_client_id,
+#     client_secret=oauth_client_secret,
+#     api_base_url='https://dev-54k5g1jc.auth0.com',
+#     access_token_url='https://dev-54k5g1jc.auth0.com/oauth/token',
+#     authorize_url='https://dev-54k5g1jc.auth0.com/authorize',
+#     client_kwargs={
+#         'scope': 'openid profile email',
+#     },
+# )
 
 @app.route('/callback')
 def callback_handling():
