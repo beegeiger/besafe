@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import session
+from flask import Flask, render_template, request, redirect, session
 
 def requires_auth(f):
     """Creats Decorator from AuthO to only allow logged-in users access to 

@@ -152,7 +152,7 @@ class Feedback(db.Model):
 def starter_data():
 	"""A user and 2 associated contacts are added for the developer backdoor login. Function call should be deleted before deployment."""
 	#Developer User Created and Added to dBase
-	new_user = User(user_id=999, name='dev', email='developer@placeholder.com', username='dev', fname='Dev', lname='Eveloper', created_at=datetime.now())
+	new_user = User(user_id=999, name='dev', email='developer@placeholder.com', username='dev', fname='Dev', lname='Eveloper', created_at=datetime.now(), timezone="-8")
 	db.session.add(new_user)
 	db.session.commit()
 	#Two placeholder contacts are created associated with developer user and added

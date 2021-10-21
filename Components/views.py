@@ -32,14 +32,14 @@ def go_home():
     return render_template("homepage.html")
 
 @views_bp.route('/dashboard', methods=["GET"])
-@requires_auth
+# @requires_auth
 def dashboard():
     return render_template('dashboard.html',
                            userinfo=session['profile'],
                            userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
 @views_bp.route("/edit_profile", methods=["GET"])
-@requires_auth
+# @requires_auth
 def edit_page():
     """Renders the Profile page"""
     print("Edit Profile Session: ", session)
@@ -51,7 +51,7 @@ def edit_page():
     return render_template("edit_profile.html", user=user)
 
 @views_bp.route("/new_profile", methods=["GET"])
-@requires_auth
+# @requires_auth
 def new_page():
     """Renders the Profile page"""
 
@@ -59,7 +59,7 @@ def new_page():
     return render_template("edit_profile.html")      
 
 @views_bp.route("/bs_alerts", methods=["GET"])
-@requires_auth
+# @requires_auth
 def besafe_alerts():
     """Renders the main besafe page including a user's alert-sets"""
 
@@ -147,7 +147,7 @@ def scheduled_alerts():
     return render_template("edit_sched_alerts.html", contacts=contacts, timezone=user.timezone)
 
 @views_bp.route("/contacts", methods=["GET"])
-@requires_auth
+# @requires_auth
 def user_contacts():
     """Renders the User's 'contacts' Page"""
 
@@ -158,7 +158,7 @@ def user_contacts():
     return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
 
 @views_bp.route("/check_ins", methods=["GET"])
-@requires_auth
+# @requires_auth
 def checkin_page():
     """Renders the User's check-in page"""
 
