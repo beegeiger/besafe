@@ -121,15 +121,14 @@ class ReqCheck(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 	check_in_id = db.Column(db.Integer, db.ForeignKey('checkins.check_in_id'), nullable=True)
 	alert_id = db.Column(db.Integer, db.ForeignKey('alerts.alert_id'))
-	alert_set_id = db.Column(db.Integer, db.ForeignKey('alertsets.alert_set_id'))
 	time = db.Column(db.Time, nullable=True)
 	date = db.Column(db.Date, nullable=True)
 	checked = db.Column(db.Boolean, nullable=True)
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<req_check_id={} user_id={} check_in_id={} alert_id={} alert_set_id={} time={} date={} checked={}>".format(
-			self.req_check_id, self.user_id, self.check_in_id, self.alert_id, self.alert_set_id, self.time, self.date, self.checked)
+		return "<req_check_id={} user_id={} check_in_id={} alert_id={} time={} date={} checked={}>".format(
+			self.req_check_id, self.user_id, self.check_in_id, self.alert_id, self.time, self.date, self.checked)
 
 class Feedback(db.Model):
 	"""Error Feedback from Users"""
@@ -153,14 +152,14 @@ class Feedback(db.Model):
 def starter_data():
 	"""A user and 2 associated contacts are added for the developer backdoor login. Function call should be deleted before deployment."""
 	#Developer User Created and Added to dBase
-	new_user = User(user_id=999, name='dev', email='developer@placeholder.com', username='dev', fname='Dev', lname='Eveloper', created_at=datetime.datetime.now())
+	new_user = User(user_id=999, name='dev', email='developer@placeholder.com', username='dev', fname='Dev', lname='Eveloper', created_at=datetime.now())
 	db.session.add(new_user)
 	db.session.commit()
 	#Two placeholder contacts are created associated with developer user and added
 	contact1 = Contact(user_id = 999, name='Sneezy', email='Sneezy@placeholder.com', phone='5555555569')
 	contact2 = Contact(user_id = 999, name='Dopey', email='Dopey@placeholder.com', phone='5555555519')
 	db.session.add_all([contact1, contact2])
-	db.commit()
+	db.session.commit()
 	return
 			   
 def example_data():
@@ -191,7 +190,7 @@ def connect_to_db(app, db_uri='postgresql:///besafe'):
 	with app.app_context():
 		db.drop_all()
 		db.create_all()
-		db.starter_data()
+		starter_data()
 
 if __name__ == "__main__":	
 	connect_to_db(app, 'postgresql:///besafe')
