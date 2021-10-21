@@ -39,7 +39,7 @@ def check_in(user_id, notes):
     
     #All active alerts for the user are queried
     alerts = Alert.query.filter(Alert.user_id == user_id, Alert.active == True).all()
-    
+    checks = alerts.check_ins + 1
     #The alerts are looped through and all alerts within an hour are marked as checked-in
     for alert in alerts:
         if alert.datetime - datetim < datetime.timedelta(hours=1):
@@ -47,10 +47,10 @@ def check_in(user_id, notes):
                 print("Alert:")
                 print(alert)
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
-                {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': (alert.checked_in += 1)})
+                {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': checks})
             else:
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
-                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': (alert.checked_in += 1)})
+                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': checks})
     db.session.commit()
     return "Check In has been Logged!"
 
@@ -74,11 +74,8 @@ def create_alert(alert_id):
     
     #For all associated alerts, if there is a message longer than 2 characters, the alert is added to the events dictionary
     if len(alert.message) > 2:
-<<<<<<< HEAD
-        events[alert.datetime] = alert.message
-=======
         events[alert.datetime] = alert
->>>>>>> 570c7d23e4336b99033871a403953ac9c302b38c
+
     
     #All check-ins are added to the events dictionary
     for chks in check_ins:
