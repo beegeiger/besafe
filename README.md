@@ -17,7 +17,7 @@ The BeSafe System is built based on a basic Python3 Flask application and uses j
 
 -Clone/Download the repo from https://github.com/beegeiger/besafe
 
--Add "/env" directory to your working directory ($virtualenv env)
+-Add "/env" directory to your working directory ($mkdir env)
 
 -Create a virtual environment ($sudo python3 -m venv ./env) and activate it ($source env/bin/activate)
 
