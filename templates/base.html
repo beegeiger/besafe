@@ -20,8 +20,9 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
     }
-	.navbar{
-		background-color: black;	
+	.navbar {
+    background: transparent;
+    color: transparent;
 		}
     .hidden {
         display: none;
@@ -30,8 +31,8 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="navbar-inner container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -59,7 +60,7 @@
             </div>
         </div>
     </nav>
-    <a href="/">Homepage</a> <a href="/login">Login</a> <a href="/logout">Logout</a> <a href="/edit_profile">Edit/View User Profile</a> <a href="/contacts">contacts</a> <a href="/bs_alerts">Main Alerts Page</a>
+  <a href="/contacts">contacts</a> <a href="/bs_alerts">Main Alerts Page</a>
 	{% block content %} {% endblock %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
