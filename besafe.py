@@ -60,7 +60,7 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 ################################################################
-oauth = OAuth(app)
+#oauth = OAuth(app)
 
 # auth0 = oauth.register(
 #     'auth0',
