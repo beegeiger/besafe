@@ -22,8 +22,8 @@ from os import environ as env
 # from werkzeug.exceptions import HTTPException
 # from dotenv import load_dotenv, find_dotenv
 
-from authlib.flask.client import OAuth
-from six.moves.urllib.parse import urlencode
+# from authlib.flask.client import OAuth
+# from six.moves.urllib.parse import urlencode
 from Components.alerts import alerts_bp
 from Components.contacts import contacts_bp
 from Components.profile import profile_bp
