@@ -19,10 +19,10 @@ import logging
 from auth import requires_auth
 from functools import wraps
 from os import environ as env
-from dotenv import load_dotenv, find_dotenv
+#from dotenv import load_dotenv, find_dotenv
 
-from authlib.flask.client import OAuth
-from six.moves.urllib.parse import urlencode
+#from authlib.flask.client import OAuth
+#from six.moves.urllib.parse import urlencode
 
 def check_in(user_id, notes):
     """Helper-function used to log a new check-in from any source"""
