@@ -109,7 +109,7 @@ def callback_handling():
     db.session.commit()
 
     #Redirects to the User Profile
-    return redirect('/dashboard')
+    return redirect('/edit_profile')
 
 @app.route("/login", methods=["GET"])
 def log_in():
@@ -130,8 +130,8 @@ def logout():
     """Logs user out and deletes them from the session (Tested)"""
 
     # Clear session stored data
-    session.clear
-
+    session.clear()
+    db.session.commit()
     # Redirect user to logout endpoint
     params = {'returnTo': url_for('views_bp.go_home', _external=True), 'client_id': '78rUTjeVusqU3vYXyvNpOQiF8jEacf55'}
     return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
