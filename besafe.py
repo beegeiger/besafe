@@ -19,11 +19,11 @@ import logging
 from auth import requires_auth
 from functools import wraps
 from os import environ as env
-# from werkzeug.exceptions import HTTPException
-# from dotenv import load_dotenv, find_dotenv
+from werkzeug.exceptions import HTTPException
+from dotenv import load_dotenv, find_dotenv
 
-# from authlib.flask.client import OAuth
-# from six.moves.urllib.parse import urlencode
+from authlib.flask.client import OAuth
+from six.moves.urllib.parse import urlencode
 from Components.alerts import alerts_bp
 from Components.contacts import contacts_bp
 from Components.profile import profile_bp
@@ -33,7 +33,7 @@ from Components.incoming import incoming_bp
 from Components.check_ins import check_ins_bp
 from Components.helpers import (check_in, create_alert, send_alert_contacts,
                     send_alert_user, check_alerts)
-#from secrets import oauth_client_secret, oauth_client_id, google_maps_key
+from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
 app.register_blueprint(views_bp)
@@ -53,26 +53,26 @@ db.app = app
 
 db.init_app(app)
 
-# Required to use Flask sessions and the debug toolbar
+#Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
 
-# Causes error messages for undefined variables in jinja
+#Causes error messages for undefined variables in jinja
 app.jinja_env.undefined = StrictUndefined
 
 ################################################################
-#oauth = OAuth(app)
+oauth = OAuth(app)
 
-# auth0 = oauth.register(
-#     'auth0',
-#     client_id=oauth_client_id,
-#     client_secret=oauth_client_secret,
-#     api_base_url='https://dev-54k5g1jc.auth0.com',
-#     access_token_url='https://dev-54k5g1jc.auth0.com/oauth/token',
-#     authorize_url='https://dev-54k5g1jc.auth0.com/authorize',
-#     client_kwargs={
-#         'scope': 'openid profile email',
-#     },
-# )
+auth0 = oauth.register(
+    'auth0',
+    client_id=oauth_client_id,
+    client_secret=oauth_client_secret,
+    api_base_url='https://dev-54k5g1jc.auth0.com',
+    access_token_url='https://dev-54k5g1jc.auth0.com/oauth/token',
+    authorize_url='https://dev-54k5g1jc.auth0.com/authorize',
+    client_kwargs={
+       'scope': 'openid profile email',
+    },
+)
 
 @app.route('/callback')
 def callback_handling():
@@ -111,16 +111,16 @@ def callback_handling():
     #Redirects to the User Profile
     return redirect('/dashboard')
 
-@app.route("/login/<special>", methods=["GET"])
-def log_in(special=""):
+@app.route("/login", methods=["GET"])
+def log_in():
     """Render's the log-in page if user not in session,
      otherwise redirects to the homepage (Still Works as of 1/21)"""
     #Backdoor Login For Developers...To be deleted before deployment
-    if special == "development":
-        #The placeholder developer email is added to session
-        session['current_user'] = 'developer@placeholder.com'
-        db.session.commit()
-        return redirect('/edit_profile')
+    # if special == "development":
+        # #The placeholder developer email is added to session
+        # session['current_user'] = 'developer@placeholder.com'
+        # db.session.commit()
+        # return redirect('/edit_profile')
     uri = "https://besafe.ngrok.io/callback"
     print(type(uri))
     return auth0.authorize_redirect(redirect_uri=uri, audience='https://dev-54k5g1jc.auth0.com/api/v2/')

@@ -19,7 +19,7 @@ import logging
 from functools import wraps
 from os import environ as env
 from werkzeug.exceptions import HTTPException
-#from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 from auth import requires_auth
 

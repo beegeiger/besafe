@@ -19,10 +19,10 @@ import logging
 from auth import requires_auth
 from functools import wraps
 from os import environ as env
-# from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-#from authlib.flask.client import OAuth
-#from six.moves.urllib.parse import urlencode
+from authlib.flask.client import OAuth
+from six.moves.urllib.parse import urlencode
 
 
 profile_bp = Blueprint('profile_bp', __name__)
