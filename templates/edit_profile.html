@@ -12,10 +12,10 @@
 <h1>You must add a timezone before using this application.</h1>
 {% endif %}
 
-<div id="profile_div">
+<div id="profile_div"  class="centered_text">
 	<h1>Your Profile</h1>
 	</div>
-	<div class="gen_div">
+	<div class="centered">
 	<b>E-mail:</b> {{ user.email }}<br><br>
 	<b>Name:</b> {{ user.fname }} {{ user.lname }}<br><br>
 	<b>Timezone:</b> GMT {{ user.timezone }}<br><br>
@@ -29,7 +29,7 @@
 	<button id="edit_but" type="button">Edit Profile</button>
 </div>
 
-<div id="edit_div" class="hidden">
+<div id="edit_div" class="hidden centered">
 <h2 style="text-align: center;">Edit Your Profile:</h2>
 
 <div class="container">
