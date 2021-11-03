@@ -3,9 +3,9 @@
 {% block head %}	
 {% endblock %}
 {% block content %}
-<h1>BeSafe Safety Warning System Page</h1>
+<h1 class="centered_text">BeSafe Warning System Scheduler Page</h1>
 <div style="text-align: center"> <h2>Your Local Time: &nbsp <div id='clock'></div></h2></div>
-
+<div class = "centered">
 <h2>Alerts*</h2>
 <div class="container-fluid.">
 	<div class="row">
@@ -144,7 +144,7 @@
 
     </div>
 </div>
-
+</div>
 <script type="text/javascript">
 	var modal{{ al.alert_id }} = document.getElementById("edit_alert_modal{{ al.alert_id }}");
 	// Get the button that opens the modal

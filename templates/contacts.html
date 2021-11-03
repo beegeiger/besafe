@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}User Contacts{% endblock %}
 {% block content %}
-<div class="gen_div">
-<h1>Your Contacts</h1>
-</div>
+<div class="centered">
+<h1 class="centered_text">Your Contacts</h1>
+
 
 {% for contact in contacts %}
 {% set contactloop = loop %}
@@ -56,5 +56,5 @@ Message {{ contact.c_message }}<br><br>
 <br><br>
 <a href="/sw_getting_started">Go Back to the Getting Started with SafeWalk Page</a>
 </form>
-
+</div>
 {% endblock %}
