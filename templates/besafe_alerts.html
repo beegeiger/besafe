@@ -6,29 +6,7 @@
 <h1 class="centered_text">BeSafe Warning System Scheduler Page</h1>
 <div style="text-align: center"> <h2>Your Local Time: &nbsp <div id='clock'></div></h2></div>
 <div class = "centered">
-<h2>Alerts*</h2>
-<div class="container-fluid.">
-	<div class="row">
-		<div class="col-2">
-			<p style="font-size: 140%; text-align: left; padding-left: 15%; text-decoration: underline;">Alert Name</p>
-		</div>
-		<div class="col-2">
-			<p style="font-size: 140%; text-align: left; padding-left: 15%; text-decoration: underline;">Activated</p>
-		</div>
-		<div class="col-6" style="display: inline-block; padding: 0 0 0 0;">
-			<div class="col-5" style="display: inline-block;">
-				<p style="font-size: 140%; text-align: left; display: inline-block; padding-left: 10%; text-decoration: underline;">Next Alert Time</p>
-			</div>
-			<div class="col-6" style="display: inline-block;">
-				<p style="font-size: 140%; text-align: left; display: inline-block; padding-left: 10%; text-decoration: underline;">Next Alert Countdown</p>
-			</div>
-		</div>
-		<div class="col-1">
-			<p style="font-size: 120%; text-align: left; padding-left: 10%; text-decoration: underline;">Checked-In?</p>
-		</div>
-
-	</div>
-</div>
+<h2 class="centered_text">Alerts</h2>
 
 
 <!--#########################################-->
@@ -55,7 +33,7 @@
 </div>
 
 
-<div class="container-fluid.">
+<div class="container-fluid centered">
 	<div class="row.alert_display" style="width:100%">
 		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
         font-weight: bold; font-size: 135%;">
@@ -263,11 +241,12 @@ $(document).ready(function(){
 </script>
 <!--#########################################-->
 
-<button id="add_new_alert" type="button">
+<div class="centered_text">
+<button id="add_new_alert" type="button" class="centered">
 	Add New Alert
 </button>
-
-<div id="new_alert_modal" class="modal">
+</div>
+<div id="new_alert_modal" class="modal" style="color:black">
     <div class="modal-content">
         <span id="closeO">&times;</span>
         <h1 style="text-align: center;">New Alert</h1>
@@ -312,7 +291,6 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 	$(document).ready( function() {
-
 	  function displayTime() {
 	    var currentTime = new Date();
 		var year = currentTime.getYear() + 1900;
