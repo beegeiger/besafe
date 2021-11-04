@@ -9,7 +9,7 @@ import datetime
 import threading
 from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, flash,
-                   session, jsonify, Blueprint)
+                   session, jsonify, Blueprint, send_file)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
 from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db
@@ -31,6 +31,11 @@ def go_home():
     """Renders the besafe homepage. (Tested)"""
     return render_template("homepage.html")
 
+@views_bp.route("/favicon", methods=["GET"])
+def get_fav():
+    """Renders the besafe homepage. (Tested)"""
+    return send_file("static/img/favicon.png", mimetype="image/png")
+
 @views_bp.route('/dashboard', methods=["GET"])
 @requires_auth
 def dashboard():
@@ -38,10 +43,6 @@ def dashboard():
                            userinfo=session['profile'],
                            userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
-@views_bp.route("/favicon", methods=["GET"])
-def go_home():
-    """Renders the besafe homepage. (Tested)"""
-    return ("./static/img/checkin_mini-03.png")
 
 @views_bp.route("/edit_profile", methods=["GET"])
 @requires_auth
