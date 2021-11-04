@@ -15,7 +15,7 @@
 <div id="profile_div"  class="centered_text">
 	<h1>Your Profile</h1>
 	</div>
-	<div class="centered">
+	<div id="profile_details" class="centered">
 	<b>E-mail:</b> {{ user.email }}<br><br>
 	<b>Name:</b> {{ user.fname }} {{ user.lname }}<br><br>
 	<b>Timezone:</b> GMT {{ user.timezone }}<br><br>
@@ -30,7 +30,7 @@
 </div>
 
 <div id="edit_div" class="hidden centered">
-<h2 style="text-align: center;">Edit Your Profile:</h2>
+<h1 style="text-align: center;">Edit Your Profile:</h1>
 
 <div class="container">
 <div class="row" style="width: 100%;">
@@ -149,7 +149,7 @@ if (!navigator.geolocation) {
 }
 
 function timezone(lat, long){
-	let path = 'https://maps.googleapis.com/maps/api/timezone/json?location='.concat(lat, ',', long, '&timestamp=1331161200&key=',google_maps_key)
+	let path = 'https://maps.googleapis.com/maps/api/timezone/json?location='.concat(lat, ',', long, '&timestamp=1331161200&key=AIzaSyBy5ngCDOhsY_rvRZlz3vwz3hO69zbljEI')
 	$.post(path, function(data){
 		console.log('data:', data)
 		let offset = (data.rawOffset / 3600).toString();
@@ -165,6 +165,7 @@ function timezone(lat, long){
 $(document).ready(function(){
 	$( "#edit_but" ).click(function(){
 		$( "#edit_div" ).show();
+		$( "#profile_details" ).addClass("hidden");
 		$( "#profile_div" ).hide()
 		console.log("Submit Sched Set Button Working");
 	});
