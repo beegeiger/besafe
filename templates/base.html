@@ -2,11 +2,12 @@
 <html>
 <head>
     <title>{% block title %} {% endblock %}</title>
+    <meta name="viewport" content="width=device-width , initial-scale=1" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Mogra&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384 1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+   
 {% block head %} {% endblock %}
     <style>
     a {
@@ -48,10 +49,21 @@
 		white-space: nowrap;
 		font-size: 23px;
 		}
-
+    .nav-item li a {
+        color: white;
+        font-family: 'Mogra', cursive;
+        white-space: nowrap;
+        font-size: 23px;
+    }
     .centered {
-        margin-left:30%;
-        margin-right:30%;
+        position: fixed;
+    /* center the element */
+        right: 0;
+        left: 0;
+        margin-right: auto;
+        margin-left: auto;
+        /* give it dimensions */
+        max-width: 700px;
     }
     .centered_text {
         margin-left:20%;
@@ -61,66 +73,53 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light" {% if 'current_user' not in session %}style="margin-left:5%;"{% endif %}>
+<nav class="navbar navbar-expand-md navbar-dark" {% if 'current_user' not in session %}style="margin-left:5%;"{% endif %}>
         <div class="navbar-inner container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <button style="color: white" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-target=".navbar-collapse">
+            <span class="material-icons-outlined"><img src="../static/img/Menu.png" height="25"/></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="padding-left: 25%; padding-right: 20%">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/"><img src="../static/img/checkin-03-02.png" height="50" alt=""/></a>
                     </li>
-                </ul>
                 {%- if request.path != "/" %}
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item" style="padding-top: 10px;">
                         <a class="nav-link active" aria-current="page" href="/">HOME</a>
                     </li>
-                </ul>
                 {% endif %}
                 {% if 'current_user' in session %}
                 {%- if request.path != "/edit_profile" %}
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item" style="padding-top: 10px;">
                         <a class="nav-link active" aria-current="page" href="/edit_profile">YOUR PROFILE</a>
                     </li>
-                </ul>
                 {% endif %}
                 {%- if request.path != "/contacts" %}
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
+					<li class="nav-item" style="padding-top: 10px;">
                         <a class="nav-link active" aria-current="page" href="/contacts">CONTACTS</a>
                   	</li>
-                </ul>
                 {% endif %}
                 {%- if request.path != "/bs_alerts" %}
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item" style="padding-top: 10px;">
                       <a class="nav-link active" aria-current="page" href="/bs_alerts">SCHEDULER</a>
                     </li>
-                </ul>
                 {% endif %}
                 {% endif %}
                 {% if 'current_user' not in session %}
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 30%">
-                    <li class="nav-item">
+                    <li class="nav-item" style="padding-top: 10px;">
                         <a class="nav-link active" aria-current="page" href="/login" style="color: #FF3E41">LOGIN/CREATE ACCOUNT</a>
                     </li>
-                </ul>
                 {% else %}
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item" style="padding-top: 10px;">
                         <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF3E41">LOGOUT</a>
                     </li>
-                </ul>
                 {% endif %}
             </div>
         </div>
     </nav>
 {% block content %} {% endblock %}
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -12,8 +12,8 @@
 <h1>You must add a timezone before using this application.</h1>
 {% endif %}
 
-<div id="profile_div"  class="centered_text">
-	<h1>Your Profile</h1>
+<div id="profile_div"  ">
+	<h1 class="centered_text">Your Profile</h1>
 	</div>
 	<div id="profile_details" class="centered">
 	<b>E-mail:</b> {{ user.email }}<br><br>
@@ -40,7 +40,7 @@
 	
 		<b>E-mail:</b><b style="color: red;">*</b> <input type=textbox name="email_input"  value="{{ user.email }}" required></input><br><br>
 	
-		(Feel free to use any name, real or fake!)<br>
+		(Feel free to use any name, real or fake, as long as your contacts will recognize it!)<br>
 		<b>First name: <b style="color: red;">*</b></b><input type=textbox name="fname" value="{{ user.fname }}" required></input>&nbsp &nbsp<b>Last name:</b><input type=textbox name="lname" value={{ user.lname }}></input><br><br>
 
 		<b>What is your timezone?:</b><br>
