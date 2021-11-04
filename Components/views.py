@@ -38,6 +38,11 @@ def dashboard():
                            userinfo=session['profile'],
                            userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
+@views_bp.route("/favicon", methods=["GET"])
+def go_home():
+    """Renders the besafe homepage. (Tested)"""
+    return ("./static/img/checkin_mini-03.png")
+
 @views_bp.route("/edit_profile", methods=["GET"])
 @requires_auth
 def edit_page():
