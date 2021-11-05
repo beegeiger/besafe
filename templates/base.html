@@ -38,6 +38,11 @@
     h2 {
     font-family: 'Josefin Sans', sans-serif;    
     }
+    footer {
+        grid-area: footer;
+        height: 80px;
+        
+    }
 	.navbar {
     background: transparent;
     color: white;
@@ -47,6 +52,9 @@
     .hidden {
         display: none;
 
+    }
+    .wrapper {
+    min-height: calc(100vh - 140px);
     }
 	.navbar-nav.me-auto.mb-2.mb-lg-0 li a {
 		color: white;
@@ -77,6 +85,7 @@
     </style>
 </head>
 <body>
+<div class="wrapper">
 <nav class="navbar navbar-expand-md navbar-dark" {% if 'current_user' not in session %}style="margin-left:5%;"{% endif %} style="background-color: #7000d2; border-bottom: 1px solid; border-color: white; padding-top: 0px; padding-bottom: 0px; height:65px;">
         <div class="navbar-inner container-fluid" >
             <button style="color: white" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-target=".navbar-collapse">
@@ -121,12 +130,14 @@
             </div>
         </div>
     </nav>
+
 {% block content %} {% endblock %}
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-</body>
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" style="background: rgba(112,0,210,1); margin: 30px;">
+
+<footer class="d-flex flex-wrap justify-content-between align-items-center my-4 border-top" style="background: rgba(112,0,210,1); margin: 5%; padding-bottom: 15px; padding-top: 5px">
     <p style="color:white;" class="col-md-4 mb-0">&copy; 2021 CheckInWithMe.org</p>
 
     <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -140,4 +151,5 @@
       <li class="nav-item"><a href="/contact_us" style="color:white;" class="nav-link px-2">Contact Us</a></li>
     </ul>
 </footer>
+</body>
 </html>
