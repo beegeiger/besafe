@@ -3,7 +3,7 @@
 <head>
     <title>{% block title %} {% endblock %}</title>
     <link rel="shortcut icon" type="image/png" href="https://besafe.ngrok.io/favicon"/>
-    <meta name="viewport" content="width=device-width , initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Mogra&display=swap" rel="stylesheet">
@@ -91,7 +91,7 @@
 </head>
 <body>
 <div class="wrapper">
-<nav class="navbar navbar-expand-md navbar-dark" {% if 'current_user' not in session %}style="margin-left:5%;"{% endif %} style="background-color: #7000d2; border-bottom: 1px solid; border-color: white; padding-top: 0px; padding-bottom: 0px; height:65px;">
+<nav class="navbar navbar-expand-md navbar-dark" {% if 'current_user' not in session %}style="margin-left:5%;"{% endif %} style="background-color: #7000d2; border-bottom: 1px solid; border-color: white; padding-top: 0px; padding-bottom: 0px;">
         <div class="navbar-inner container-fluid" >
             <button style="color: white" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-target=".navbar-collapse">
             <span class="material-icons-outlined"><img src="../static/img/Menu.png" height="25"/></span>
