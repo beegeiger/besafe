@@ -15,10 +15,15 @@
 
 
 <div class="check-in-div" id="alertDiv{{ al.alert_id }}" style="border-style: solid;">
-	<p class="centered_text">Check-In: {{ al.a_name }}</p>
+	<div class="col-8" style="display: inline-block;">
+		<p class="centered_text" style="display: inline-block;">Check-In: {{ al.a_name }}</p>
+		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
+			<input id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
+		</div>
+	</div>
 	<p>Status:{% if al.active == true %} Currently Active {% else %} Currently Innactive {% endif %} </p>
 	{% if al.active == true %} <p>Checked in {{ al.checked_in }} Times so Far</p> {% endif %}
-	<p id="datetime{{ al.alert_id }}">Scheduled Check-In Time: {{ al.time }}</p>
+	<p id="datetime{{ al.alert_id }}">Scheduled Check-In Time: {{ al.next_alarm_dis }}</p>
 	{% if al.active == true %}
 	<div class="countdown-container">
 		<div class="check-in-inner">
@@ -28,7 +33,11 @@
 		</div>
 	</div>
 	{% endif %}
-</div>
+	<button id="edit_alert{{ al.alert_id }}">
+	Edit Alert
+	</button>
+
+
 
 <!--#########################################--> 
 
@@ -53,7 +62,7 @@
 </div> -->
 
 
-<div class="container-fluid centered">
+<!-- <div class="container-fluid centered">
 	<div class="row.alert_display" style="width:100%">
 		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
         font-weight: bold; font-size: 135%;">
@@ -93,10 +102,10 @@
 			{% endif %}
 			
 			</p>
-		</div>
+		</div> -->
 			
 
-</div>
+<!-- </div> -->
 
 <div id="edit_alert_modal{{ al.alert_id }}" class="modal">
     <div class="modal-content">
@@ -218,8 +227,11 @@ $(document).ready( function() {
 });
 
 alertDiv{{ al.alert_id }}
-
-
+$(document).ready(function(){
+    $( "#toggle_rec{{ al.alert_id }}" ).change(function(event){
+    	console.log('Toggle is pressed!');
+    });
+});
 
 $(document).ready(function(){
     $( "#toggle_rec{{ al.alert_id }}" ).change(function(event){
@@ -235,8 +247,6 @@ $(document).ready(function(){
             $( "#alertDiv{{ al.alert_id }}" ).removeClass("hidden").addClass("col-6");
             $( "#alertDiv{{ al.alert_id }}" ).show();
         }
-
-
         else {
             $.get("/deactivate/{{ al.alert_id }}");
             console.log("Toggle Button Off is working");
@@ -245,7 +255,7 @@ $(document).ready(function(){
             $( "#checked{{ al.alert_id }}").hide()
         };
     
-});
+	});
 });
 
 </script>
