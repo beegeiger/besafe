@@ -86,11 +86,12 @@ class Alert(db.Model):
 	datetime = db.Column(db.DateTime, nullable=True)
 	checked_in = db.Column(db.Integer, default=0)
 	notes = db.Column(db.String(2056), nullable=True)
+	status = db.Column(db.String(1028), nullable=True)
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<alert_id={} a_name={} user_id={} contact_id1={} contact_id2={} contact_id3={} active={} sent={} time={} date={} start_time={} message={} datetime={} checked_in={} notes={}>".format(
-			self.alert_id, self.a_name, self.user_id, self.contact_id1, self.contact_id2, self.contact_id3, self.active, self.sent, self.time, self.date, self.start_time, self.message, self.datetime, self.checked_in, self.notes)
+		return "<alert_id={} a_name={} user_id={} contact_id1={} contact_id2={} contact_id3={} active={} sent={} time={} date={} start_time={} message={} datetime={} checked_in={} notes={} status={}>".format(
+			self.alert_id, self.a_name, self.user_id, self.contact_id1, self.contact_id2, self.contact_id3, self.active, self.sent, self.time, self.date, self.start_time, self.message, self.datetime, self.checked_in, self.notes, self.status)
 
 class CheckIn(db.Model):
 	"""SafeWalk Check-Ins"""
