@@ -44,32 +44,16 @@ def activate_alertset(alert_id):
     if alert.date == None:
         db.session.query(Alert).filter_by(alert_id=alert_id).update({'date': date})
     
-    #If the alert set is scheduled (not recurring), the alert times are added to the the dt_list
-    if alert.interval == None:
-        db.session.query(Alert).filter_by(alert_id=alert_id).update({'active': True, 'start_time': time})
-        if alert.date == None:
-            dtime = datetime.datetime.combine(date, alert.time)
-            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'date': date, 'datetime': dtime})
-            dt_list.append(dtime)
-        else:
-            dtime = datetime.datetime.combine(alert.date, alert.time)
-            db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime})
-            dt_list.append(dtime)
-    
-    #If the alert set is recurring, the alert time is set to now + the time interval
-    else:
-        # dtime = datetime.datetime.combine(date, time)
-        # dt_list.append(dtime)
-        dtime_int = dt + datetime.timedelta(minutes=alert.interval)
-        db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'active': True, 'start_time': time, 'time': dtime_int.time(), 'datetime': dtime_int})
-        dt_list.append(dtime_int)
+    #The alert datetime is updated added to the the alert datetime
+    dtime = datetime.datetime.combine(alert.date, alert.time)
+    db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime, 'active': True, 'status': "Active With No Check-Ins so Far"})
+    dt_list.append(dtime)    
     
     #Session is Commited
     db.session.commit()
     
     #The alert datetime list is sorted and the earliest time is then sent back to the page
-    dt_list.sort()
-    alarm_dt = dt_list[0].strftime("%I:%M %p, %m/%d/%Y")
+    alarm_dt = dtime.strftime("%I:%M %p, %m/%d/%Y")
     return str(alarm_dt)
 
 @alerts_bp.route("/deactivate/<alert_id>")
