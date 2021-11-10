@@ -62,12 +62,8 @@ def deactivate_alertset(alert_id):
 
     #All alerts associated with the alert set are queried and updated, and it's all commited
     alert = Alert.query.filter_by(alert_id=alert_id).one()
-    if alert.interval:
-        db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
-        {'active': False, 'checked_in': 0, 'time': None, 'datetime': None})
-    else:
-        db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
-        {'active': False, 'checked_in': 0,'datetime': None})
+    db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
+    {'active': False, 'checked_in': 0,'datetime': None, 'status': "Scheduled Alert has been Deactivated"})
     db.session.commit()
     return redirect("/bs_alerts")
 
@@ -110,7 +106,8 @@ def add_alert():
 
     #A new alert (associated with the alert set) is created, added, and commited to the dBase
     new_alert = Alert(user_id=user.user_id, contact_id1=contact1, a_name=name,
-                      contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc, time=time)
+                      contact_id2=contact2, contact_id3=contact3, interval=interval, message=desc, time=time,
+                      active=False, status='Not Yet Activated')
 
     db.session.add(new_alert)
     db.session.commit()
