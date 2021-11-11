@@ -14,10 +14,26 @@
 
 
 <div class="check-in-div" id="alertDiv{{ al.alert_id }}" style="border-style: solid;">
-	<div class="col-8" style="display: inline-block;">
-		<p class="centered_text" style="display: inline-block;">Check-In: {{ al.a_name }}</p>
-		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
-			<input id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
+	<div style="display: inline-block; max-width: 95%; width: 700px">
+		<div id="alert_inner" style="display: inline-block; width:40%"> 
+			<p class="centered_text">Check-In: {{ al.a_name }}</p>
+		</div>
+		<div id="alert_inner" style="display: inline-block;"> 
+			<p style="display: inline-block;">Inactive</p>
+			<div id="alert_inner" style="display: inline-block; zoom: 0.3"> 
+			<input type="checkbox" id="toggle" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle hidden" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
+
+			<label for="toggle" class="toy-toggle" style="display: inline-block;">
+				<span class="border1"></span>
+				<span class="border2"></span>
+				<span class="border3"></span>
+				<span class="handle">
+					<span class="handle-off"></span>
+					<span class="handle-on"></span>
+				</span>
+			</label>
+			</div>
+			<p style="display: inline-block;">Active</p>
 		</div>
 	</div>
 	<p>Status:{% if al.active == true %} Currently Active {% else %} Currently Innactive {% endif %} </p>

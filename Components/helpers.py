@@ -50,7 +50,7 @@ def check_in(user_id, notes):
                 {'datetime': (alert.datetime + datetime.timedelta(minutes=alert.interval)), 'checked_in': alert.checked_in + 1, 'status': "Checked in " + str(alert.checked_in + 1) + "times"})
             else:
                 (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update(
-                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': alert.checked_in + 1, 'active': false; 'status': "Checked In and Alarm Disarmed"})
+                {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': alert.checked_in + 1, 'active': False, 'status': "Checked In and Alarm Disarmed"})
     db.session.commit()
     return "Check In has been Logged!"
 

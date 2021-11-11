@@ -45,7 +45,7 @@ def activate_alertset(alert_id):
         db.session.query(Alert).filter_by(alert_id=alert_id).update({'date': date})
     
     #The alert datetime is updated added to the the alert datetime
-    dtime = datetime.datetime.combine(alert.date, alert.time)
+    dtime = datetime.datetime.combine(date, alert.time)
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime, 'active': True, 'status': "Active With No Check-Ins so Far"})
     dt_list.append(dtime)    
     
