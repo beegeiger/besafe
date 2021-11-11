@@ -15,11 +15,11 @@
 
 <div class="check-in-div" id="alertDiv{{ al.alert_id }}" style="border-style: solid;">
 	<div style="display: inline-block; max-width: 95%; width: 700px">
-		<div id="alert_inner" style="display: inline-block; width:40%"> 
-			<p class="centered_text">Check-In: {{ al.a_name }}</p>
+		<div id="alert_inner" style="display: inline-block; width:60%; vertical-align: top; padding-top: 10px;"> 
+			<h5 class="centered_text">Check-In: {{ al.a_name }}</h5>
 		</div>
 		<div id="alert_inner" style="display: inline-block;"> 
-			<p style="display: inline-block;">Inactive</p>
+			<p style="display: inline-block; vertical-align: top; padding-top: 10px;">Inactive</p>
 			<div id="alert_inner" style="display: inline-block; zoom: 0.3"> 
 			<input type="checkbox" id="toggle" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle hidden" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
 
@@ -33,7 +33,7 @@
 				</span>
 			</label>
 			</div>
-			<p style="display: inline-block;">Active</p>
+			<p style="display: inline-block;  vertical-align: top; padding-top: 10px;">Active</p>
 		</div>
 	</div>
 	<p>Status:{% if al.active == true %} Currently Active {% else %} Currently Innactive {% endif %} </p>
