@@ -162,8 +162,6 @@
     	</form>
         <br>
         <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
-    
-
     </div>
 </div>
 
@@ -318,8 +316,8 @@ $(document).ready(function(){
             <input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
             {% endfor %}<br><br>
             <b>How often (in minutes) would you like to require checking in with the app after the first alert? (leave blank for a one-time alert):</b> 
-	            <input type="number" name="interval" placeholder="120" min="45" max="1500"><br> 
-	            (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br><br>
+	        <input type="number" name="interval" placeholder="120" min="45" max="1500"><br> 
+	        (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br><br>
             <button id="new_alert_submit" type="submit">
             	Create Alert
             </button>
