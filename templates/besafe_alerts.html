@@ -55,79 +55,7 @@
 		</button>
 	</div>
 
-</div>
-
-<!--#########################################--> 
-
-<!-- <div {% if al.active == False %} class="hidden" {% endif %} id="alertDiv{{ al.alert_id }}" style="border-style: solid;">
-	<p>Alert: {{ al.a_name }}</p>
-	{% if al.active == true %}
-	<p>Currently Active</p>
-	{% if al.interval %}
-	<p>Checked in {{ al.checked_in }} Times so Far</p>
-	{% endif %}
-	{% else %}
-	<p>Alert Time Passed, Alert Sent</p>
-	{% endif %}
-	<p id="datetime{{ al.alert_id }}">Next Alert Time: 			
-	{% if al.active == True %}
-	{{ al.next_alarm_dis }}
-	{% endif %}
-	</p>
-	<p>Countdown To Alert: </p>
-	<divclass="col-6" id='countdown{{ al.alert_id }}' style="display: inline-block; font-family: 'Bitter', serif; font-weight: bold; font-size: 105%; color: red;">
-	</div>
-</div> -->
-
-
-<!-- <div class="container-fluid centered">
-	<div class="row.alert_display" style="width:100%">
-		<div class="col-2" style="display: inline-block; font-family: 'Bitter', serif;
-        font-weight: bold; font-size: 135%;">
-			<button id="edit_alert{{ al.alert_id }}">
-			{{ al.a_name }}
-			</button>
-	
-		</div>
-		<div class="col-2" id="alert_inner" style="display: inline-block;"> 
-			<input id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
-		</div>
-		
-
-		<div class="col-6.alert_display" id="count_display{{ al.alert_id }}" style="display: inline-block; padding: 0 0 0 0;" name="{{ al.alert_id }}">
-			
-			<div class="col-5" id="al_time{{ al.alert_id }}" style="display: inline-block;">	
-			<p id="datetime{{ al.alert_id }}" style="font-family: 'Bitter', serif;
-        	font-weight: bold; font-size: 105%; color: red; display: inline-block;">
-			{% if al.active == True %}
-			{{ al.next_alarm_dis }}
-			{% endif %}
-			</p>
-			</div>
-		
-
-			<div class="col-6"  id='countdown{{ al.alert_id }}' style="display: inline-block;font-family: 'Bitter', serif;
-        font-weight: bold; font-size: 105%; color: red;">
-
-			</div>
-		</div>
-		<div class='col-1'style="display: inline-block;" id="checked{{ al.alert_id }}">
-			<p {% if al.active == False %} class='hidden' {% else %} class='visible' {%endif%}  id="checked{{ al.alert_id }}" style="font-family: 'Bitter', serif; font-weight: bold; font-size: 150%; {% if al.checked_in %} color: green; {% else %} color: red; {% endif %}">
-			{% if al.checked_in == True %}
-			Yes
-			{% else %}
-			No
-			{% endif %}
-			
-			</p>
-		</div> -->
-			
-
-<!-- </div> -->
-
-<div id="edit_alert_modal{{ al.alert_id }}" class="modal">
-    <div class="modal-content">
-        <span id="close{{ al.alert_id }}">&times;</span>
+	<div id="edit_alert_modal{{ al.alert_id }}" class="hidden">
         <h1 style="text-align: center;">{{ al.a_name }}</h1>
 
         {% if contacts|length < 1 %}
@@ -165,25 +93,14 @@
     	</form>
         <br>
         <a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
-    </div>
+	</div>
 </div>
 
-<script type="text/javascript">
-	var modal{{ al.alert_id }} = document.getElementById("edit_alert_modal{{ al.alert_id }}");
-	// Get the button that opens the modal
-	var btn{{ al.alert_id }} = document.getElementById("edit_alert{{ al.alert_id }}");
-	// Get the <span> element that closes the modal
-	var span{{ al.alert_id }} = document.getElementById("close{{ al.alert_id }}");
-	// When the user clicks on the button, open the modal
-	btn{{ al.alert_id }}.onclick = function() {
-	modal{{ al.alert_id }}.style.display = "block";
-	}
-	// When the user clicks on <span> (x), close the modal
-	span{{ al.alert_id }}.onclick = function() {
-	modal{{ al.alert_id }}.style.display = "none";
-	console.log("Modal Specific Span close triggered.")
-	}
+<!--#########################################--> 
 
+
+
+<script type="text/javascript">
 var t{{ al.alert_id }} = ({{ al.total }} * 1000)
 
 $(document).ready( function() {
