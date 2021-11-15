@@ -14,43 +14,46 @@
 
 
 <div class="check-in-div" id="alertDiv{{ al.alert_id }}" style="border-style: solid;">
-	<div style="display: inline-block; max-width: 95%; width: 700px">
-		<div id="alert_inner" style="display: inline-block; width:60%; vertical-align: top; padding-top: 10px;"> 
-			<h5 class="centered_text">Check-In: {{ al.a_name }}</h5>
-		</div>
-		<div id="alert_inner" style="display: inline-block;"> 
-			<p style="display: inline-block; vertical-align: top; padding-top: 10px;">Inactive</p>
-			<div id="alert_inner" style="display: inline-block; zoom: 0.3"> 
-			<input type="checkbox" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle hidden" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
-
-			<label for="toggle_rec{{ al.alert_id }}" class="toy-toggle" style="display: inline-block;">
-				<span class="border1"></span>
-				<span class="border2"></span>
-				<span class="border3"></span>
-				<span class="handle">
-					<span class="handle-off"></span>
-					<span class="handle-on"></span>
-				</span>
-			</label>
+	<div id="all_content{{ al.alert_id }}">
+		<div style="display: inline-block; max-width: 95%; width: 700px">
+			<div id="alert_inner" style="display: inline-block; width:60%; vertical-align: top; padding-top: 10px;"> 
+				<h5 class="centered_text">Check-In: {{ al.a_name }}</h5>
 			</div>
-			<p style="display: inline-block;  vertical-align: top; padding-top: 10px;">Active</p>
+			<div id="alert_inner{{ al.alert_id }}" style="display: inline-block;"> 
+				<p style="display: inline-block; vertical-align: top; padding-top: 10px;">Inactive</p>
+				<div id="alert_inner" style="display: inline-block; zoom: 0.3"> 
+				<input type="checkbox" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle hidden" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
+
+				<label for="toggle_rec{{ al.alert_id }}" class="toy-toggle" style="display: inline-block;">
+					<span class="border1"></span>
+					<span class="border2"></span>
+					<span class="border3"></span>
+					<span class="handle">
+						<span class="handle-off"></span>
+						<span class="handle-on"></span>
+					</span>
+				</label>
+				</div>
+				<p style="display: inline-block;  vertical-align: top; padding-top: 10px;">Active</p>
+			</div>
 		</div>
 	</div>
 	<p>Status:{% if al.active == true %} Currently Active {% else %} Currently Innactive {% endif %} </p>
-	{% if al.active == true %} <p>Checked in {{ al.checked_in }} Times so Far</p> {% endif %}
-	<p id="datetime{{ al.alert_id }}">Scheduled Check-In Time: {{ al.next_alarm_dis }}</p>
-	{% if al.active == true %}
-	<div class="countdown-container">
-		<div class="check-in-inner">
-			Countdown to Next Check-In:
+	 
+	<div id="alert_on{{ al.alert_id}}" {% if al.active == false %}class="hidden"{% endif %}>
+		<p>Checked in {{ al.checked_in }} Times so Far</p> 
+		<p id="datetime{{ al.alert_id }}">Scheduled Check-In Time: {{ al.next_alarm_dis }}</p>
+		<div class="countdown-container">
+			<div class="check-in-inner">
+				Countdown to Next Check-In:
+			</div>
+			<div class="check-in-inner" id='countdown{{ al.alert_id }}' style="color: red;">
+			</div>
 		</div>
-		<div class="check-in-inner" id='countdown{{ al.alert_id }}' style="color: red;">
-		</div>
+		<button id="edit_alert{{ al.alert_id }}">
+		Edit Alert
+		</button>
 	</div>
-	{% endif %}
-	<button id="edit_alert{{ al.alert_id }}">
-	Edit Alert
-	</button>
 
 </div>
 
@@ -258,13 +261,13 @@ $(document).ready(function(){
             });
             console.log("Toggle Button On is working");
             $( "#alertDiv{{ al.alert_id }}" ).removeClass("hidden").addClass("col-6");
-            $( "#alertDiv{{ al.alert_id }}" ).show();
+            $( "#alert_on{{ al.alert_id }}" ).show();
         }
         else {
             $.get("/deactivate/{{ al.alert_id }}");
             console.log("Toggle Button Off is working");
             $( "#count_display{{ al.alert_id }}" ).hide();
-            $( "#countdown{{ al.alert_id }}").hide();
+            $( "#alert_on{{ al.alert_id }}").hide();
             $( "#checked{{ al.alert_id }}").hide()
         };
     
