@@ -21,9 +21,9 @@
 		<div id="alert_inner" style="display: inline-block;"> 
 			<p style="display: inline-block; vertical-align: top; padding-top: 10px;">Inactive</p>
 			<div id="alert_inner" style="display: inline-block; zoom: 0.3"> 
-			<input type="checkbox" id="toggle" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle hidden" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
+			<input type="checkbox" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle hidden" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
 
-			<label for="toggle" class="toy-toggle" style="display: inline-block;">
+			<label for="toggle_rec{{ al.alert_id }}" class="toy-toggle" style="display: inline-block;">
 				<span class="border1"></span>
 				<span class="border2"></span>
 				<span class="border3"></span>
@@ -277,8 +277,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 	document.querySelectorAll('.display_toggle').forEach(item => {
 	  item.addEventListener('click', event => {
-	    //handle click
-	    
+	    console.log("Display Toggle Clicked")    
 	  })
 	})
 </script>
