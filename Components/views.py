@@ -62,7 +62,7 @@ def new_page():
     """Renders the Profile page"""
 
     #Returns the Profile Template
-    return render_template("edit_profile.html")      
+    return render_template("edit_profile.html")
 
 @views_bp.route("/bs_alerts", methods=["GET"])
 @requires_auth
@@ -91,7 +91,7 @@ def besafe_alerts():
 
     if user.timezone == None:
         return redirect("/edit_profile")
-    
+
     #Loops through all user's alert-sets and initiates variables to keep track of them
     for alert in alerts:
 
@@ -107,7 +107,7 @@ def besafe_alerts():
                 alert_time.append(tim)
         else:
             alert_time.append(alert.datetime)
-            
+
 
         """If there is at least one alert for each alert-set, the earliest alert and
         the total number of seconds until that alert are saved to the alert-set object"""
@@ -117,6 +117,7 @@ def besafe_alerts():
             d1 = now - alert_time[0]
             d2 = abs(d1.total_seconds())
             alert.total =int(d2)
+            alert.time_formated = alert.time.strftime("%I:%M %p")
 
         else:
             print("Alert ", alert.alert_id, " has no datetime added to ther alert_time[] list!")
