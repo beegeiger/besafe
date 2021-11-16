@@ -211,14 +211,19 @@ $(document).ready(function(){
 <!--#########################################-->
 <div class="check-in-div" id="alertDivnew" style="border-style: solid;">
 	<div id="all_content_new">
-		<h1 style="text-align: center;">New Alert</h1>
+		<h1 style="text-align: center;">New Scheduled Check In</h1>
 		{% if contacts|length < 1 %}
 		<h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
 		{% endif %}
 		<form name="add_alert_form" id="add_alert_form" action="/add_alert" onsubmit="event.preventDefault(); validateForm(add_alert_form)" method="POST">
-				<b>What would you like to name this alert set???:</b> <input type=textbox name='a_name'></input><br>
-				<b>Where are you going and/or what are you doing that you might need this alert?</b><br>
-				<textarea rows="2" cols="40" name="descri"></textarea>
+				<b>Check In Name: <p style="color:red; display:inline-block">*</p></b>  <input type=textbox name='a_name'></input>
+				<br>
+				<br>
+				<div class="ilblock"  style="width: 100%">
+					<b style="display:inline-block; vertical-align:top">Check In Details:</b>
+					<textarea style="display:inline-block; max-width: 90%; width: 600px" columns="35" name="descri"></textarea>
+				</div>
+				<p>(Where are you going and/or what are you doing that you might need this alert?)</p>
 				<br>
 
 				<a href="/contacts">Add/Edit/View Your Contacts</a>
