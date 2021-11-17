@@ -81,7 +81,7 @@ def besafe_alerts():
         return redirect('/login')
 
     #Queries Alert Sets, Alerts, Contacts and creates and empty list for the alert sets
-    alerts = Alert.query.filter_by(user_id=user.user_id).all()
+    alerts = Alert.query.filter_by(user_id=user.user_id).order_by(desc(Alert.active)).all()
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
     con_length = len(contacts)
 
