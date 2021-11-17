@@ -14,7 +14,7 @@
 
 
 <div class="check-in-div" id="alertDiv{{ al.alert_id }}" style="border-style: solid;">
-	<div id="all_content{{ al.alert_id }}" class="hidden">
+	<div id="all_content{{ al.alert_id }}" class="unhide.fullWidth">
 		<div style="display: inline-block; max-width: 95%; width: 700px">
 			<div id="alert_inner" style="display: inline-block; width:60%; vertical-align: top; padding-top: 10px;">
 				<h5 class="centered_text">Check-In: {{ al.a_name }}</h5>
@@ -58,11 +58,13 @@
 		<button id="edit_alert_but{{ al.alert_id }}">
 			Edit Alert
 		</button>
-
+		<button style="display: inline-block;" id="delete_alert_but{{ al.alert_id }}" class="cd-popup-trigger" type="button">
+			Delete Alert
+		</button>
 	</div>
 
 
-	<div id="edit_alert{{ al.alert_id }}" class="unhide.fullWidth">
+	<div id="edit_alert{{ al.alert_id }}" class="hidden">
         {% if contacts|length < 1 %}
         <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
         {% endif %}
@@ -81,13 +83,12 @@
 						<span class="tooltiptext">Where are you going and/or what are you doing that you might need this alert?</span>
 					</div>
 					<div class="tooltips">
-	          <b>Check In Time <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time" value='{{ al.time }}'></input><br>
+	          <b>Check In Time: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time" value='{{ al.time }}'></input><br>
 						<span class="tooltiptext">What time would you like the app to send an alert if you don't check-in by that time?</span>
 					</div>
 					<br>
 					<div class="tooltips">
-	          <b>Contact(s):</b>
-	          <br>
+	          <b>Contact(s): <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b>
 	          {% for contact in contacts %}
 				    {% set contactloop = loop %}
 				    <input type="checkbox" name="contact" value="{{ contact.contact_id }}" {% if contact.contact_id == al.contact_id1 or contact.contact_id == al.contact_id2 or contact.contact_id == al.contact_id3%}checked{% endif %}>{{ contact.name }} &nbsp &nbsp
@@ -95,23 +96,26 @@
 						<br>
 						<span class="tooltiptext">Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)</span>
 					</div>
-					<br>
 					<a href="/contacts">Add/Edit/View Your Contacts</a>
-					<br><br>
-            <b>How often (in minutes) would you like to require checking in with the app after the first alert? (leave blank for a one-time alert):</b>
+					<br>
+					<div class="tooltips">
+            <b>Time Between Check Ins (in minutes):</b>
 	            <input type="number" name="interval" placeholder="120" min="45" max="1500" value='{{ al.interval }}'><br>
-	            (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br><br>
-            <button id="save_al_submit{{ al.alert_id }}" type="submit">
+							<span class="tooltiptext">
+							Leave blank for a one-time alert.
+							</span>
+					</div>
+	            <br>
+            <button style="display: inline-block;" id="save_al_submit{{ al.alert_id }}" type="submit">
             	Save Alert
             </button>
+						<button style="display: inline-block;" id="delete_alert_but2{{ al.alert_id }}" class="cd-popup-trigger" href="/delete_alert/{{ al.alert_id }}" method="POST" type="button">
+							Delete Alert
+						</button>
         </form>
-        <br>
-        <a href="/bs_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
 	</div>
-	<form action="/delete_alert/{{ al.alert_id }}" method="POST">
-	<button id="delete_alert_but{{ al.alert_id }}" class="cd-popup-trigger" type="submit">
-		Delete Alert
-	</button>
+	<form style="display: inline-block;" action="/delete_alert/{{ al.alert_id }}" method="POST">
+
 	</form>
 </div>
 
@@ -178,11 +182,23 @@ $(document).ready( function() {
 
 $(document).ready(function(){
 	$( "#delete_alert_but{{ al.alert_id }}" ).click(function(event){
-		confirm("Are you sure you want to delete this checkin?")
+		let c = confirm("Are you sure you want to delete this checkin?");
+		if (c == true) {
+			$.post("/delete_alert/{{ al.alert_id }}");
+			$( "#alertDiv{{ al.alert_id }}" ).hide();
+		}
 	});
 });
 
-
+$(document).ready(function(){
+	$( "#delete_alert_but2{{ al.alert_id }}" ).click(function(event){
+		let d = confirm("Are you sure you want to delete this checkin?");
+		if (d == true) {
+			$.post("/delete_alert/{{ al.alert_id }}");
+			$( "#alertDiv{{ al.alert_id }}" ).hide();
+		}
+	});
+});
 
 $(document).ready(function(){
     $( "#edit_alert_but{{ al.alert_id }}" ).click(function(event){
@@ -223,49 +239,58 @@ $(document).ready(function(){
 </script>
 {% endfor %}
 <!--#########################################-->
-<div class="check-in-div" id="alertDivnew" style="border-style: solid;">
-	<div id="all_content_new">
-		<h1 style="text-align: center;">New Scheduled Check In</h1>
-		{% if contacts|length < 1 %}
-		<h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
-		{% endif %}
-		<form name="add_alert_form" id="add_alert_form" action="/add_alert" onsubmit="event.preventDefault(); validateForm(add_alert_form)" method="POST">
-				<b>Check In Name: <p style="color:red; display:inline-block">*</p></b>  <input type=textbox name='a_name'></input>
-				<br>
-				<br>
-				<div class="ilblock"  style="width: 100%">
-					<b style="display:inline-block; vertical-align:top">Check In Details:</b>
-					<textarea style="display:inline-block; max-width: 90%; width: 600px" columns="35" name="descri"></textarea>
-				</div>
-				<p>(Where are you going and/or what are you doing that you might need this alert?)</p>
-				<br>
+<div class="check-in-div hidden" id="alertDivnew" style="border-style: solid;">
+	<div id="all_content_new" class="unhide.fullWidth">
+        {% if contacts|length < 1 %}
+        <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
+        {% endif %}
+        <form name="add_alert_form" id="add_alert_form" action="/add_alert" onsubmit="event.preventDefault(); validateForm(add_alert_form)" method="POST">
+					<div class="tooltips">
 
-				<a href="/contacts">Add/Edit/View Your Contacts</a>
-				<!-- What Date would you like this alert set to first be available? (optional)<input type="date" name="date" value=""><br>
-				What is the last date you would like this alert set to be available? (optional)<input type="date" name="end_date" value=""> -->
-				<br><br>
-				What time would you like the app to send an alert if you don't check-in by that time (your first alert)? <input type="time" name="time">
-				<br>
-				Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)
-				<br>
-				{% for contact in contacts %}
-				{% set contactloop = loop %}
-				<input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
-				{% endfor %}<br><br>
-				<b>How often (in minutes) would you like to require checking in with the app after the first alert? (leave blank for a one-time alert):</b>
-			<input type="number" name="interval" placeholder="120" min="45" max="1500"><br>
-			(You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br><br>
-				<button id="new_alert_submit" type="submit">
-					Create Alert
-				</button>
-				<br>
-				<a href="/sw_main">Go Back to the Main SafeWalk <br> Alerts Page</a>
-		</form>
+						<b>Check In Name: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p></b>  <input type=textbox name='a_name'></input><br>
+						<span class="tooltiptext">What would you like to name this Check In?</span>
+
+					</div>
+					<br>
+					<div class="tooltips">
+						<b style="display:inline-block; vertical-align:top">Check In Details: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> </b>
+						<textarea style="display:inline-block; max-width: 90%; width: 400px" name="descri"'></textarea>
+						<br>
+						<span class="tooltiptext">Where are you going and/or what are you doing that you might need this alert?</span>
+					</div>
+					<div class="tooltips">
+	          <b>Check In Time: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time"></input><br>
+						<span class="tooltiptext">What time would you like the app to send an alert if you don't check-in by that time?</span>
+					</div>
+					<br>
+					<div class="tooltips">
+	          <b>Contact(s): <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b>
+						{% for contact in contacts %}
+				    {% set contactloop = loop %}
+				    <input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
+				    {% endfor %}
+						<br>
+						<span class="tooltiptext">Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)</span>
+					</div>
+					<a href="/contacts">Add/Edit/View Your Contacts</a>
+					<br>
+					<div class="tooltips">
+            <b>Time Between Check Ins (in minutes):</b>
+	            <input type="number" name="interval" placeholder="120" min="45" max="1500"><br>
+							<span class="tooltiptext">
+							Leave blank for a one-time alert.
+							</span>
+					</div>
+	            <br>
+            <button style="display: inline-block;" id="add_new_alert" type="submit">
+            	Save Alert
+            </button>
+        </form>
 	</div>
 </div>
 
 <div class="centered_text" id="new_alert_but_div">
-	<button id="add_new_alert" type="button" class="centered">
+	<button id="add_new_alert_but" type="button" class="centered">
 		Add New Alert
 	</button>
 </div>
@@ -273,19 +298,19 @@ $(document).ready(function(){
 <!--#########################################-->
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		$( "#add_new_alert" ).click(function(event){
-			$( "#alertDivnew" ).show();
-			$( "#alertDivnew" ).removeClass("hidden").addClass("unhide").addClass("fullWidth")
-			console.log("New Alert Button Clicked")
-		});
+$(document).ready(function(){
+	$( "#add_new_alert_but" ).click(function(event){
+		console.log("New Alert Button Clicked");
+		$( "#alertDivnew" ).show();
+		$( "#alertDivnew" ).removeClass("hidden").addClass("unhide");
 	});
+});
 
-	document.querySelectorAll('.display_toggle').forEach(item => {
-	  item.addEventListener('click', event => {
-	    console.log("Display Toggle Clicked")
-	  })
-	})
+document.querySelectorAll('.display_toggle').forEach(item => {
+  item.addEventListener('click', event => {
+    console.log("Display Toggle Clicked")
+  })
+})
 </script>
 <!--#########################################-->
 
