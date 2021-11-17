@@ -75,24 +75,29 @@
 					</div>
 					<br>
 					<div class="tooltips">
-						<b style="display:inline-block; vertical-align:top">Check In Details:</b>
+						<b style="display:inline-block; vertical-align:top">Check In Details: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> </b>
 						<textarea style="display:inline-block; max-width: 90%; width: 400px" name="descri" value='{{ al.message }}'></textarea>
 						<br>
 						<span class="tooltiptext">Where are you going and/or what are you doing that you might need this alert?</span>
 					</div>
 					<div class="tooltips">
-	          <b>Check In Time <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time" value='{{ al.time }}'></input>
+	          <b>Check In Time <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time" value='{{ al.time }}'></input><br>
 						<span class="tooltiptext">What time would you like the app to send an alert if you don't check-in by that time?</span>
-						<p>(What time would you like the app to send an alert if you don't check-in by that time?)</p>
 					</div>
-          Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)
-          <br>
-          {% for contact in contacts %}
-		    {% set contactloop = loop %}
-		    <input type="checkbox" name="contact" value="{{ contact.contact_id }}" {% if contact.contact_id == al.contact_id1 or contact.contact_id == al.contact_id2 or contact.contact_id == al.contact_id3%}checked{% endif %}>{{ contact.name }} &nbsp &nbsp
-		    {% endfor %}
-				<a href="/contacts">Add/Edit/View Your Contacts</a>
-				<br><br>
+					<br>
+					<div class="tooltips">
+	          <b>Contact(s):</b>
+	          <br>
+	          {% for contact in contacts %}
+				    {% set contactloop = loop %}
+				    <input type="checkbox" name="contact" value="{{ contact.contact_id }}" {% if contact.contact_id == al.contact_id1 or contact.contact_id == al.contact_id2 or contact.contact_id == al.contact_id3%}checked{% endif %}>{{ contact.name }} &nbsp &nbsp
+				    {% endfor %}
+						<br>
+						<span class="tooltiptext">Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)</span>
+					</div>
+					<br>
+					<a href="/contacts">Add/Edit/View Your Contacts</a>
+					<br><br>
             <b>How often (in minutes) would you like to require checking in with the app after the first alert? (leave blank for a one-time alert):</b>
 	            <input type="number" name="interval" placeholder="120" min="45" max="1500" value='{{ al.interval }}'><br>
 	            (You'll receive texts reminding you to check in 30 and 15 minutes before your required check-ins)<br><br>
