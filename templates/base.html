@@ -45,13 +45,46 @@
         grid-area: footer;
         height: 80px;
     }
+    .checkinForm {
+      width: 95%;
+      padding-top: 0;
+      align: top;
+    }
     .ilblock{
       display: inline-block;
     }
+    .tooltips{
+      display: inline-block;
+    }
+    .tooltips .tooltiptext {
+      visibility: hidden;
+      background-color: rgba(112,0,210,1);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+
+      /* Position the tooltip */
+      position: relative;
+      width: 150px;
+      top: -10px;
+      left: 0%;
+      z-index: 1;
+    }
+    .tooltiptext {
+      display:none;
+      opacity:0;
+    }
+    .tooltips:hover .tooltiptext {
+      visibility: visible;
+      display:initial;
+      opacity: 100%;
+    }
     .unhide {
       display: inline-block;
-      max-width: 95%;
-      width: 700px
+    }
+    .fullWidth {
+      width: 100%;
     }
     .check-in-div {
         border-style: solid;
