@@ -34,6 +34,7 @@ Message: {{ contact.c_message }}<br><br>
 	<button class="button-1" type="submit">Save Changes</button>
 </form>
 </div>
+
 <script>
 	$(document).ready(function(){
 	    $( "#edit_button{{ contactloop.index }}" ).click(function(){
@@ -55,7 +56,7 @@ Message: {{ contact.c_message }}<br><br>
 
 </script>
 {% endfor %}
-<div class="contact-div">
+<div id="new-con-div" class="hidden">
 <form action="/contacts" method="POST">
 	<b>Contact Name:</b> <input type=textbox name="name"></input><br>
 	<b>Phone Number:</b><input type="tel" name="phone"><br>
@@ -71,4 +72,19 @@ Message: {{ contact.c_message }}<br><br>
 <a href="/sw_getting_started">Go Back to the Getting Started with SafeWalk Page</a>
 </form>
 </div>
+<div class="centered_text" id="new_alert_but_div">
+	<button id="add_new_contactb" style="width: 300px" type="button" class="centered button-1">
+		Add New Contact
+	</button>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+		$( "#add_new_contactb" ).click(function(event){
+			console.log("New Alert Button Clicked");
+			$( "#new-con-div" ).removeClass("hidden").addClass("contact-div");
+			$( "#new-con-div" ).show();
+			$( "#add_new_contactb" ).hide()
+		});
+	});
+</script>
 {% endblock %}
