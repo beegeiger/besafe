@@ -19,7 +19,7 @@
 			<div id="alert_inner" style="display: inline-block; width:60%; vertical-align: top; padding-top: 10px;">
 				<h5 class="centered_text">Check-In: {{ al.a_name }}</h5>
 			</div>
-			<div id="alert_inner{{ al.alert_id }}" style="display: inline-block;">
+			<div id="alert_inner{{ al.alert_id }}" style="display: inline-block; zoom: 0.98">
 				<p style="display: inline-block; vertical-align: top; padding-top: 10px;">Inactive</p>
 				<div id="alert_inner" style="display: inline-block; zoom: 0.3">
 				<input type="checkbox" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle hidden" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
@@ -42,7 +42,7 @@
 		<p>Status:Currently Active</p>
 			<p>Checked in {{ al.checked_in }} Times so Far</p>
 			<p id="datetime{{ al.alert_id }}">Scheduled Check-In Time: {{ al.next_alarm_dis }}</p>
-			<div class="countdown-container" style="margin-bottom: 20px; height:20px">
+			<div class="countdown-container" style="margin-bottom: 15px; height:20px">
 				<div class="check-in-inner" >
 					Countdown to Next Check-In:
 				</div>
@@ -155,8 +155,8 @@ $(document).ready( function() {
     // to the hours, minutes, and seconds of the current time
 
     if(t > 0) {
-    countDiv.innerText = days + " days & " + hours + ":" + minutes + ":" + seconds + " Remaining";
-Alert
+    countDiv.innerText = days + ":" + hours + ":" + minutes + ":" + seconds;
+
     return {
         'changes': change + 1
     };
@@ -303,6 +303,7 @@ $(document).ready(function(){
 		console.log("New Alert Button Clicked");
 		$( "#alertDivnew" ).show();
 		$( "#alertDivnew" ).removeClass("hidden").addClass("unhide");
+		$( "#add_new_alert_but" ).hide()
 	});
 });
 
