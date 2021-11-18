@@ -42,8 +42,8 @@
 		<p>Status:Currently Active</p>
 			<p>Checked in {{ al.checked_in }} Times so Far</p>
 			<p id="datetime{{ al.alert_id }}">Scheduled Check-In Time: {{ al.next_alarm_dis }}</p>
-			<div class="countdown-container">
-				<div class="check-in-inner">
+			<div class="countdown-container" style="margin-bottom: 20px; height:20px">
+				<div class="check-in-inner" >
 					Countdown to Next Check-In:
 				</div>
 				<div class="check-in-inner" id='countdown{{ al.alert_id }}' style="color: red;">
@@ -55,21 +55,22 @@
 			<p>Status:Currently Inactive</p>
 			<p id="datetime{{ al.alert_id }}">Scheduled Check-In Time: {{ al.time_formated }}</p>
 		</div>
-		<button id="edit_alert_but{{ al.alert_id }}">
-			Edit Alert
+		<button id="edit_alert_but{{ al.alert_id }}" class="button-1">
+			Edit Check In
 		</button>
-		<button style="display: inline-block;" id="delete_alert_but{{ al.alert_id }}" class="cd-popup-trigger" type="button">
-			Delete Alert
+		<button style="display: inline-block;" id="delete_alert_but{{ al.alert_id }}" class="cd-popup-trigger button-1" type="button">
+			Delete Check In
 		</button>
 	</div>
 
 
 	<div id="edit_alert{{ al.alert_id }}" class="hidden">
+		<div style="display: inline-block; max-width: 95%; width: 700px">
         {% if contacts|length < 1 %}
         <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
         {% endif %}
         <form name="save_alert_form{{ al.alert_id }}" id="save_alert_form{{ al.alert_id }}" action="/save_alert/{{ al.alert_id }}" onsubmit="event.preventDefault(); validateForm(save_alert_form{{ al.alert_id }})" method="POST" class="checkinForm">
-					<div class="tooltips">
+					<div class="tooltips" style="display: inline-block; max-width: 85%">
 
 						<b>Check In Name: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p></b>  <input type=textbox name='a_name' value='{{ al.a_name }}'></input><br>
 						<span class="tooltiptext">What would you like to name this Check In?</span>
@@ -78,7 +79,7 @@
 					<br>
 					<div class="tooltips">
 						<b style="display:inline-block; vertical-align:top">Check In Details: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> </b>
-						<textarea style="display:inline-block; max-width: 90%; width: 400px" name="descri" value='{{ al.message }}'></textarea>
+						<textarea style="display:inline-block; max-width: 75%; width: 400px" name="descri" value='{{ al.message }}'></textarea>
 						<br>
 						<span class="tooltiptext">Where are you going and/or what are you doing that you might need this alert?</span>
 					</div>
@@ -96,9 +97,10 @@
 						<br>
 						<span class="tooltiptext">Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)</span>
 					</div>
+					<br>
 					<a href="/contacts">Add/Edit/View Your Contacts</a>
 					<br>
-					<div class="tooltips">
+					<div class="tooltips" style="max-width: 85%">
             <b>Time Between Check Ins (in minutes):</b>
 	            <input type="number" name="interval" placeholder="120" min="45" max="1500" value='{{ al.interval }}'><br>
 							<span class="tooltiptext">
@@ -106,17 +108,15 @@
 							</span>
 					</div>
 	            <br>
-            <button style="display: inline-block;" id="save_al_submit{{ al.alert_id }}" type="submit">
-            	Save Alert
+            <button id="save_al_submit{{ al.alert_id }}" type="submit" class="button-1">
+            	Save Check In
             </button>
-						<button style="display: inline-block;" id="delete_alert_but2{{ al.alert_id }}" class="cd-popup-trigger" href="/delete_alert/{{ al.alert_id }}" method="POST" type="button">
-							Delete Alert
+						<button style="display: inline-flex;" id="delete_alert_but2{{ al.alert_id }}" class="cd-popup-trigger button-1" href="/delete_alert/{{ al.alert_id }}" method="POST" type="button">
+							Delete Check In
 						</button>
         </form>
+		</div>
 	</div>
-	<form style="display: inline-block;" action="/delete_alert/{{ al.alert_id }}" method="POST">
-
-	</form>
 </div>
 
 
@@ -156,7 +156,7 @@ $(document).ready( function() {
 
     if(t > 0) {
     countDiv.innerText = days + " days & " + hours + ":" + minutes + ":" + seconds + " Remaining";
-
+Alert
     return {
         'changes': change + 1
     };
@@ -203,7 +203,7 @@ $(document).ready(function(){
 $(document).ready(function(){
     $( "#edit_alert_but{{ al.alert_id }}" ).click(function(event){
     	$( "#all_content{{ al.alert_id }}" ).hide();
-			$( "#edit_alert{{ al.alert_id }}" ).removeClass("hidden").addClass("unhide")
+			$( "#edit_alert{{ al.alert_id }}" ).removeClass("hidden").addClass("unhide").addClass("fullWidth")
 			$( "#edit_alert{{ al.alert_id }}" ).show();
 			console.log("Edit Alert Div should appear!")
     });
@@ -290,8 +290,8 @@ $(document).ready(function(){
 </div>
 
 <div class="centered_text" id="new_alert_but_div">
-	<button id="add_new_alert_but" type="button" class="centered">
-		Add New Alert
+	<button id="add_new_alert_but" style="width: 300px" type="button" class="centered button-1">
+		Add New Check In
 	</button>
 </div>
 
