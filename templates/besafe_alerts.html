@@ -391,32 +391,8 @@ document.querySelectorAll('.display_toggle').forEach(item => {
 	  	document.getElementById(formName).submit();
 	  }
 	}
-
-
-{% for al in alerts %}
-
-{% endfor %}
-
-	// function addingSet(){
-	// 	console.log('Button is pressed!');
-	// 	console.log('Form Data: ')
-	// 	$.post("/add_schedset", $("#add_sched_form").serialize(), function(data) {
-	// 		console.log("data then value:");
-	// 		console.log(data);
-	// 		$('input[name="alertsetID"]').val(data);
-	// 		console.log(data.value);
-	// 	});
-	// };
-	// function addingAlert(){
-	// 	console.log('Button is pressed!');
-	// 	console.log('Form Data: ')
-	// 	path = "/add_alert/" + ($('[name=alertsetID]').val())
-	// 	$.post(path, $("#set_form").serialize(), function(data) {
-	// 		console.log("data then value:");
-	// 		console.log(data);
-	// 		$('input[name="alertsetID"]').val(parseInt(data));
-	// 		console.log(data.value);
-	// 	});
-	// };
 </script>
+
+{% include 'contact_modal.html'%}
+
 {% endblock %}

@@ -27,8 +27,8 @@ from six.moves.urllib.parse import urlencode
 
 contacts_bp = Blueprint('contacts_bp', __name__)
 
-@contacts_bp.route("/contacts", methods=["POST"])
-def add_contact():
+@contacts_bp.route("/contacts/<modal>", methods=["POST"])
+def add_contact(modal = ""):
     """Adds a user's new contact's info to the dBase"""
 
     #Creates variables from the form on the contacts page
@@ -45,23 +45,25 @@ def add_contact():
     new_contact = Contact(user_id=user.user_id, name=name, email=email, phone=phone, c_message=message)
     db.session.add(new_contact)
     db.session.commit()
-
+    if modal == "modal":
+        return redirect("/bs_alerts")
     return redirect("/contacts")
 
-@contacts_bp.route("/del_contact/<contact_num>")
-def delete_contact(contact_num):
+@contacts_bp.route("/del_contact/<contact_num>/<modal>")
+def delete_contact(contact_num, modal = ""):
     """Deletes a user's contact from the dBase"""
 
     #Queries the contact in question, deletes it from the dBase, and commits
     contact = Contact.query.filter_by(contact_id=contact_num).one()
     db.session.delete(contact)
     db.session.commit()
-
+    if modal == "modal":
+        return redirect("/bs_alerts")
     return redirect("/contacts")
 
 
-@contacts_bp.route("/edit_contact/<contact_num>", methods=["POST"])
-def edit_contact(contact_num):
+@contacts_bp.route("/edit_contact/<contact_num>/<modal>", methods=["POST"])
+def edit_contact(contact_num, modal = ""):
     """Edit's a contact's info"""
 
     #Creates variables from the form on the contacts page
@@ -75,5 +77,6 @@ def edit_contact(contact_num):
     ((db.session.query(Contact).filter_by(contact_id=contact_num)).update(
     {'name':name, 'email':email, 'phone':phone, 'c_message':message}))
     db.session.commit()
-
+    if modal == "modal":
+        return redirect("/bs_alerts")
     return redirect("/contacts")
