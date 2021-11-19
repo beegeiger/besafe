@@ -7,7 +7,13 @@
 <div style="text-align: center"> <h2>Your Local Time: &nbsp </h2><div id='clock'></div></div>
 
 
+{% if contacts|length < 1 %}
+<h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
 
+<button type="button" class="button-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Add/Edit Contacts
+</button>
+{% else %}
 <!--#########################################-->
 <!--In Progress Check-in Redesign-->
 {% for al in alerts %}
@@ -66,9 +72,7 @@
 
 	<div id="edit_alert{{ al.alert_id }}" class="hidden">
 		<div style="display: inline-block; max-width: 95%; width: 700px">
-        {% if contacts|length < 1 %}
-        <h5><a href="/contacts">You must add at least one contact to save an alarm set. Click here to add/edit contacts.</a></h5>
-        {% endif %}
+
         <form name="save_alert_form{{ al.alert_id }}" id="save_alert_form{{ al.alert_id }}" action="/save_alert/{{ al.alert_id }}" onsubmit="event.preventDefault(); validateForm(save_alert_form{{ al.alert_id }})" method="POST" class="checkinForm">
 					<div class="tooltips" style="display: inline-block; max-width: 85%">
 
@@ -98,7 +102,9 @@
 						<span class="tooltiptext">Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)</span>
 					</div>
 					<br>
-					<a href="/contacts">Add/Edit/View Your Contacts</a>
+					<button type="button" class="button-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+					  Add/Edit Contacts
+					</button>
 					<br>
 					<div class="tooltips" style="max-width: 85%">
             <b>Time Between Check Ins (in minutes):</b>
@@ -272,7 +278,9 @@ $(document).ready(function(){
 						<br>
 						<span class="tooltiptext">Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)</span>
 					</div>
-					<a href="/contacts">Add/Edit/View Your Contacts</a>
+					<button type="button" class="button-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+					  Add/Edit Contacts
+					</button>
 					<br>
 					<div class="tooltips">
             <b>Time Between Check Ins (in minutes):</b>
@@ -294,7 +302,7 @@ $(document).ready(function(){
 		Add New Check In
 	</button>
 </div>
-
+{% endif %}
 <!--#########################################-->
 
 <script type="text/javascript">

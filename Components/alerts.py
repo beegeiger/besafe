@@ -31,27 +31,27 @@ def activate_alertset(alert_id):
 
     #The alert set in question is queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
-    
+
     #Variables set to the current date, time, and datetime are created for convenience
     time = datetime.datetime.now().time()
     date = (datetime.datetime.today())
     dt = datetime.datetime.now()
-    
+
     #An empty list is created to store the datetimes of the alerts associated with the alert set
     dt_list = []
-    
+
     #If there is no start date, the start date is set to today
     if alert.date == None:
         db.session.query(Alert).filter_by(alert_id=alert_id).update({'date': date})
-    
+
     #The alert datetime is updated added to the the alert datetime
     dtime = datetime.datetime.combine(date, alert.time)
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime, 'active': True, 'status': "Active With No Check-Ins so Far"})
-    dt_list.append(dtime)    
-    
+    dt_list.append(dtime)
+
     #Session is Commited
     db.session.commit()
-    
+
     #The alert datetime list is sorted and the earliest time is then sent back to the page
     alarm_dt = dtime.strftime("%I:%M %p, %m/%d/%Y")
     return str(alarm_dt)
