@@ -372,9 +372,11 @@ document.querySelectorAll('.display_toggle').forEach(item => {
 
 	});
 
-
-
-
+{% if modal == "True" %}
+	$(window).on('load', function() {
+        $('#exampleModal').modal('show');
+    });
+{% endif %}
 
 
 

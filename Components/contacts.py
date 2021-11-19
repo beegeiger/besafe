@@ -46,7 +46,7 @@ def add_contact(modal = ""):
     db.session.add(new_contact)
     db.session.commit()
     if modal == "modal":
-        return redirect("/bs_alerts")
+        return redirect("/bs_alerts/modal")
     return redirect("/contacts")
 
 @contacts_bp.route("/del_contact/<contact_num>/<modal>")
@@ -58,7 +58,7 @@ def delete_contact(contact_num, modal = ""):
     db.session.delete(contact)
     db.session.commit()
     if modal == "modal":
-        return redirect("/bs_alerts")
+        return redirect("/bs_alerts/modal")
     return redirect("/contacts")
 
 
@@ -78,5 +78,5 @@ def edit_contact(contact_num, modal = ""):
     {'name':name, 'email':email, 'phone':phone, 'c_message':message}))
     db.session.commit()
     if modal == "modal":
-        return redirect("/bs_alerts")
+        return redirect("/bs_alerts/modal")
     return redirect("/contacts")
