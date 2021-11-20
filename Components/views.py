@@ -64,11 +64,12 @@ def new_page():
     #Returns the Profile Template
     return render_template("edit_profile.html")
 
-@views_bp.route("/bs_alerts", methods=["GET"])
+@views_bp.route("/bs_alerts", defaults={'modal': "False"}, methods=["GET"])
+@views_bp.route("/bs_alerts/<modal>", methods=["GET"])
 @requires_auth
-def besafe_alerts():
+def besafe_alerts(modal):
     """Renders the main besafe page including a user's alert-sets"""
-
+    print("modal", modal)
     #Creates variables for the curent time, date, and datetime for convenience
     time = datetime.datetime.now().time()
     date = (datetime.datetime.today())
@@ -128,78 +129,11 @@ def besafe_alerts():
         if len(alert.a_name) > 14:
             alert.a_name = alert.a_name[:9] + "..." + alert.a_name[-4:]
     mod = "False"
-
+    if modal == "modal":
+        mod = "True"
     print("Alerts: ", alerts)
     return render_template("besafe_alerts.html", alerts=alerts, timezone=user.timezone, user=user, contacts=contacts, modal=mod)
 
-@views_bp.route("/bs_alerts/modal", methods=["GET"])
-@requires_auth
-def besafe_alerts_mod():
-    """Renders the main besafe page including a user's alert-sets"""
-
-    #Creates variables for the curent time, date, and datetime for convenience
-    time = datetime.datetime.now().time()
-    date = (datetime.datetime.today())
-    now = datetime.datetime.now()
-
-    #Queries the dBase for the current user and their alerts and contacts
-    if 'current_user' in session:
-        user = User.query.filter_by(email=session['current_user']).one()
-    else:
-        return redirect('/login')
-
-    #Queries Alert Sets, Alerts, Contacts and creates and empty list for the alert sets
-    alerts = Alert.query.filter_by(user_id=user.user_id).order_by(desc(Alert.active)).all()
-    contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-    con_length = len(contacts)
-
-    #If the user has added no contacts, they are re-routed to the 'getting started' page
-    if con_length < 1:
-        return redirect("/contacts")
-
-    if user.timezone == None:
-        return redirect("/edit_profile")
-
-    #Loops through all user's alert-sets and initiates variables to keep track of them
-    for alert in alerts:
-
-        alert_time = []
-        alert.total = 0
-
-        if alert.active == False:
-            if alert.time:
-                dtime = datetime.datetime.combine(date, alert.time)
-                alert_time.append(dtime)
-            else:
-                tim = now + datetime.timedelta(minutes=alert.interval)
-                alert_time.append(tim)
-        else:
-            alert_time.append(alert.datetime)
-
-
-        """If there is at least one alert for each alert-set, the earliest alert and
-        the total number of seconds until that alert are saved to the alert-set object"""
-        if len(alert_time) >= 1:
-            alert.next_alarm = alert_time[0]
-            alert.next_alarm_dis = alert_time[0].strftime("%I:%M %p, %m/%d/%Y")
-            d1 = now - alert_time[0]
-            d2 = abs(d1.total_seconds())
-            alert.total =int(d2)
-            alert.time_formated = alert.time.strftime("%I:%M %p")
-
-        else:
-            print("Alert ", alert.alert_id, " has no datetime added to ther alert_time[] list!")
-            #If there are no alerts, the current datetime is used as a placeholder
-            alert.next_alarm_dis = now.strftime("%I:%M %p, %m/%d/%Y")
-
-    for alert in alerts:
-        if len(alert.a_name) > 14:
-            alert.a_name = alert.a_name[:9] + "..." + alert.a_name[-4:]
-
-    mod = "True"
-
-    print("Alerts: ", alerts)
-    return render_template("besafe_alerts.html", alerts=alerts, timezone=user.timezone, user=user, contacts=contacts, modal=mod)
 
 @views_bp.route("/sw_getting_started", methods=["GET"])
 def get_started():

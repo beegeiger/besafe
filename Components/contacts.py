@@ -27,7 +27,8 @@ from six.moves.urllib.parse import urlencode
 
 contacts_bp = Blueprint('contacts_bp', __name__)
 
-@contacts_bp.route("/contacts", methods=["POST"])
+@contacts_bp.route("/contacts", defaults={'modal': "False"}, methods=["POST"])
+@contacts_bp.route("/contacts/<modal>", methods=["POST"])
 def add_contact(modal = ""):
     """Adds a user's new contact's info to the dBase"""
 
@@ -49,21 +50,32 @@ def add_contact(modal = ""):
         return redirect("/bs_alerts/modal")
     return redirect("/contacts")
 
-@contacts_bp.route("/delete_contact/<contact_num>", methods=["POST"])
+@contacts_bp.route("/delete_contact/<contact_num>", defaults={'modal': "False"}, methods=["POST"])
+@contacts_bp.route("/delete_contact/<contact_num>/<modal>", methods=["POST"])
 def delete_contact(contact_num, modal = ""):
     """Deletes a user's contact from the dBase"""
 
     #Queries the contact in question, deletes it from the dBase, and commits
-    contact = Contact.query.filter_by(contact_id=contact_num).one()
-    print("contact: ", contact)
-    (db.session.query(Contact).filter_by(contact_id=contact_num)).delete()
-    db.session.commit()
+    c1 = Alert.query.filter_by(contact_id1=contact_num).all()
+    c2 = Alert.query.filter_by(contact_id2=contact_num).all()
+    c3 = Alert.query.filter_by(contact_id3=contact_num).all()
+    if len(c1) + len(c2) + len(c3) > 0:
+        user = User.query.filter_by(email=session['current_user']).one()
+        contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
+        flash("You can't delete this contact! It still is associated with at least one Scheduled Check In!")
+        return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
+    else:
+        contact = Contact.query.filter_by(contact_id=contact_num).one()
+        print("contact: ", contact)
+        (db.session.query(Contact).filter_by(contact_id=contact_num)).delete()
+        db.session.commit()
     if modal == "modal":
         return redirect("/bs_alerts/modal")
     return redirect("/contacts")
 
 
-@contacts_bp.route("/edit_contact/<contact_num>", methods=["POST"])
+@contacts_bp.route("/edit_contact/<contact_num>", defaults={'modal': "False"}, methods=["POST"])
+@contacts_bp.route("/edit_contact/<contact_num>/<modal>", methods=["POST"])
 def edit_contact(contact_num):
     """Edit's a contact's info"""
 
