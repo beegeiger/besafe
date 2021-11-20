@@ -50,8 +50,8 @@ def add_contact(modal = ""):
         return redirect("/bs_alerts/modal")
     return redirect("/contacts")
 
-@contacts_bp.route("/delete_contact/<contact_num>", defaults={'modal': "False"}, methods=["POST"])
-@contacts_bp.route("/delete_contact/<contact_num>/<modal>", methods=["POST"])
+@contacts_bp.route("/delete_contact/<contact_num>", defaults={'modal': "False"}, methods=["GET"])
+@contacts_bp.route("/delete_contact/<contact_num>/<modal>", methods=["GET"])
 def delete_contact(contact_num, modal = ""):
     """Deletes a user's contact from the dBase"""
 
@@ -63,7 +63,7 @@ def delete_contact(contact_num, modal = ""):
         user = User.query.filter_by(email=session['current_user']).one()
         contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
         flash("You can't delete this contact! It still is associated with at least one Scheduled Check In!")
-        return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
+        return redirect("/contacts/error")
     else:
         contact = Contact.query.filter_by(contact_id=contact_num).one()
         print("contact: ", contact)
@@ -71,12 +71,13 @@ def delete_contact(contact_num, modal = ""):
         db.session.commit()
     if modal == "modal":
         return redirect("/bs_alerts/modal")
+    print("Redirecting back to contacts")
     return redirect("/contacts")
 
 
 @contacts_bp.route("/edit_contact/<contact_num>", defaults={'modal': "False"}, methods=["POST"])
 @contacts_bp.route("/edit_contact/<contact_num>/<modal>", methods=["POST"])
-def edit_contact(contact_num):
+def edit_contact(contact_num, modal = ""):
     """Edit's a contact's info"""
 
     #Creates variables from the form on the contacts page

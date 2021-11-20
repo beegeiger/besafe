@@ -156,16 +156,19 @@ def scheduled_alerts():
 
     return render_template("edit_sched_alerts.html", contacts=contacts, timezone=user.timezone)
 
-@views_bp.route("/contacts", methods=["GET"])
+@views_bp.route("/contacts/", defaults={"error": "False"}, methods=["GET"])
+@views_bp.route("/contacts/<error>", methods=["GET"])
 @requires_auth
-def user_contacts():
+def user_contacts(error= "False"):
     """Renders the User's 'contacts' Page"""
 
     #Queries the current user and their contact info
     user = User.query.filter_by(email=session['current_user']).one()
     contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-
-    return render_template("contacts.html", contacts=contacts, timezone=user.timezone)
+    if error == "error":
+        error = "True"
+    print("Error: ", error)
+    return render_template("contacts.html", contacts=contacts, timezone=user.timezone, error=error)
 
 @views_bp.route("/check_ins", methods=["GET"])
 @requires_auth

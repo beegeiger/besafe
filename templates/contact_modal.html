@@ -55,7 +55,7 @@
             			let c = confirm("Are you sure you want to delete this check?");
             			if (c == true) {
             				$.post("/delete_contact/{{ contact.contact_id }}/modal");
-            				$( "#contact_div{{ contactloop.index }}" ).hide();
+            				window.location.reload();
             			}
             		});
             	});
