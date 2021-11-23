@@ -62,7 +62,6 @@ def delete_contact(contact_num, modal = ""):
     if len(c1) + len(c2) + len(c3) > 0:
         user = User.query.filter_by(email=session['current_user']).one()
         contacts = Contact.query.filter_by(user_id=user.user_id).order_by(asc(Contact.contact_id)).all()
-        flash("You can't delete this contact! It still is associated with at least one Scheduled Check In!")
         return redirect("/contacts/error")
     else:
         contact = Contact.query.filter_by(contact_id=contact_num).one()
