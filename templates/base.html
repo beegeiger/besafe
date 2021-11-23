@@ -32,7 +32,7 @@
     color:  white;
     font-family: 'Josefin Sans', sans-serif;
     --on: #88e661;
-    --off: #FF3E41;
+    --off: #fc7ce3;
     --transDur: 0.6s;
     }
     h1{
@@ -50,7 +50,7 @@
     .button-1 {
           align-items: center;
           appearance: none;
-          background-image: radial-gradient(100% 100% at 100% 0, #FF3E41 0, #FF3E41 75%);
+          background-image: radial-gradient(100% 100% at 100% 0, #fc7ce3 0, #fc7ce3 75%);
           border: 0;
           border-radius: 6px;
           box-shadow:#B4A0E5 0 2px 4px, #B4A0E5 0 7px 13px -3px, rgb(58 65 111 / 50%) 0 -3px 0 inset;
@@ -341,7 +341,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #7000d2; border-bottom: 1px solid; border-color: white;">
+    <nav class="navbar navbar-expand-md navbar-dark"  style="background-color: #7000d2; border-bottom: 1px solid; border-color: white;">
         <div class="navbar-inner container-fluid" >
             <button style="color: white; margin-top: 12px; margin-bottom: 12px;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-target=".navbar-collapse">
             <span class="material-icons-outlined" ><img src="../static/img/Menu.png" height="25" /></span>
@@ -375,11 +375,11 @@
                 {% endif %}
                 {% if 'current_user' not in session %}
                     <li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/login" style="color: #FF3E41">LOGIN/CREATE ACCOUNT</a>
+                        <a class="nav-link active" aria-current="page" href="/login" style="color: #fc7ce3">LOGIN/CREATE ACCOUNT</a>
                     </li>
                 {% else %}
                     <li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF3E41">LOGOUT</a>
+                        <a class="nav-link active" aria-current="page" href="/logout" style="color: #fc7ce3">LOGOUT</a>
                     </li>
                 {% endif %}
             </div>
