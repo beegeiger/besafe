@@ -32,7 +32,7 @@
     color:  white;
     font-family: 'Josefin Sans', sans-serif;
     --on: #88e661;
-    --off: #fc7ce3;
+    --off: #FF74EA;
     --transDur: 0.6s;
     }
     h1{
@@ -50,7 +50,7 @@
     .button-1 {
           align-items: center;
           appearance: none;
-          background-image: radial-gradient(100% 100% at 100% 0, #fc7ce3 0, #fc7ce3 75%);
+          background-image: radial-gradient(100% 100% at 100% 0, #FF74EA 0, #FF74EA 75%);
           border: 0;
           border-radius: 6px;
           box-shadow:#B4A0E5 0 2px 4px, #B4A0E5 0 7px 13px -3px, rgb(58 65 111 / 50%) 0 -3px 0 inset;
@@ -375,11 +375,11 @@
                 {% endif %}
                 {% if 'current_user' not in session %}
                     <li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/login" style="color: #fc7ce3">LOGIN/CREATE ACCOUNT</a>
+                        <a class="nav-link active" aria-current="page" href="/login" style="color: #FF74EA">LOGIN/CREATE ACCOUNT</a>
                     </li>
                 {% else %}
                     <li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/logout" style="color: #fc7ce3">LOGOUT</a>
+                        <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF74EA">LOGOUT</a>
                     </li>
                 {% endif %}
             </div>
