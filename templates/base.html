@@ -32,7 +32,7 @@
     color:  white;
     font-family: 'Josefin Sans', sans-serif;
     --on: #88e661;
-    --off: #FF74EA;
+    --off: red;
     --transDur: 0.6s;
     }
     h1{
@@ -50,7 +50,7 @@
     .button-1 {
           align-items: center;
           appearance: none;
-          background-image: radial-gradient(100% 100% at 100% 0, #FF74EA 0, #FF74EA 75%);
+          background-image: radial-gradient(100% 100% at 100% 0, rgba(112,0,210,1) 0, rgba(112,0,210,1) 75%);
           border: 0;
           border-radius: 6px;
           box-shadow:#B4A0E5 0 2px 4px, #B4A0E5 0 7px 13px -3px, rgb(58 65 111 / 50%) 0 -3px 0 inset;
@@ -83,7 +83,35 @@
       border-radius: 6px;
       box-shadow:#B4A0E5 0 2px 4px, #B4A0E5 0 7px 13px -3px, rgb(58 65 111 / 50%) 0 -3px 0 inset;
       box-sizing: border-box;
-      color: #fff;
+      color: black;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      list-style: none;
+      overflow: hidden;
+      padding-left: 16px;
+      padding-right: 16px;
+      position: relative;
+      text-align: left;
+      text-decoration: none;
+      transition: box-shadow .15s,transform .15s;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      white-space: nowrap;
+      will-change: box-shadow,transform;
+      font-size: 18px;
+      margin-bottom: 10px;
+}
+.button-3 {
+      align-items: center;
+      appearance: none;
+      background-image: radial-gradient(100% 100% at 100% 0, red 0,red 75%);
+      border: 0;
+      border-radius: 6px;
+      box-shadow:#B4A0E5 0 2px 4px, #B4A0E5 0 7px 13px -3px, rgb(58 65 111 / 50%) 0 -3px 0 inset;
+      box-sizing: border-box;
+      color: white;
       cursor: pointer;
       display: inline-flex;
       justify-content: center;
