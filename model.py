@@ -8,6 +8,7 @@ from sqlalchemy import Column, ForeignKey, Integer, Unicode, inspect, create_eng
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from flask_debugtoolbar import DebugToolbarExtension
+from sqlalchemy_json import mutable_json_type
 
 # from server import app
 
@@ -38,15 +39,16 @@ class User(db.Model):
 	phone = db.Column(db.String(28), nullable=True)
 	safe_code = db.Column(db.String(64), nullable=True)
 	danger_code = db.Column(db.String(64), nullable=True)
+	history = db.Column(mutable_json_type(dbtype=JSONB, nested=True))
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<user_id={} username={} name={} fname={} lname={} email={} email2={} created_at={} timezone={} phone={} safe_code={} danger_code={}>".format(
-			self.user_id, self.username, self.name, self.fname, self.lname, self.email, self.email2, self.created_at, self.timezone, self.phone, self.safe_code, self.danger_code)
+		return "<user_id={} username={} name={} fname={} lname={} email={} email2={} created_at={} timezone={} phone={} safe_code={} danger_code={} history ={}>".format(
+			self.user_id, self.username, self.name, self.fname, self.lname, self.email, self.email2, self.created_at, self.timezone, self.phone, self.safe_code, self.danger_code, self.history)
 
 
 
- 
+
 class Contact(db.Model):
 	"""SafeWalk Contacts"""
 
@@ -145,7 +147,7 @@ class Feedback(db.Model):
 		"""Provide helpful representation when printed."""
 		return "<feedback_id={} user_id={} datetime={} content={}>".format(
 			self.feedback_id, self.user_id, self.datetime, self.content)
- 
+
 
 
 ################################################################################
@@ -162,7 +164,7 @@ def starter_data():
 	db.session.add_all([contact1, contact2])
 	db.session.commit()
 	return
-			   
+
 def example_data():
 	"""Example data to be used for testing."""
 	#Deleting tables in case this file has been run before
@@ -193,6 +195,6 @@ def connect_to_db(app, db_uri='postgresql:///besafe'):
 		db.create_all()
 		starter_data()
 
-if __name__ == "__main__":	
+if __name__ == "__main__":
 	connect_to_db(app, 'postgresql:///besafe')
 	print("Connected to DB.")

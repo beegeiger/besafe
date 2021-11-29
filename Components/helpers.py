@@ -36,7 +36,7 @@ def check_in(user_id, notes):
     new_check = CheckIn(user_id=user_id, notes=notes, time=time, date=date, datetime=datetim)
     db.session.add(new_check)
     db.session.commit()
-    
+
     #All active alerts for the user are queried
     alerts = Alert.query.filter(Alert.user_id == user_id, Alert.active == True).all()
 
@@ -64,19 +64,19 @@ def create_alert(alert_id):
     alert = Alert.query.filter_by(alert_id=alert_id).one()
     user = User.query.filter_by(user_id=alert.user_id).one()
     check_ins = CheckIn.query.filter(checkin.user_id == user.user_id, abs(checkin.datetime - datetim) <  datetime.timedelta(days=1)).all()
-    
+
     #An empty dictionary is created to store the associated events for the alert
     events = {}
-    
+
     #A new string that will begin the alert message is created
     message_body = """This is a Safety Alert sent by {} {} through the Check In With Me Be Safe Alert System,
             found at besafe.org \n \n""".format(user.fname, user.lname)
-    
+
     #For all associated alerts, if there is a message longer than 2 characters, the alert is added to the events dictionary
     if len(alert.message) > 2:
         events[alert.datetime] = alert
 
-    
+
     #All check-ins are added to the events dictionary
     for chks in check_ins:
         events[chks.datetime] = chks
@@ -101,7 +101,7 @@ def create_alert(alert_id):
         #If it isn't an alarm, it's a check-in object which is then added to the main message body
         else:
             message_body += "{} checked in with the app at {} and included the following message: {}".format(user.fname, key, events[key].notes)
-    
+
     #Different messages are added depending on how many contacts are sent the alert
     if alert.contact_id3:
         message_body += """Two other contacts have been sent this alert. If you know who it might be,
@@ -112,18 +112,18 @@ def create_alert(alert_id):
     else:
         message_body += """You were the only person sent this alert, so if anything can be done
                         to help {}, it is up to you! Good luck!!!""".format(user.fname)
-    
+
     #The complete message body is then returned
     return message_body
 
 
 def send_alert_contacts(alert_id, message_body):
     """Helper Function that actually sends the alerts to contacts over e-mail and sms"""
-    
+
     #The current alert and user is queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
     user = User.query.filter_by(user_id=alert.user_id).one()
-    
+
 
     #An empty list is created and then filled with the contact objects associated with the alert
     contacts = []
@@ -132,7 +132,7 @@ def send_alert_contacts(alert_id, message_body):
         contacts += Contact.query.filter_by(contact_id=alert.contact_id2)
     if alert.contact_id2:
         contacts += Contact.query.filter_by(contact_id=alert.contact_id3)
-    
+
     #For each contact, an optional personal message is added to the message_body and is sent to email and sms
     for con in contacts:
         if con.c_message:
@@ -145,11 +145,11 @@ def send_alert_contacts(alert_id, message_body):
 
 def send_alert_user(alert_id, message_body):
     """Helper Function that actually sends alerts to user over e-mail and sms"""
-    
+
     #The current alert and user is queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
     user = User.query.filter_by(user_id=alert.user_id).one()
-    
+
     if user.email2:
         send_email(user.email2, message_body)
         print('Sending to email2')
@@ -163,7 +163,7 @@ def send_alert_user(alert_id, message_body):
 
 def check_alerts():
     """A Helper function to run every minute to check if any alerts need to be sent"""
-    
+
     print("Checking For Alerts and Reminders Now")
 
     #Datetime object for now created for convenience
@@ -171,7 +171,7 @@ def check_alerts():
     yester = datetim - datetime.timedelta(days=1)
 
     with app.app_context():
-        #All currently-active alerts are queried 
+        #All currently-active alerts are queried
         alerts = Alert.query.filter_by(active=True).all()
         print(alerts)
         #If at least one alert is active, the alerts are looped through to see if any need to be sent
@@ -179,17 +179,17 @@ def check_alerts():
             for alert in alerts:
                 #A new variable 'difference' is set to the timedelt between the alert and the current time
                 difference = alert.datetime - datetime.datetime.now()
-                
+
                 #All recent check-ins are queried and a new counter variable checks is set to 0
                 check_ins = CheckIn.query.filter(CheckIn.user_id == alert.user_id, CheckIn.datetime  >=  yester).all()
                 checks = 0
-                
+
                 #For each check-in, if it is within 90 minutes before the current time, the checks counter is added by 1
                 for ch in check_ins:
                     dif = datetime.datetime.now() - alert.datetime
                     if dif <= datetime.timedelta(hours=1.5) and difference > datetime.timedelta(seconds=0):
                         checks += 1
-                
+
                 #If there is no check-in and the alert is within a minute, an alert is sent
                 if abs(difference) <= datetime.timedelta(minutes=1) and abs(difference) > datetime.timedelta(seconds=0) and checks == 0 and alert.sent == False:
                     print('A CHECK-IN WAS MISSED AND AN ALERT IS BEING SENT NOW!')
@@ -207,4 +207,13 @@ def check_alerts():
                     by responding to this text, emailing 'safe@safeworkproject.org', or checking in on the site at
                     'www.safeworkproject.org/check_ins', your pre-set alerts will be sent to your contact(s)!"""
                     send_alert_user(alert.alert_id, message_body)
+    return
+
+def add_log_note(dt_key, message):
+    user = User.query.filter_by(user_email=session['current_user']).one()
+    h = user.hisory
+    h[dt_key] = message
+    (db.session.query(User).filter(
+        User.email == session['current_user']).update({'history': h}))
+    db.session.commit()
     return
