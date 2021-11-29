@@ -27,8 +27,8 @@
 			</div>
 			<div id="alert_inner{{ al.alert_id }}" style="display: inline-block; zoom: 0.98">
 				<p style="display: inline-block; vertical-align: top; padding-top: 10px;">Inactive</p>
-				<div id="alert_inner" style="display: inline-block; zoom: 0.3">
-				<input style="offset: right; offset: 20px;" type="checkbox" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
+				<div id="alert_inner" style="display: inline-block; zoom: 0.3" class="togdiv">
+				<input class="toginput" type="checkbox" name="toggle" id="toggle_rec{{ al.alert_id }}" type="checkbox" data-toggle="toggle" class="display_toggle" data-on="Alert Set Active" data-off="Inactive" {% if al.active == True %}checked{% endif %} name="{{ al.alert_id }}">
 
 				<label for="toggle_rec{{ al.alert_id }}" class="toy-toggle" style="display: inline-block;">
 					<span class="border1"></span>

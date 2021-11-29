@@ -49,6 +49,20 @@
         height: 80px;
         background: transparent;
     }
+    .togdiv:focus-within {
+      border: solid;
+      border-color: cyan;
+      padding: 4px;
+      padding-top: 4px;
+      padding-right:12px
+    }
+    .toginput {
+      height: 1px;
+    }
+    .toginput:focus {
+      outline: none !important;
+      border:1px black;
+    }
     .button-1 {
           align-items: center;
           appearance: none;
@@ -242,10 +256,6 @@
     .check-in-inner {
         display:inline;
     }
-    /* input {
-        position: fixed;
-        transform: translateX(-100%);
-    } */
     .toy-toggle {
         background:
             radial-gradient(at top left,#fff 10%,#fff0 20%),
