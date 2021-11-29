@@ -25,7 +25,9 @@
     display: block;
     margin: 0px;
     background: rgb(112,0,210);
-    background: linear-gradient(0deg, rgba(112,0,210,1) 0%, rgba(112,0,210,1) 8%, rgba(8,0,251,1) 100%);
+    /* background: linear-gradient(0deg, rgba(112,0,210,1) 0%, rgba(112,0,210,1) 8%, rgba(8,0,251,1) 100%); */
+    background-image: url("../static/img/pexels-frank-cone-3279307.jpg");
+    background-size: 100%;
     min-height: 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -46,6 +48,7 @@
     footer {
         grid-area: footer;
         height: 80px;
+        background: transparent;
     }
     .button-1 {
           align-items: center;
@@ -301,6 +304,15 @@
         height: 8.5em;
         transition: background-position var(--transDur) ease-in-out;
     }
+    .border3:focus-visible {
+      outline: 2px solid white;
+    }
+    /* .focus-only:focus{
+      outline: 2px solid white;
+    }
+    .focus-visible-only:focus-visible {
+      outline: 4px dashed darkorange;
+    } */
     .handle {
         border-radius: 50%;
         box-shadow: 0 0 0.5em 0 #0007;
@@ -369,7 +381,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <nav class="navbar navbar-expand-md navbar-dark"  style="background-color: #7000d2; border-bottom: 1px solid; border-color: white;">
+    <nav class="navbar navbar-expand-md navbar-dark"  style="background-color: rgba(112, 0, 210, 0.3); border-bottom: 1px solid; border-color: white;">
         <div class="navbar-inner container-fluid" >
             <button style="color: white; margin-top: 12px; margin-bottom: 12px;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-target=".navbar-collapse">
             <span class="material-icons-outlined" ><img src="../static/img/Menu.png" height="25" /></span>
@@ -428,7 +440,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 
-<footer class="d-flex flex-wrap justify-content-between align-items-center my-4 border-top" style="background: rgba(112,0,210,1); margin: 5%; padding-bottom: 15px; padding-top: 5px">
+<footer class="d-flex flex-wrap justify-content-between align-items-center my-4 border-top" style="margin: 5%; padding-bottom: 15px; padding-top: 5px">
     <p style="color:white;" class="col-md-4 mb-0">&copy; 2021 CheckInWithMe.org</p>
 
     <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
