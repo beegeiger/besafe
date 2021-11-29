@@ -43,6 +43,7 @@
     h5,
     h6 {
       font-family: 'Bree Serif', serif;
+      text-align: center;
     }
     h1{
     padding-top: 1%;
@@ -54,6 +55,9 @@
         grid-area: footer;
         height: 80px;
         background: transparent;
+    }
+    .nav-item {
+      padding-top: 10px;
     }
     .togdiv:focus-within {
       border: solid;
@@ -406,27 +410,20 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/"><img src="../static/img/checkin3-04.png" height="50" alt=""/></a>
                     </li>
-                {%- if request.path != "/" %}
-                    <li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/">HOME</a>
+
+                    <li class="nav-item" >
+                        <a class="nav-link active" aria-current="page" href="/" {%- if request.path == "/" %} style="color: #5BDAF7;" {% endif %}>HOME</a>
                     </li>
-                {% endif %}
                 {% if 'current_user' in session %}
-                {%- if request.path != "/edit_profile" %}
                     <li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/edit_profile">YOUR PROFILE</a>
+                        <a class="nav-link active" aria-current="page" href="/edit_profile" {%- if request.path == "/edit_profile" %} style="color: #5BDAF7;" {% endif %}>YOUR PROFILE</a>
                     </li>
-                {% endif %}
-                {%- if request.path != "/contacts" %}
-					<li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/contacts">CONTACTS</a>
+					           <li class="nav-item" style="padding-top: 10px;">
+                        <a class="nav-link active" aria-current="page" href="/contacts" {%- if request.path == "/contacts/" %} style="color: #5BDAF7;" {% endif %}>CONTACTS</a>
                   	</li>
-                {% endif %}
-                {%- if request.path != "/bs_alerts" %}
                     <li class="nav-item" style="padding-top: 10px;">
-                      <a class="nav-link active" aria-current="page" href="/bs_alerts">SCHEDULER <img src="../static/img/besafe2small-01.png" height="24" alt="" /></a>
+                      <a class="nav-link active" aria-current="page" href="/bs_alerts" {%- if request.path == "/bs_alerts" %} style="color: #5BDAF7;" {% endif %}>SCHEDULER <img src="../static/img/besafe2small-01.png" height="24" alt="" /></a>
                     </li>
-                {% endif %}
                 {% endif %}
                 {% if 'current_user' not in session %}
                     <li class="nav-item" style="padding-top: 10px;">
