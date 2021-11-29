@@ -4,6 +4,7 @@ import datetime
 from datetime import datetime
 import json
 from flask_sqlalchemy import SQLAlchemy
+import sqlalchemy
 from sqlalchemy import Column, ForeignKey, Integer, Unicode, inspect, create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -39,7 +40,7 @@ class User(db.Model):
 	phone = db.Column(db.String(28), nullable=True)
 	safe_code = db.Column(db.String(64), nullable=True)
 	danger_code = db.Column(db.String(64), nullable=True)
-	history = db.Column(mutable_json_type(dbtype=JSONB, nested=True))
+	history = db.Column(mutable_json_type(dbtype=sqlalchemy.types.JSON, nested=True))
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
