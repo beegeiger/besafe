@@ -48,6 +48,23 @@ class User(db.Model):
 			self.user_id, self.username, self.name, self.fname, self.lname, self.email, self.email2, self.created_at, self.timezone, self.phone, self.safe_code, self.danger_code, self.history)
 
 
+class User_log(db.Model):
+	"""SafeWalk Contacts"""
+
+	__tablename__ = "user_log"
+
+	user_log_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+	datetime = db.Column(db.DateTime, nullable=True)
+	time = db.Column(db.Time, nullable=True)
+	type = db.Column(db.String(200), nullable=True)
+	l_message = db.Column(db.String(1028), nullable=True)
+
+	def __repr__(self):
+		"""Provide helpful representation when printed."""
+		return "<user_log_id={} user_id={} datetime={} time={} type={} l_message={}>".format(
+			self.user_log_id, self.user_id, self.datetime, self.time, self.type, self.l_message)
+
 
 
 class Contact(db.Model):

@@ -31,8 +31,7 @@ from Components.views import views_bp
 from Components.location import location_bp
 from Components.incoming import incoming_bp
 from Components.check_ins import check_ins_bp
-from Components.helpers import (check_in, create_alert, send_alert_contacts,
-                    send_alert_user, check_alerts)
+from Components.helpers import (check_in, create_alert, send_alert_contacts, send_alert_user, check_alerts, add_log_note)
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
@@ -96,7 +95,7 @@ def callback_handling():
     #User Table is Queried to see if User already exists in dB
     user = User.query.filter_by(email=userinfo['email']).all()
     print("Callback User1: ", user)
-    
+
     #If the user isn't in the dBase, they are added
     if user == []:
         new_user = User(name=userinfo['name'], email=userinfo['email'], username=userinfo['nickname'], fname=userinfo['given_name'], lname=userinfo['family_name'], created_at=datetime.datetime.now())
@@ -104,7 +103,7 @@ def callback_handling():
         db.session.commit()
         print("Callback NewUser: ", new_user)
         return redirect('/edit_profile')
-    
+
     #The dBase changes are committed
     db.session.commit()
 

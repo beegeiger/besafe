@@ -15,7 +15,7 @@ from sqlalchemy import (update, asc, desc)
 from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db
 import requests
 import logging
-
+from Components.helpers import (check_in, create_alert, send_alert_contacts, send_alert_user, check_alerts, add_log_note)
 from functools import wraps
 from os import environ as env
 from werkzeug.exceptions import HTTPException
@@ -49,6 +49,7 @@ def activate_alertset(alert_id):
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime, 'active': True, 'status': "Active With No Check-Ins so Far"})
     dt_list.append(dtime)
 
+    add_log_note(dt, ["Activation", alert.time, alert.message])
     #Session is Commited
     db.session.commit()
 
