@@ -34,7 +34,7 @@ def go_home():
 @views_bp.route("/favicon", methods=["GET"])
 def get_fav():
     """Renders the besafe homepage. (Tested)"""
-    return send_file("static/img/fav2-03.png", mimetype="image/png")
+    return send_file("static/img/fav3-03.jpg", mimetype="image/png")
 
 @views_bp.route('/dashboard', methods=["GET"])
 @requires_auth

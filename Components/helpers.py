@@ -23,7 +23,7 @@ from dotenv import load_dotenv, find_dotenv
 
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
-from secrets.py import mailgun_key
+from Components.secrets import mailgun_key
 
 def check_in(user_id, notes):
     """Helper-function used to log a new check-in from any source"""
