@@ -29,26 +29,27 @@ check_ins_bp = Blueprint('check_ins_bp', __name__)
 def add_new_checkin():
     """Using POST, a new check-in is added from the check-in page"""
 
+    dt = datetime.datetime()
     #Get's the check-in details from the form on the page and runs the check_in helper-function
     text = request.form['check_text']
     user = User.query.filter_by(email=session['current_user']).one()
-    
+    add_log_note(user.user_id, dt, "Check-In", text)
     #Use's the helper function check_in()
     check_in(user.user_id, text)
-    
+
     #Queries the active and all alerts
     alerts = Alert.query.filter(Alert.user_id == user.user_id, Alert.active == True).all()
     all_alerts = Alert.query.filter(Alert.user_id == user.user_id).all()
-    
+
     #Creates and empty list which is then filled with datetimes from the active alerts
     alert_datetimes = []
     for alert in alerts:
         if alert.datetime:
             alert_datetimes.append(alert.datetime)
-    
+
     #The List of Datetimes is sorted
     alert_datetimes.sort()
-    
+
     #If there is at least one active alert, a message is created with that info
     if len(alert_datetimes) > 0:
         diff = datetime.datetime.now() - alert_datetimes[0]
@@ -56,11 +57,11 @@ def add_new_checkin():
         time = alert_datetimes[0].time()
         check_time = (alert_datetimes[0] - datetime.timedelta(hours=1)).time()
         message = "Your Check-In has been received! Your next alarm is due in " + str(minutes) + " minutes, so you must check in between " + str(check_time) + " and " + str(time) + "."
-    
+
     #Otherwise a message is created explaining that there are no active alerts
     else:
         message = "Your check-in has been received! You don't have any alerts currently active."
-    
+
     #The message is then sent back to the user as confirmation
     if len(all_alerts) > 0:
         send_alert_user(all_alerts[0].alert_id, message)

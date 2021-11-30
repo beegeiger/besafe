@@ -209,8 +209,8 @@ def check_alerts():
                     send_alert_user(alert.alert_id, message_body)
     return
 
-def add_log_note(datet, type, message="", time=None):
-    user = User.query.filter_by(user_email=session['current_user']).one()
+def add_log_note(user_id, datet, type, message="", time=None):
+    user = User.query.filter_by(user_id=user_id).one()
     new_log_note = User_log(user_id=user.user_id, datetime=datet, type=type, l_message=message, time=time)
     db.session.add(new_log_note)
     db.session.commit()

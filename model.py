@@ -9,7 +9,6 @@ from sqlalchemy import Column, ForeignKey, Integer, Unicode, inspect, create_eng
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from flask_debugtoolbar import DebugToolbarExtension
-from sqlalchemy_json import mutable_json_type
 
 # from server import app
 
@@ -40,12 +39,11 @@ class User(db.Model):
 	phone = db.Column(db.String(28), nullable=True)
 	safe_code = db.Column(db.String(64), nullable=True)
 	danger_code = db.Column(db.String(64), nullable=True)
-	history = db.Column(mutable_json_type(dbtype=sqlalchemy.types.JSON, nested=True))
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<user_id={} username={} name={} fname={} lname={} email={} email2={} created_at={} timezone={} phone={} safe_code={} danger_code={} history ={}>".format(
-			self.user_id, self.username, self.name, self.fname, self.lname, self.email, self.email2, self.created_at, self.timezone, self.phone, self.safe_code, self.danger_code, self.history)
+		return "<user_id={} username={} name={} fname={} lname={} email={} email2={} created_at={} timezone={} phone={} safe_code={} danger_code={}>".format(
+			self.user_id, self.username, self.name, self.fname, self.lname, self.email, self.email2, self.created_at, self.timezone, self.phone, self.safe_code, self.danger_code)
 
 
 class User_log(db.Model):
