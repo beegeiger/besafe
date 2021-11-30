@@ -23,6 +23,7 @@ from dotenv import load_dotenv, find_dotenv
 
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
+from secrets.py import mailgun_key
 
 def check_in(user_id, notes):
     """Helper-function used to log a new check-in from any source"""
@@ -215,3 +216,13 @@ def add_log_note(user_id, datet, type, message="", time=None):
     db.session.add(new_log_note)
     db.session.commit()
     return
+
+def send_email(recipient, subject, content):
+    request_url = 'https://api.mailgun.net/v3/bg.checkinwithme.org/messages'
+    request = requests.post(request_url, auth=('api', mailgun_key), data={
+        'from': 'application@checkinwithme.org',
+        'to': recipient,
+        'subject': subject,
+        'text': content
+    })
+    return ('Status: ' + str(request.status_code)),('Body: ' + str(request.text))
