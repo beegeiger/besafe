@@ -15,7 +15,7 @@ from sqlalchemy import (update, asc, desc)
 from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db
 import requests
 import logging
-
+from send
 from auth import requires_auth
 from functools import wraps
 from os import environ as env
@@ -24,6 +24,8 @@ from dotenv import load_dotenv, find_dotenv
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
 from Components.secrets import mailgun_key
+from Components.send_email import send_SES_email
+from Compenents.send_SMS import send_twilio_sms
 
 def check_in(user_id, notes):
     """Helper-function used to log a new check-in from any source"""
@@ -139,9 +141,9 @@ def send_alert_contacts(alert_id, message_body):
         if con.c_message:
             body = con.c_message + message_body
         if con.email:
-            send_email(con.email, body)
+            send_SES_email(con.email, body)
         if con.phone:
-            send_sms(con.phone, body)
+            send_twilio_sms(con.phone, body)
     return "Message Sent"
 
 def send_alert_user(alert_id, message_body):
@@ -152,10 +154,10 @@ def send_alert_user(alert_id, message_body):
     user = User.query.filter_by(user_id=alert.user_id).one()
 
     if user.email2:
-        send_email(user.email2, message_body)
+        send_SES_email(user.email2, message_body)
         print('Sending to email2')
     elif user.email:
-        send_email(user.email, message_body)
+        send_SES_email(user.email, message_body)
         print('Sending to email1')
     if user.phone:
         send_message(user.phone, message_body)
@@ -208,6 +210,7 @@ def check_alerts():
                     by responding to this text, emailing 'safe@safeworkproject.org', or checking in on the site at
                     'www.safeworkproject.org/check_ins', your pre-set alerts will be sent to your contact(s)!"""
                     send_alert_user(alert.alert_id, message_body)
+                    add_log_note(alert.user_id, datetim, "Missed", alert.message)
     return
 
 def add_log_note(user_id, datet, type, message="", time=None):
@@ -216,13 +219,3 @@ def add_log_note(user_id, datet, type, message="", time=None):
     db.session.add(new_log_note)
     db.session.commit()
     return
-
-def send_email(recipient, subject, content):
-    request_url = 'https://api.mailgun.net/v3/bg.checkinwithme.org/messages'
-    request = requests.post(request_url, auth=('api', mailgun_key), data={
-        'from': 'application@checkinwithme.org',
-        'to': recipient,
-        'subject': subject,
-        'text': content
-    })
-    return ('Status: ' + str(request.status_code)),('Body: ' + str(request.text))
