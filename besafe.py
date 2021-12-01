@@ -32,6 +32,7 @@ from Components.location import location_bp
 from Components.incoming import incoming_bp
 from Components.check_ins import check_ins_bp
 from Components.helpers import (check_in, create_alert, send_alert_contacts, send_alert_user, check_alerts, add_log_note)
+from Components.send_email import send_SES_email
 from secrets import oauth_client_secret, oauth_client_id, google_maps_key
 
 app = Flask(__name__)
