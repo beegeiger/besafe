@@ -7,8 +7,8 @@ client = Client(account_sid, auth_token)
 def send_twilio_sms(recipient, content):
     message = client.messages.create(
                                   messaging_service_sid='MG56f27c44ea5c19616a38262fdd2b5d27',
-                                  body='Twilio Test1',
-                                  to='+17045176027'
+                                  body=content,
+                                  to='+1' + recipient
                               )
 
     print(message.sid)
