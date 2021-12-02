@@ -100,23 +100,3 @@ def edit_contact(contact_num, modal = ""):
     if modal == "modal":
         return redirect("/bs_alerts/modal")
     return redirect("/contacts")
-
-@contacts_bp.route("/save_first_contact", methods=["POST"])
-def edit_contact(contact_num, modal = ""):
-    """Edit's a contact's info"""
-
-    #Creates variables from the form on the contacts page
-    name = request.form['name']
-    phone = request.form['phone']
-    email = request.form['email']
-    message = request.form['message']
-
-
-    #Queries the contact in question, edits it in the dBase, and commits
-    contact = Contact.query.filter_by(contact_id=contact_num).one()
-    ((db.session.query(Contact).filter_by(contact_id=contact_num)).update(
-    {'name':name, 'email':email, 'phone':phone, 'c_message':message}))
-    db.session.commit()
-    if modal == "modal":
-        return redirect("/bs_alerts/modal")
-    return redirect("/contacts")

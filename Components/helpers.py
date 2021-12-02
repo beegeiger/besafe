@@ -15,7 +15,6 @@ from sqlalchemy import (update, asc, desc)
 from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db
 import requests
 import logging
-from send
 from auth import requires_auth
 from functools import wraps
 from os import environ as env
@@ -23,9 +22,8 @@ from dotenv import load_dotenv, find_dotenv
 
 from authlib.flask.client import OAuth
 from six.moves.urllib.parse import urlencode
-from Components.secrets import mailgun_key
 from Components.send_email import send_SES_email
-from Compenents.send_SMS import send_twilio_sms
+from Components.send_SMS import send_twilio_sms
 
 def check_in(user_id, notes):
     """Helper-function used to log a new check-in from any source"""
