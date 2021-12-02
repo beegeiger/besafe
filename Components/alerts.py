@@ -114,7 +114,7 @@ def add_alert():
 
     db.session.add(new_alert)
     db.session.commit()
-
+    add_log_note(alert.user_id, dt, "Check In For " + str(time) + "Created", alert.message, alert.time)
     return redirect("/bs_alerts")
 
 

@@ -99,9 +99,11 @@
 </div>
 
 <h2>User Log</h2>
+<div class="centered_text" style="margin: 15px">
 {% for log in logs %}
 <p>{{ log.datetime }}: {{ log.type }}</p>
 {% endfor %}
+</div>
 <script>
 document.querySelector('#find_me').addEventListener('click', geoFindMe);
 $(document).ready(function(){
