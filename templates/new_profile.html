@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}User Profile{% endblock %}
+{% block title %}First Visit{% endblock %}
 {% block head %}
 <script type="text/javascript"
         src="secrets.js">
@@ -8,19 +8,13 @@
 {% block content %}
 
 
-{% if not user.timezone %}
-<h1>Let's begin by setting your timezone and adding your first contact.</h1>
-{% endif %}
+<h2>Setup Steps</h2>
 
+<div class="centered">
 
-<div id="edit_div" class="hidden centered">
-<h1 style="text-align: center;">Edit Your Profile:</h1>
-
-<div class="container">
-<div class="row" style="width: 100%;">
-<div class="col-lg-6-offset-3 col-md-8-offset-2 col-sm-10-offset-1 col-xs-12">
-
-<form action="/edit_contact/{{ contact.contact_id }}" method="POST" id="edit_form{{ contactloop.index }}" class="hidden"><br>
+<form action="/contacts/first/" method="POST"><br>
+    <div class="contact-div">
+      <h4>Step 1: Set Your Timezone</h4>
     <b>What is your timezone?:</b><br>
 		<button type=button id ="find_me">Get My Timezone Automatically</button>(recommended)<br/>
 		<p id = "status"></p>
@@ -65,20 +59,20 @@
 		</div>
 		<br>
 		The Timezone Hour Offset Being Saved: <input type=textbox name="tzim" maxlength="4" size="3" value="{{ user.timezone }}" required>
-		<br><br>
-    <div class="contact_div">
-    <b>Contact Name:</b> <input type=textbox name="name" value='{{ contact.name }}'></input><br>
-    <b>Phone Number:</b><input type="tel" name="phone" value="{{ contact.phone }}"><br>
+		</div>
+    <div class="contact-div">
+      <h4>Step 2: Add your first Contact</h4>
+    <b>Contact Name:</b> <input type=textbox name="name" required></input><br>
+    <b>Phone Number:</b><input type="tel" name="phone"><br>
     <b>Email Address:</b><input type="email" name="email"><br>
     <br>
     <b>Custom Message For Contact</b>(Optional)<b>:</b><br>
-    <textarea rows="3" cols="50" name="message">{{ contact.c_message }}</textarea><br>
+    <textarea rows="3" cols="50" name="message"></textarea><br>
     </div>
-
-		<br><input type=submit></form>
-</div>
-</div>
-</div>
+    <div class="contact-div">
+    <h4>Step 3: Submit your information</h4>
+    <input type=submit></form>
+    </div>
 </div>
 <script>
 document.querySelector('#find_me').addEventListener('click', geoFindMe);

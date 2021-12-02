@@ -52,7 +52,7 @@ def add_contact(modal = ""):
             User.user_id == user.user_id).update(
                 {'timezone': timezone}))
         db.session.commit()
-        return redirect("bs_alerts")
+        return redirect("/bs_alerts")
     if modal == "modal":
         return redirect("/bs_alerts/modal")
     return redirect("/contacts")
