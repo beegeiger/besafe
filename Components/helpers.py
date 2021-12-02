@@ -12,7 +12,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, Blueprint)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
-from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db
+from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db, User_log
 import requests
 import logging
 from auth import requires_auth
@@ -208,7 +208,7 @@ def check_alerts():
                     by responding to this text, emailing 'safe@safeworkproject.org', or checking in on the site at
                     'www.safeworkproject.org/check_ins', your pre-set alerts will be sent to your contact(s)!"""
                     send_alert_user(alert.alert_id, message_body)
-                    add_log_note(alert.user_id, datetim, "Missed", alert.message)
+                    add_log_note(alert.user_id, datetim, "Missed Check In", alert.message)
     return
 
 def add_log_note(user_id, datet, type, message="", time=None):
@@ -216,4 +216,5 @@ def add_log_note(user_id, datet, type, message="", time=None):
     new_log_note = User_log(user_id=user.user_id, datetime=datet, type=type, l_message=message, time=time)
     db.session.add(new_log_note)
     db.session.commit()
+    print("Log Note Added")
     return

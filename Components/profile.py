@@ -52,9 +52,9 @@ def edit_profile():
             {'fname': fname, 'lname': lname, 'email': email_input,
                 'phone': phone,'timezone': timezone}))
     db.session.commit()
-    
+
     flash('Your Profile was Updated!')
-    
+
     #Refreshes the Profile Page
     return redirect("/edit_profile")
 
@@ -74,7 +74,7 @@ def submit_feedback():
 @profile_bp.route("/user_code", methods=["POST"])
 def new_user_code():
     """Creates a new User Code"""
-    
+
     user = User.query.filter_by(email=session['current_user']).one()
     code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(4))
     # code = "".join(random.choices(string.ascii_uppercase + string.digits, k=4))

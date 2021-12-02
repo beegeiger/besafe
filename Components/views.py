@@ -12,7 +12,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, Blueprint, send_file)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
-from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db
+from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db, User_log
 import requests
 import logging
 
@@ -54,6 +54,7 @@ def edit_page():
     user = User.query.filter_by(email=session['current_user']).one()
 
     logs = User_log.query.filter_by(user_id=user.user_id).all()
+    print("Logs: ", logs)
     #Returns the Profile Template
     return render_template("edit_profile.html", user=user, logs=logs)
 

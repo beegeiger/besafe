@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}User Profile{% endblock %}
 {% block head %}
-<script type="text/javascript" 
+<script type="text/javascript"
         src="secrets.js">
 </script>
 {% endblock %}
@@ -25,7 +25,7 @@
 	{% if user.email2 %}
 	<b>Additional E-mail: </b> {{ user.email2 }}<br><br>
 	{% endif %}
-	
+
 	<button id="edit_but" type="button">Edit Profile</button>
 </div>
 
@@ -34,12 +34,12 @@
 
 <div class="container">
 <div class="row" style="width: 100%;">
-<div class="col-lg-6-offset-3 col-md-8-offset-2 col-sm-10-offset-1 col-xs-12">	
+<div class="col-lg-6-offset-3 col-md-8-offset-2 col-sm-10-offset-1 col-xs-12">
 
 	<form action="/edit_profile" method="POST"><br>
-	
+
 		<b>E-mail:</b><b style="color: red;">*</b> <input type=textbox name="email_input"  value="{{ user.email }}" required></input><br><br>
-	
+
 		(Feel free to use any name, real or fake, as long as your contacts will recognize it!)<br>
 		<b>First name: <b style="color: red;">*</b></b><input type=textbox name="fname" value="{{ user.fname }}" required></input>&nbsp &nbsp<b>Last name:</b><input type=textbox name="lname" value={{ user.lname }}></input><br><br>
 
@@ -88,7 +88,7 @@
 		<br>
 		The Timezone Hour Offset Being Saved: <input type=textbox name="tzim" maxlength="4" size="3" value="{{ user.timezone }}" required>
 		<br><br>
-	
+
 		<b>Phone Number:</b><input type="tel" name="phone"><br><br>
 
 
@@ -97,6 +97,11 @@
 </div>
 </div>
 </div>
+
+<h2>User Log</h2>
+{% for log in logs %}
+<p>{{ log.datetime }}: {{ log.type }}</p>
+{% endfor %}
 <script>
 document.querySelector('#find_me').addEventListener('click', geoFindMe);
 $(document).ready(function(){
@@ -126,7 +131,7 @@ function geoFindMe() {
 	  const longitude = position.coords.longitude;
 	  console.log("Lat and Long: ", latitude, longitude)
 
-	  
+
 	  status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
 	  timezone(latitude, longitude);
 	//   setInterval(postapp, 60*1000);
