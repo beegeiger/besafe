@@ -46,6 +46,13 @@ def add_contact(modal = ""):
     new_contact = Contact(user_id=user.user_id, name=name, email=email, phone=phone, c_message=message)
     db.session.add(new_contact)
     db.session.commit()
+    if modal == "first":
+        timezone = request.form['tzim']
+        (db.session.query(User).filter(
+            User.user_id == user.user_id).update(
+                {'timezone': timezone}))
+        db.session.commit()
+        return redirect("bs_alerts")
     if modal == "modal":
         return redirect("/bs_alerts/modal")
     return redirect("/contacts")
@@ -78,12 +85,32 @@ def delete_contact(contact_num, modal = ""):
 @contacts_bp.route("/edit_contact/<contact_num>/<modal>", methods=["POST"])
 def edit_contact(contact_num, modal = ""):
     """Edit's a contact's info"""
+    timezone = request.form['tzim']
+    #Creates variables from the form on the contacts page
+    name = request.form['name']
+    phone = request.form['phone']
+    email = request.form['email']
+    message = request.form['message']
+
+    #Queries the contact in question, edits it in the dBase, and commits
+    contact = Contact.query.filter_by(contact_id=contact_num).one()
+    ((db.session.query(Contact).filter_by(contact_id=contact_num)).update(
+    {'name':name, 'email':email, 'phone':phone, 'c_message':message}))
+    db.session.commit()
+    if modal == "modal":
+        return redirect("/bs_alerts/modal")
+    return redirect("/contacts")
+
+@contacts_bp.route("/save_first_contact", methods=["POST"])
+def edit_contact(contact_num, modal = ""):
+    """Edit's a contact's info"""
 
     #Creates variables from the form on the contacts page
     name = request.form['name']
     phone = request.form['phone']
     email = request.form['email']
     message = request.form['message']
+
 
     #Queries the contact in question, edits it in the dBase, and commits
     contact = Contact.query.filter_by(contact_id=contact_num).one()

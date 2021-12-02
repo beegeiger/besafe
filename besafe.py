@@ -104,7 +104,7 @@ def callback_handling():
         db.session.add(new_user)
         db.session.commit()
         print("Callback NewUser: ", new_user)
-        return redirect('/edit_profile')
+        return redirect('/new_profile')
 
     #The dBase changes are committed
     db.session.commit()

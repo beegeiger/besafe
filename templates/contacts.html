@@ -24,7 +24,7 @@ Message: {{ contact.c_message }}<br><br>
 
 </div>
 
-<form action="/edit_contact/{{ contact.contact_id }}" method="POST" id="edit_form{{ contactloop.index }}" class="hidden">
+<form action="/contacts/first" method="POST" id="edit_form{{ contactloop.index }}" class="hidden">
 	<b>Contact Name:</b> <input type=textbox name="name" value='{{ contact.name }}'></input><br>
 	<b>Phone Number:</b><input type="tel" name="phone" value="{{ contact.phone }}"><br>
 	<b>Email Address:</b><input type="email" name="email"><br>

@@ -53,8 +53,9 @@ def edit_page():
     #Queries User
     user = User.query.filter_by(email=session['current_user']).one()
 
+    logs = User_log.query.filter_by(user_id=user.user_id).all()
     #Returns the Profile Template
-    return render_template("edit_profile.html", user=user)
+    return render_template("edit_profile.html", user=user, logs=logs)
 
 @views_bp.route("/new_profile", methods=["GET"])
 @requires_auth
@@ -62,7 +63,7 @@ def new_page():
     """Renders the Profile page"""
 
     #Returns the Profile Template
-    return render_template("edit_profile.html")
+    return render_template("new_profile.html")
 
 @views_bp.route("/bs_alerts", defaults={'modal': "False"}, methods=["GET"])
 @views_bp.route("/bs_alerts/<modal>", methods=["GET"])
