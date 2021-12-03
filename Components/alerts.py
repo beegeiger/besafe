@@ -62,12 +62,13 @@ def deactivate_alertset(alert_id):
     """Deactivates an alert set"""
 
     #All alerts associated with the alert set are queried and updated, and it's all commited
+    date = datetime.date.today()
     alert = Alert.query.filter_by(alert_id=alert_id).one()
     dt = datetime.datetime.combine(date, alert.time)
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
     {'active': False, 'checked_in': 0,'datetime': None, 'status': "Scheduled Alert has been Deactivated"})
     db.session.commit()
-    add_log_note(alert.user_id, dt, "Check In For " + str(alert.time) + "Deactivated", alert.message, alert.time)
+    add_log_note(alert.user_id, dt, "Check In For " + str(alert.time) + " Deactivated", alert.message, alert.time)
     return redirect("/bs_alerts")
 
 @alerts_bp.route("/add_alert", methods=["POST"])
