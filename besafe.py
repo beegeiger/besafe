@@ -30,6 +30,7 @@ from Components.profile import profile_bp
 from Components.views import views_bp
 from Components.location import location_bp
 from Components.incoming import incoming_bp
+from Components.logs import logs_bp
 from Components.check_ins import check_ins_bp
 from Components.helpers import (check_in, create_alert, send_alert_contacts, send_alert_user, check_alerts, add_log_note)
 from Components.send_email import send_SES_email
@@ -43,7 +44,7 @@ app.register_blueprint(location_bp)
 app.register_blueprint(incoming_bp)
 app.register_blueprint(contacts_bp)
 app.register_blueprint(profile_bp)
-
+app.register_blueprint(logs_bp)
 app.register_blueprint(alerts_bp)
 
 
