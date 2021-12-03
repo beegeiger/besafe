@@ -54,6 +54,8 @@ def edit_page():
     user = User.query.filter_by(email=session['current_user']).one()
 
     logs = User_log.query.filter_by(user_id=user.user_id).all()
+    for log in logs:
+        log.form_date = log.datetime.strftime("%I:%M %p, %m/%d/%Y")
     print("Logs: ", logs)
     #Returns the Profile Template
     return render_template("edit_profile.html", user=user, logs=logs)

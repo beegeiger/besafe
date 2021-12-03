@@ -49,7 +49,7 @@ def activate_alertset(alert_id):
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime, 'active': True, 'status': "Active With No Check-Ins so Far"})
     dt_list.append(dtime)
 
-    add_log_note(alert.user_id, dt, "Check In for " + str(alert.time) + " Activated", alert.message, alert.time)
+    add_log_note(alert.user_id, dt, "Check In for " + str(alert.time.strftime("%I:%M %p")) + " Activated", alert.message, alert.time)
     #Session is Commited
     db.session.commit()
 
@@ -65,10 +65,11 @@ def deactivate_alertset(alert_id):
     date = datetime.date.today()
     alert = Alert.query.filter_by(alert_id=alert_id).one()
     dt = datetime.datetime.combine(date, alert.time)
+    dt_now = datetime.datetime.now()
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
     {'active': False, 'checked_in': 0,'datetime': None, 'status': "Scheduled Alert has been Deactivated"})
     db.session.commit()
-    add_log_note(alert.user_id, dt, "Check In For " + str(alert.time) + " Deactivated", alert.message, alert.time)
+    add_log_note(alert.user_id, dt_now, "Check In For " + str(alert.time) + " Deactivated", alert.message, alert.time)
     return redirect("/bs_alerts")
 
 @alerts_bp.route("/add_alert", methods=["POST"])
