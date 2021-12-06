@@ -199,7 +199,7 @@ def check_alerts():
                     #The alert object is updates to be marked sent and inactive and its commited
                     (db.session.query(Alert).filter_by(alert_id=alert.alert_id)).update({'sent': True, 'active': False})
                     db.session.commit()
-
+                    add_log_note(alert.user_id, datetim, "Missed Check In. Here are the details the user included with their scheduled check-in: " + str(alert.message))
 
                 #If there is no check in and it is 15 minutes before an alert, a reminder message is sent
                 elif abs(difference) <= datetime.timedelta(minutes=15) and abs(difference) > datetime.timedelta(minutes=14) and checks == 0 and alert.sent == False:
@@ -208,7 +208,7 @@ def check_alerts():
                     by responding to this text, emailing 'safe@safeworkproject.org', or checking in on the site at
                     'www.safeworkproject.org/check_ins', your pre-set alerts will be sent to your contact(s)!"""
                     send_alert_user(alert.alert_id, message_body)
-                    add_log_note(alert.user_id, datetim, "Missed Check In", alert.message)
+
     return
 
 def add_log_note(user_id, datet, type, message="", time=None):
