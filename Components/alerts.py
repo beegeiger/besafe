@@ -119,7 +119,11 @@ def add_alert():
 
     db.session.add(new_alert)
     db.session.commit()
-    add_log_note(alert.user_id, dt, "Check-In Added", "Check In " + name + " For " + str(time.strftime("%I:%M %p")) + "Created", alert.message, alert.time)
+    alert = Alert.query.filter_by(a_name=name).order_by(Alert.alert_id.desc()).first()
+    note = "Check In " + str(name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Created."
+    if desc:
+        note += "The user included the following message: " + str(desc)
+    add_log_note(user.user_id, dt, "Check-In Added", note, time)
     return redirect("/bs_alerts")
 
 
