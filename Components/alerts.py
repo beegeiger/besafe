@@ -119,7 +119,7 @@ def add_alert():
 
     db.session.add(new_alert)
     db.session.commit()
-    add_log_note(alert.user_id, dt, "Check-In Added", "Check In " + name + " For " + str(time) + "Created", alert.message, alert.time)
+    add_log_note(alert.user_id, dt, "Check-In Added", "Check In " + name + " For " + str(time.strftime("%I:%M %p")) + "Created", alert.message, alert.time)
     return redirect("/bs_alerts")
 
 
@@ -162,6 +162,11 @@ def save_alert(alert_id):
     if len(contacts) > 2:
         contact3 = int(contacts[2])
 
+    note = "Alert " + name + " Updated To " + str(time.strftime("%I:%M %p"))
+    if desc:
+        note += "The user included the following message: " + desc
+    dt_now = datetime.datetime.now()
+    add_log_note(alert.user_id, dt_now, "Deleted Check-In", note, alert.message, alert.time)
     #The alert associated with the alert set is then updated and all of the changes are committed
     (db.session.query(Alert).filter_by(alert_id=alert_id)).update(
     {'message': desc, 'a_name': name, 'time': time, 'interval': interval, 'contact_id1': contact1, 'contact_id2': contact2, 'contact_id3': contact3})
