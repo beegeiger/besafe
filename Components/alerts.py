@@ -50,8 +50,8 @@ def activate_alertset(alert_id):
     dt_list.append(dtime)
     note = "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Activated"
     if alert.message:
-        note += "The user included the following notes: " + alert.message
-    add_log_note(alert.user_id, dt, "Activated", alert.message, alert.time)
+        note += "The user included the following message: " + alert.message
+    add_log_note(alert.user_id, dt, "Activation", note, alert.message, alert.time)
     #Session is Commited
     db.session.commit()
 
@@ -71,7 +71,8 @@ def deactivate_alertset(alert_id):
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
     {'active': False, 'checked_in': 0,'datetime': None, 'status': "Scheduled Alert has been Deactivated"})
     db.session.commit()
-    add_log_note(alert.user_id, dt_now, "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Deactivated", alert.message, alert.time)
+    note = "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Deactivated"
+    add_log_note(alert.user_id, dt_now, "Deactivation", note, alert.message, alert.time)
     return redirect("/bs_alerts")
 
 @alerts_bp.route("/add_alert", methods=["POST"])
@@ -118,7 +119,7 @@ def add_alert():
 
     db.session.add(new_alert)
     db.session.commit()
-    add_log_note(alert.user_id, dt, "Check In For " + str(time) + "Created", alert.message, alert.time)
+    add_log_note(alert.user_id, dt, "Check-In Added", "Check In " + name + " For " + str(time) + "Created", alert.message, alert.time)
     return redirect("/bs_alerts")
 
 
@@ -173,7 +174,10 @@ def save_alert(alert_id):
 @alerts_bp.route("/delete_alert/<alert_id>", methods=["POST"])
 def delete_alert(alert_id):
     """Saves the edits to a recurring alert set"""
-
+    alert = Alert.query.filter_by(alert_id=alert_id).one()
+    note = "Alert " + alert.a_name + " Deleted"
+    dt_now = datetime.datetime.now()
+    add_log_note(alert.user_id, dt_now, "Deleted Check-In", note, alert.message, alert.time)
     #The alert associated with the alert set is then deleted
     (db.session.query(Alert).filter_by(alert_id=alert_id)).delete()
     db.session.commit()
