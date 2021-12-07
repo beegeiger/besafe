@@ -48,8 +48,10 @@ def activate_alertset(alert_id):
     dtime = datetime.datetime.combine(date, alert.time)
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime, 'active': True, 'status': "Active With No Check-Ins so Far"})
     dt_list.append(dtime)
-
-    add_log_note(alert.user_id, dt, "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Activated", alert.message, alert.time)
+    note = "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Activated"
+    if alert.message:
+        note += "The user included the following notes: " + alert.message
+    add_log_note(alert.user_id, dt, "Activated", alert.message, alert.time)
     #Session is Commited
     db.session.commit()
 

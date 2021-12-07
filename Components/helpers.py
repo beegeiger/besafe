@@ -211,9 +211,9 @@ def check_alerts():
 
     return
 
-def add_log_note(user_id, datet, type, message="", time=None):
+def add_log_note(user_id, datet, type, full_note, message="", time=None):
     user = User.query.filter_by(user_id=user_id).one()
-    new_log_note = User_log(user_id=user.user_id, datetime=datet, type=type, l_message=message, time=time)
+    new_log_note = User_log(user_id=user.user_id, datetime=datet, type=type, l_message=message, time=time, full_note=full_note)
     db.session.add(new_log_note)
     db.session.commit()
     print("Log Note Added")

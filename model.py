@@ -57,11 +57,12 @@ class User_log(db.Model):
 	time = db.Column(db.Time, nullable=True)
 	type = db.Column(db.String(200), nullable=True)
 	l_message = db.Column(db.String(1028), nullable=True)
+	full_note = db.Column(db.String(2056), nullable=True)
 
 	def __repr__(self):
 		"""Provide helpful representation when printed."""
-		return "<user_log_id={} user_id={} datetime={} time={} type={} l_message={}>".format(
-			self.user_log_id, self.user_id, self.datetime, self.time, self.type, self.l_message)
+		return "<user_log_id={} user_id={} datetime={} time={} type={} l_message={} full_note={}>".format(
+			self.user_log_id, self.user_id, self.datetime, self.time, self.type, self.l_message, self.full_note)
 
 
 
