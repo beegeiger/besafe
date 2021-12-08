@@ -48,9 +48,15 @@ def activate_alertset(alert_id):
     dtime = datetime.datetime.combine(date, alert.time)
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update({'datetime': dtime, 'active': True, 'status': "Active With No Check-Ins so Far"})
     dt_list.append(dtime)
-    note = "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Activated"
+
+    #The Variable "note" is created, which includes the text of the log entry
+    note = "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Activated. "
+
+    #If there is a message included in the alert, it is included in the log entry
     if alert.message:
-        note += "The user included the following message: " + alert.message
+        note += "The user included the following message: " + alert.message + "."
+
+    #The log note is saved to the database
     add_log_note(alert.user_id, dt, "Activation", note, alert.message, alert.time)
     #Session is Commited
     db.session.commit()
@@ -63,15 +69,23 @@ def activate_alertset(alert_id):
 def deactivate_alertset(alert_id):
     """Deactivates an alert set"""
 
-    #All alerts associated with the alert set are queried and updated, and it's all commited
+    #Today's Date and DateTime are set to variables
     date = datetime.date.today()
+    dt_now = datetime.datetime.now()
+
+    #The alert is queried and today's date is combined with the alert's time
     alert = Alert.query.filter_by(alert_id=alert_id).one()
     dt = datetime.datetime.combine(date, alert.time)
-    dt_now = datetime.datetime.now()
+
+    #The alert object is updated and session is commited
     db.session.query(Alert).filter_by(alert_id=alert.alert_id).update(
     {'active': False, 'checked_in': 0,'datetime': None, 'status': "Scheduled Alert has been Deactivated"})
     db.session.commit()
-    note = "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Deactivated"
+
+    #The Variable "note" is created, which includes the text of the log entry
+    note = "Check In " + str(alert.a_name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Deactivated" + "."
+
+    #The log note is saved to the database
     add_log_note(alert.user_id, dt_now, "Deactivation", note, alert.message, alert.time)
     return redirect("/bs_alerts")
 
@@ -120,9 +134,9 @@ def add_alert():
     db.session.add(new_alert)
     db.session.commit()
     alert = Alert.query.filter_by(a_name=name).order_by(Alert.alert_id.desc()).first()
-    note = "Check In " + str(name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Created."
+    note = "Check In " + str(name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Created. "
     if desc:
-        note += "The user included the following message: " + str(desc)
+        note += "The user included the following message: " + str(desc) + "."
     add_log_note(user.user_id, dt, "Check-In Added", note, time)
     return redirect("/bs_alerts")
 

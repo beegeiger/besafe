@@ -30,7 +30,9 @@ def delete_log():
     """Saves the edits to a recurring alert set"""
     user = User.query.filter_by(email=session['current_user']).one()
     #The alert associated with the alert set is then deleted
-    (db.session.query(User_log).filter_by(user_id=user.user_id)).all().delete()
+    to_delete = db.session.query(User_log).filter_by(user_id=user.user_id).all()
+    for td in to_delete:
+        td.delete(synchronize_session=False)
     db.session.commit()
 
     #The user is then re-routed to the main besafe page
