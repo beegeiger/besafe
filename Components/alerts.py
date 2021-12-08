@@ -91,7 +91,8 @@ def deactivate_alertset(alert_id):
 
 @alerts_bp.route("/add_alert", methods=["POST"])
 def add_alert():
-    """Adds a recurring Alert-Set to the dBase"""
+    """Adds an alert to the dBase"""
+    #The user is queried along with all associated alerts
     user = User.query.filter_by(email=session['current_user']).one()
     alerts_all = Alert.query.filter_by(user_id=user.user_id).all()
 
@@ -101,18 +102,16 @@ def add_alert():
     interval = request.form['interval']
     contacts = request.form.getlist('contact')
     time = request.form['time']
-    print("name1: ", name, type(name), len(name))
 
-    if time == "":
-        time = None
+    #If there is no interval, the variable is set to None
     if interval == "":
         interval = None
 
+    #If no name is included, the name is set as the next sequential number
     if len(name)== 0:
         name = "Alert " + str(len(alerts_all))
-    print("name2: ", name, type(name), len(name))
-    #Queries the current user
 
+    #Current DateTime is queried
     dt = datetime.datetime.now()
 
     #Initiates 3 contact variables, sets the first to the first contact and the next two to None
@@ -133,8 +132,14 @@ def add_alert():
 
     db.session.add(new_alert)
     db.session.commit()
+
+    #The new alert is now queried
     alert = Alert.query.filter_by(a_name=name).order_by(Alert.alert_id.desc()).first()
+
+    #The Variable "note" is created, which includes the text of the log entry
     note = "Check In " + str(name) + " For " + str(alert.time.strftime("%I:%M %p")) + " Created. "
+
+    #If there is a message included in the alert, it is included in the log entry
     if desc:
         note += "The user included the following message: " + str(desc) + "."
     add_log_note(user.user_id, dt, "Check-In Added", note, time)
@@ -184,6 +189,8 @@ def save_alert(alert_id):
     if desc:
         note += "The user included the following message: " + desc
     dt_now = datetime.datetime.now()
+
+    #The log note is saved to the database
     add_log_note(alert.user_id, dt_now, "Deleted Check-In", note, alert.message, alert.time)
     #The alert associated with the alert set is then updated and all of the changes are committed
     (db.session.query(Alert).filter_by(alert_id=alert_id)).update(
