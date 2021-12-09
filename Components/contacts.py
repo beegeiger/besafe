@@ -46,6 +46,8 @@ def add_contact(modal = ""):
     new_contact = Contact(user_id=user.user_id, name=name, email=email, phone=phone, c_message=message)
     db.session.add(new_contact)
     db.session.commit()
+
+    #If this is first time a contact is added, the user's timezone is also saved
     if modal == "first":
         timezone = request.form['tzim']
         (db.session.query(User).filter(
@@ -53,6 +55,8 @@ def add_contact(modal = ""):
                 {'timezone': timezone}))
         db.session.commit()
         return redirect("/bs_alerts")
+
+    #If the call came from a modal, it redirects them back to the same modal
     if modal == "modal":
         return redirect("/bs_alerts/modal")
     return redirect("/contacts")

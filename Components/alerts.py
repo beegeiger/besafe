@@ -160,8 +160,8 @@ def save_alert(alert_id):
     interval = request.form['interval']
     contacts = request.form.getlist('contact')
     time = request.form['time']
-    print("name1: ", name, type(name), len(name))
 
+    #If there is no alert name, it is set to the next sequential number of alerts
     if len(name)== 0:
         name = "Alert " + str(len(alerts_all))
     print("name2: ", name, type(name), len(name))
