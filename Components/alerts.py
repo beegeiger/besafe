@@ -204,9 +204,16 @@ def save_alert(alert_id):
 @alerts_bp.route("/delete_alert/<alert_id>", methods=["POST"])
 def delete_alert(alert_id):
     """Saves the edits to a recurring alert set"""
+    #Relevant Alert is Queried
     alert = Alert.query.filter_by(alert_id=alert_id).one()
+
+    #The variable "note" is set to what the log note will be
     note = "Alert " + alert.a_name + " Deleted"
+
+    #The current datetime is queried
     dt_now = datetime.datetime.now()
+
+    #The log note is saved to the database
     add_log_note(alert.user_id, dt_now, "Deleted Check-In", note, alert.message, alert.time)
     #The alert associated with the alert set is then deleted
     (db.session.query(Alert).filter_by(alert_id=alert_id)).delete()
