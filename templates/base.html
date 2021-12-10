@@ -228,12 +228,21 @@
         margin-left: auto;
         padding:  14px;
     }
-	.navbar {
+    .navbar-div {
+      font-family: 'Mogra', cursive;
+      white-space: nowrap;
+      font-size: 23px;
+    }
+	   .navbar {
     background: transparent;
     color: white;
     padding-top: 0px;
     padding-bottom: 0px;
 		}
+    .navbar-inner {
+      display: flex;
+      justify-content:space-between;
+    }
     .hidden {
         display: none;
 
@@ -406,7 +415,7 @@
 <body>
 <div class="wrapper">
     <nav class="navbar navbar-expand-md navbar-dark"  style="background-color: rgba(112, 0, 210, 0.3); border-bottom: 1px solid; border-color: white;">
-        <div class="navbar-inner container-fluid" >
+        <div class="navbar-inner container-fluid">
 
             <button style="color: white; margin-top: 12px; margin-bottom: 12px;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-target=".navbar-collapse">
             <span class="material-icons-outlined" ><img src="../static/img/Menu.png" height="25" /></span>
@@ -430,19 +439,18 @@
                     <li class="nav-item" style="padding-top: 10px;">
                       <a class="nav-link active" aria-current="page" href="/bs_alerts" {%- if request.path == "/bs_alerts" %} style="color: #5BDAF7;" {% endif %}>SCHEDULER <img src="../static/img/besafe2small-01.png" height="24" alt="" /></a>
                     </li>
+                    <li class="nav-item" style="padding-top: 10px;">
+                       <a class="nav-link active" aria-current="page" href="/check_in_page" {%- if request.path == "/contacts/" %} style="color: #5BDAF7;" {% endif %}>CHECK IN NOW!</a>
+                   </li>
                 {% endif %}
                 </ul>
-                <ul class="navbar-nav me-auto" style="padding-bottom: 10px">
-                {% if 'current_user' not in session %}
-                    <li class="nav-item">
+                <div class="navbar-div">
+                {% if 'current_user' not in session %}>
                         <a class="nav-link active" aria-current="page" href="/login" style="color: #FF74EA; padding-top: 0;">LOGIN/CREATE ACCOUNT</a>
-                    </li>
                 {% else %}
-                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF74EA; padding-top: 0;">LOGOUT</a>
-                    </li>
                 {% endif %}
-              </ul>
+              </div>
             </div>
         </div>
     </nav>
