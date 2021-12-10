@@ -26,7 +26,7 @@
     margin: 0px;
     /* background: linear-gradient(0deg, rgba(112,0,210,1) 0%, rgba(112,0,210,1) 8%, rgba(8,0,251,1) 100%); */
     background-image: url("../static/img/pexels-frank-cone-32793074.jpg");
-    background-size: 100%;
+    background-size: cover;
     min-height: 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -161,6 +161,9 @@
       margin-bottom: 10px;
       height: 40px;
       font-family: 'Josefin Sans', sans-serif;
+    }
+    .check-in-link {
+      text-shadow: 1px 1px #5BDAF7;
     }
     .checkinForm {
       width: 95%;
@@ -440,15 +443,15 @@
                       <a class="nav-link active" aria-current="page" href="/bs_alerts" {%- if request.path == "/bs_alerts" %} style="color: #5BDAF7;" {% endif %}>SCHEDULER <img src="../static/img/besafe2small-01.png" height="24" alt="" /></a>
                     </li>
                     <li class="nav-item" style="padding-top: 10px;">
-                       <a class="nav-link active" aria-current="page" href="/check_in_page" {%- if request.path == "/contacts/" %} style="color: #5BDAF7;" {% endif %}>CHECK IN NOW!</a>
+                       <a class="nav-link active check-in-link" aria-current="page" href="/check_in_page" style="color: #FF74EA;">CHECK IN NOW!</a>
                    </li>
                 {% endif %}
                 </ul>
-                <div class="navbar-div">
+                <div class="navbar-div" style="padding-bottom: 5px; ">
                 {% if 'current_user' not in session %}>
-                        <a class="nav-link active" aria-current="page" href="/login" style="color: #FF74EA; padding-top: 0;">LOGIN/CREATE ACCOUNT</a>
+                        <a class="nav-link active" aria-current="page" href="/login" style="color: #FF74EA; padding-top: 0; padding-left: 0;">LOGIN/CREATE ACCOUNT</a>
                 {% else %}
-                        <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF74EA; padding-top: 0;">LOGOUT</a>
+                        <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF74EA; padding-top: 0; padding-left: 0;">LOGOUT</a>
                 {% endif %}
               </div>
             </div>
