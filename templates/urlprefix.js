@@ -1,1 +1,0 @@
-export const prefix = "http://besafe.ngrok.io/"
