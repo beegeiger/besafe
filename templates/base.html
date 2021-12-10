@@ -241,7 +241,7 @@
     .wrapper {
     min-height: calc(100vh - 120px);
     }
-	.navbar-nav.me-auto.mb-2.mb-lg-0 li a {
+	  .navbar-nav li a {
 		color: white;
 		font-family: 'Mogra', cursive;
 		white-space: nowrap;
@@ -407,11 +407,12 @@
 <div class="wrapper">
     <nav class="navbar navbar-expand-md navbar-dark"  style="background-color: rgba(112, 0, 210, 0.3); border-bottom: 1px solid; border-color: white;">
         <div class="navbar-inner container-fluid" >
+
             <button style="color: white; margin-top: 12px; margin-bottom: 12px;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-target=".navbar-collapse">
             <span class="material-icons-outlined" ><img src="../static/img/Menu.png" height="25" /></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent" style="">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				        <ul class="navbar-nav me-auto mb-2 mb-xl-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/"><img src="../static/img/checkin3-04.png" height="50" alt=""/></a>
                     </li>
@@ -420,7 +421,7 @@
                         <a class="nav-link active" aria-current="page" href="/" {%- if request.path == "/" %} style="color: #5BDAF7;" {% endif %}>HOME</a>
                     </li>
                 {% if 'current_user' in session %}
-                    <li class="nav-item" style="padding-top: 10px;">
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/edit_profile" {%- if request.path == "/edit_profile" %} style="color: #5BDAF7;" {% endif %}>YOUR PROFILE</a>
                     </li>
 					           <li class="nav-item" style="padding-top: 10px;">
@@ -430,15 +431,18 @@
                       <a class="nav-link active" aria-current="page" href="/bs_alerts" {%- if request.path == "/bs_alerts" %} style="color: #5BDAF7;" {% endif %}>SCHEDULER <img src="../static/img/besafe2small-01.png" height="24" alt="" /></a>
                     </li>
                 {% endif %}
+                </ul>
+                <ul class="navbar-nav me-auto" style="padding-bottom: 10px">
                 {% if 'current_user' not in session %}
-                    <li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/login" style="color: #FF74EA">LOGIN/CREATE ACCOUNT</a>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/login" style="color: #FF74EA; padding-top: 0;">LOGIN/CREATE ACCOUNT</a>
                     </li>
                 {% else %}
-                    <li class="nav-item" style="padding-top: 10px;">
-                        <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF74EA">LOGOUT</a>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF74EA; padding-top: 0;">LOGOUT</a>
                     </li>
                 {% endif %}
+              </ul>
             </div>
         </div>
     </nav>
