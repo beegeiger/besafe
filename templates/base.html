@@ -443,12 +443,12 @@
                       <a class="nav-link active" aria-current="page" href="/bs_alerts" {%- if request.path == "/bs_alerts" %} style="color: #5BDAF7;" {% endif %}>SCHEDULER <img src="../static/img/besafe2small-01.png" height="24" alt="" /></a>
                     </li>
                     <li class="nav-item" style="padding-top: 10px;">
-                       <a class="nav-link active check-in-link" aria-current="page" href="/check_in_page" style="color: #FF74EA;">CHECK IN NOW!</a>
+                       <a class="nav-link active check-in-link" aria-current="page" href="/checkin" style="color: #FF74EA;">CHECK IN NOW!</a>
                    </li>
                 {% endif %}
                 </ul>
                 <div class="navbar-div" style="padding-bottom: 5px; ">
-                {% if 'current_user' not in session %}>
+                {% if 'current_user' not in session %}
                         <a class="nav-link active" aria-current="page" href="/login" style="color: #FF74EA; padding-top: 0; padding-left: 0;">LOGIN/CREATE ACCOUNT</a>
                 {% else %}
                         <a class="nav-link active" aria-current="page" href="/logout" style="color: #FF74EA; padding-top: 0; padding-left: 0;">LOGOUT</a>

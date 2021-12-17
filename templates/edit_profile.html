@@ -99,7 +99,8 @@
 </div>
 
 <h2>User Log</h2>
-<h2><button type="button" class="button-3" id="User_Log_Delete">Delete Log</button></h2>
+<form action="/delete_log">
+<h2><button type="submit" class="button-3" id="User_Log_Delete">Delete Log</button></h2></form>
 <div class="centered_text" style="margin: 15px">
 {% for log in logs %}
 <p>{{ log.form_date }}: {{ log.full_note }}</p>
@@ -184,6 +185,7 @@ $(document).ready(function(){
     let c = confirm("Are you sure you want to delete the log?");
     if (c == true) {
       $.get("/delete_log");
+      console.log("Delete Log Button Triggered")
     }
   });
 });

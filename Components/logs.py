@@ -32,8 +32,9 @@ def delete_log():
     #The alert associated with the alert set is then deleted
     to_delete = db.session.query(User_log).filter_by(user_id=user.user_id).all()
     for td in to_delete:
-        td.delete(synchronize_session=False)
+        db.session.delete(td)
     db.session.commit()
-
+    url = "/edit_profile"
+    print("Delete Log triggered")
     #The user is then re-routed to the main besafe page
     return redirect("/edit_profile")
