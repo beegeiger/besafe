@@ -29,6 +29,7 @@ check_ins_bp = Blueprint('check_ins_bp', __name__)
 def add_new_checkin():
     """Using POST, a new check-in is added from the check-in page"""
 
+    #sets variable dt as equal to the current datetime
     dt = datetime.datetime()
     #Get's the check-in details from the form on the page and runs the check_in helper-function
     text = request.form['check_text']
