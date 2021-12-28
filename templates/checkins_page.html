@@ -6,7 +6,8 @@
 <form id="check-form" action="/add_check_in" method="POST">
 	Include a short message about where you are, if you are safe, and/or what your plans are:<br>
 	<textarea rows="6" cols="50" name="check_text"></textarea><br>
-	<input onclick="geoFindMe()" id="check-click" type=submit value="Check-In Now">
+	<input onclick="geoFindMe()" id="check-click" type=submit value="Check In Now">
+	(If you would like to record your current location along with your check-in, make sure to click "Allow Location" in your browser upon clicking "Check In Now")
 </form>
 </div>
 <br><br>
@@ -35,7 +36,7 @@
 <script>
 
     function postapp(lat, lon) {
-        $.post("/geo_point", 
+        $.post("/geo_point",
             {"lat": lat, "long": lon}
             )
         console.log("lat/lon sent")
@@ -53,7 +54,7 @@
     const latitude  = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    
+
     status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
     postapp(latitude, longitude);
     setInterval(postapp, 60*1000);
@@ -71,7 +72,7 @@
     status.textContent = 'Locating…';
     navigator.geolocation.getCurrentPosition(success, error);
   }
-  
+
 
 }
 $(document).ready(function () {
