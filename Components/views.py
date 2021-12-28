@@ -214,7 +214,7 @@ def edit_schedset_page(alert_set_id):
 
     return render_template("edit_sched_alerts.html", alert_set=alert_set, contacts=contacts, alerts=alerts, timezone=user.timezone)
 
-@views_bp.route("/checkin")
+@views_bp.route("/checkin", methods=["GET"])
 def user_check_in():
     """Renders User Check-In Page"""
     user = User.query.filter_by(email=session['current_user']).one()
