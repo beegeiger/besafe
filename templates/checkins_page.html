@@ -19,7 +19,7 @@
 <div class="gen_div">
 {% for check in check_ins %}
 {{ check.datetime }} &nbsp &nbsp
-{{ check.notes }}<br>
+{{ check.notes }}&nbsp &nbsp {{check.lat}} {{check.lon}}<br>
 {% endfor %}
 
 
