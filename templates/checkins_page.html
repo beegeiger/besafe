@@ -6,6 +6,8 @@
 <form id="check-form" action="/add_check_in" method="POST">
 	Include a short message about where you are, if you are safe, and/or what your plans are:<br>
 	<textarea rows="6" cols="50" name="check_text"></textarea><br>
+	<input type="hidden" id="form_lat" name="form_lat" value="" />
+	<input type="hidden" id="form_long" name="form_long" value="" />
 	<input onclick="geoFindMe()" id="check-click" type=submit value="Check In Now">
 	(If you would like to record your current location along with your check-in, make sure to click "Allow Location" in your browser upon clicking "Check In Now")
 </form>
@@ -24,7 +26,7 @@
 <a href="/bs_alerts">Go Back to Main Alerts Page</a>
 <br>
 <br>
-<button id = "find-me">Show my location</button><br/>
+<!-- <button id = "find-me">Show my location</button><br/> -->
 <p id = "status"></p>
 
 </div>
@@ -35,14 +37,14 @@
 
 <script>
 
-    function postapp(lat, lon) {
-        $.post("/geo_point",
-            {"lat": lat, "long": lon}
-            )
-        console.log("lat/lon sent")
-    }
+    // function postapp(lat, lon) {
+    //     $.post("/geo_point",
+    //         {"lat": lat, "long": lon}
+    //         )
+    //     console.log("lat/lon sent")
+    // }
 
-   function geoFindMe() {
+function geoFindMe() {
 
   const status = document.querySelector('#status');
 
@@ -53,12 +55,13 @@
   function success(position) {
     const latitude  = position.coords.latitude;
     const longitude = position.coords.longitude;
-
-
+		document.getElementById('form_lat').value = latitude;
+		document.getElementById('form_long').value = longitude;
     status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-    postapp(latitude, longitude);
-    setInterval(postapp, 60*1000);
+    // postapp(latitude, longitude);
+    // setInterval(postapp, 60*1000);
     console.log("location found");
+		return [latitude,longitude]
   }
 
 
@@ -75,24 +78,33 @@
 
 
 }
+// document.querySelector('#check-click').addEventListener('click', geoFindMe);
+
 $(document).ready(function () {
     $('#check-form').on('submit', function(e) {
+				geoFindMe();
         e.preventDefault();
+				console.log("check-form function triggered")
+				console.log("Form Long: ", document.getElementById('form_long').value)
+				let latlong = geoFindMe()
         $.ajax({
-            url : $(this).attr('/add_check_in') || window.location.pathname,
+            url : ('/add_check_in'),
             type: "POST",
             data: $(this).serialize(),
             success: function (data) {
                 $("#form_output").html(data);
+								latlong;
+								console.log("check form success")
             },
             error: function (jXHR, textStatus, errorThrown) {
                 alert(errorThrown);
+								console.log("check form error", errorThrown)
             }
         });
     });
 });
-document.querySelector('#check-click').addEventListener('click', geoFindMe);
-document.querySelector('#check-click').addEventListener('click', geoFindMe);
+
+
 
 
 </script>

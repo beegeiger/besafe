@@ -15,7 +15,7 @@ from sqlalchemy import (update, asc, desc)
 from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db
 import requests
 import logging
-
+from Components.helpers import (check_in, create_alert, send_alert_contacts, send_alert_user, check_alerts, add_log_note)
 from functools import wraps
 from os import environ as env
 from werkzeug.exceptions import HTTPException
@@ -28,15 +28,17 @@ check_ins_bp = Blueprint('check_ins_bp', __name__)
 @check_ins_bp.route("/add_check_in", methods=["POST"])
 def add_new_checkin():
     """Using POST, a new check-in is added from the check-in page"""
-
+    print("Request Form: ", request.form)
     #sets variable dt as equal to the current datetime
-    dt = datetime.datetime()
+    dt = datetime.datetime.now()
     #Get's the check-in details from the form on the page and runs the check_in helper-function
     text = request.form['check_text']
+    lat = request.form['form_lat']
+    long = request.form['form_long']
     user = User.query.filter_by(email=session['current_user']).one()
     add_log_note(user.user_id, dt, "Check-In", text)
     #Use's the helper function check_in()
-    check_in(user.user_id, text)
+    check_in(user.user_id, text, lat, long)
 
     #Queries the active and all alerts
     alerts = Alert.query.filter(Alert.user_id == user.user_id, Alert.active == True).all()
@@ -64,7 +66,7 @@ def add_new_checkin():
         message = "Your check-in has been received! You don't have any alerts currently active."
 
     #The message is then sent back to the user as confirmation
-    if len(all_alerts) > 0:
-        send_alert_user(all_alerts[0].alert_id, message)
+    # if len(all_alerts) > 0:
+    #     send_alert_user(all_alerts[0].alert_id, message)
 
     return redirect("/check_ins")

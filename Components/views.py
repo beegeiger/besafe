@@ -219,4 +219,5 @@ def user_check_in():
     """Renders User Check-In Page"""
     user = User.query.filter_by(email=session['current_user']).one()
     checkins = CheckIn.query.filter_by(user_id=user.user_id).all()
+    print("Check-Ins: ", checkins)
     return render_template("checkins_page.html", check_ins=checkins)

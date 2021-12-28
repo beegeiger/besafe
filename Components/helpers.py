@@ -25,7 +25,7 @@ from six.moves.urllib.parse import urlencode
 from Components.send_email import send_SES_email
 from Components.send_SMS import send_twilio_sms
 
-def check_in(user_id, notes):
+def check_in(user_id, notes, lat = '', lon=''):
     """Helper-function used to log a new check-in from any source"""
 
     #Date, time, and datetime objects are initiated for convenience
@@ -34,7 +34,7 @@ def check_in(user_id, notes):
     datetim = datetime.datetime.now()
 
     #A new check-in object is created, added, and commited
-    new_check = CheckIn(user_id=user_id, notes=notes, time=time, date=date, datetime=datetim)
+    new_check = CheckIn(user_id=user_id, notes=notes, time=time, date=date, datetime=datetim, lat=lat, lon=lon)
     db.session.add(new_check)
     db.session.commit()
 
