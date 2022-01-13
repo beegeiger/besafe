@@ -64,8 +64,14 @@ def submit_feedback():
 
     #Get's the Feedback details from the form on the page and adds it to the dBase
     text = request.form['feedback_text']
+    
+    #The user is queried
     user = User.query.filter_by(email=session['current_user']).one()
+    
+    #The current datetime is set to variable dt
     dt = datetime.datetime.now()
+    
+    #A new feedback class object is created, added to the dBase, and committed
     new_feedback = Feedback(user_id=user.user_id, datetime=dt, content=text)
     db.session.add(new_feedback)
     db.session.commit()
