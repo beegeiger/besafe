@@ -48,8 +48,6 @@ def dashboard():
 @requires_auth
 def edit_page():
     """Renders the Profile page"""
-    print("Edit Profile Session: ", session)
-    print("Session[currentuser]: ", session['current_user'])
     #Queries User
     user = User.query.filter_by(email=session['current_user']).one()
 
