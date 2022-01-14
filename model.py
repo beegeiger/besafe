@@ -165,7 +165,21 @@ class Feedback(db.Model):
 		return "<feedback_id={} user_id={} datetime={} content={}>".format(
 			self.feedback_id, self.user_id, self.datetime, self.content)
 
+class Location(db.Model):
+	"""User Location Data"""
 
+	__tablename__ = "location"
+
+	location_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+	datetime = db.Column(db.DateTime, nullable=True)
+	lat = db.Column(db.String(256), nullable=True)
+	lon = db.Column(db.String(256), nullable=True)
+
+	def __repr__(self):
+		"""Provide helpful representation when printed."""
+		return "<location_id={} user_id={} datetime={} lat={} lon={} >".format(
+			self.location_id, self.user_id, self.datetime, self.lat, self.lon)
 
 ################################################################################
 
