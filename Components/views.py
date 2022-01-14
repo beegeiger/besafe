@@ -12,7 +12,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, Blueprint, send_file)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
-from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db, User_log
+from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db, User_log, Location
 import requests
 import logging
 
@@ -180,7 +180,8 @@ def checkin_page():
     #The current user and check-ins are queried and the page is rendered
     user = User.query.filter_by(email=session['current_user']).one()
     check_ins = CheckIn.query.filter_by(user_id=user.user_id).all()
-    return render_template("checkins_page.html", check_ins=check_ins, timezone=user.timezone)
+    locations = Location.query.filter_by(user_id=user.user_id).all()
+    return render_template("checkins_page.html", locations=locations, check_ins=check_ins, timezone=user.timezone)
 
 @views_bp.route("/edit_recset/<alert_set_id>", methods=["GET"])
 def edit_recset_page(alert_set_id):
@@ -211,10 +212,3 @@ def edit_schedset_page(alert_set_id):
     print(Alert.query.filter_by(alert_set_id=alert_set_id).all())
 
     return render_template("edit_sched_alerts.html", alert_set=alert_set, contacts=contacts, alerts=alerts, timezone=user.timezone)
-
-@views_bp.route("/checkin", methods=["GET"])
-def user_check_in():
-    """Renders User Check-In Page"""
-    user = User.query.filter_by(email=session['current_user']).one()
-    checkins = CheckIn.query.filter_by(user_id=user.user_id).all()
-    return render_template("checkins_page.html", check_ins=checkins)

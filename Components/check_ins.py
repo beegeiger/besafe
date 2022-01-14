@@ -12,7 +12,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, Blueprint)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
-from model import User, Contact, Alert, CheckIn, ReqCheck, location, connect_to_db, db
+from model import User, Contact, Alert, CheckIn, ReqCheck, Location, connect_to_db, db
 import requests
 import logging
 from Components.helpers import (check_in, create_alert, send_alert_contacts, send_alert_user, check_alerts, add_log_note, add_loc)
@@ -57,7 +57,7 @@ def add_new_checkin():
         minutes = (diff.total_seconds()) / 60
         time = alert_datetimes[0].time()
         check_time = (alert_datetimes[0] - datetime.timedelta(hours=1)).time()
-        message = "Your Check-In has been received! Your next alarm is due in " + str(minutes) + " minutes, so you must check in between " + str(check_time) + " and " + str(time) + "."
+        message = "Your Check-In has been received! Your next alarm is due in " + str(minutes) + " minutedt = datetime.datetime.now()s, so you must check in between " + str(check_time) + " and " + str(time) + "."
 
     #Otherwise a message is created explaining that there are no active alerts
     else:
@@ -71,9 +71,9 @@ def add_new_checkin():
 
 @check_ins_bp.route("/add_location", methods=["POST"])
 def add_new_location():
-    latlon = request.database
-    print("latlon from add_loc POST: ", latlon)
+    lat = request.form['lat']
+    long = request.form['long']
     user = User.query.filter_by(email=session['current_user']).one()
     dt = datetime.datetime.now()
-    add_loc(user.user_id, latlon[0], latlon[1], dt)
-    return
+    add_loc(user.user_id, lat, long, dt)
+    return "New Location Added"

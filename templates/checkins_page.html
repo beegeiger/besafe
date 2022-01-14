@@ -24,15 +24,24 @@
 {{check.lat}}N/{{check.lon}}W
 {% endif %}<br>
 {% endfor %}
-
-
+</div>
+<div class="gen_div">
+<h1>Your Recorded Location</h1>
+</div>
+<div class="gen_div">
+{% for loc in locations %}
+{{ loc.datetime }} &nbsp &nbsp
+{{loc.lat}}N/{{loc.lon}}W<br>
+{% endfor %}
+</div>
+<br>
 <a href="/bs_alerts">Go Back to Main Alerts Page</a>
 <br>
 <br>
 <!-- <button id = "find-me">Show my location</button><br/> -->
 <p id = "status"></p>
 
-</div>
+
 
 
 
@@ -61,11 +70,11 @@ function geoFindMe() {
     status.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
     // postapp(latitude, longitude);
     // setInterval(postapp, 60*1000);
-    console.log("location found");
+    console.log("location found: ", latitude, longitude);
 		$.ajax({
 		  type: "POST",
 		  url: ('/add_location'),
-		  data: [latitude, longitude],
+		  data: {'lat': latitude, 'long': longitude},
 		  success: function (data) {
 					console.log("check form success")
 					window.location.reload();
@@ -96,18 +105,15 @@ function geoFindMe() {
 
 $('#check-form').on('submit', function(e) {
 		e.preventDefault();
-		let latlong = geoFindMe()
+		// let latlong = geoFindMe()
 		console.log("check-form function triggered")
-		console.log("Form Long: ", latlong)
-		setTimeout(() => {  console.log("World!"); }, 1000); document.getElementById('form_long').value;
-		console.log("Latlong: ", latlong)
+		setTimeout(() => {  console.log("World!"); }, 1000);
     $.ajax({
         url : ('/add_check_in'),
         type: "POST",
         data: $(this).serialize(),
         success: function (data) {
             $("#form_output").html(data);
-						latlong;
 						console.log("check form success")
 						// window.location.reload();
         },
