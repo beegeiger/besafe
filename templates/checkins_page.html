@@ -51,8 +51,6 @@ function geoFindMe() {
 
   const status = document.querySelector('#status');
 
-
-
   status.textContent = '';
 
   function success(position) {
@@ -64,6 +62,21 @@ function geoFindMe() {
     // postapp(latitude, longitude);
     // setInterval(postapp, 60*1000);
     console.log("location found");
+		$.ajax({
+				url : ('/add_check_in'),
+				type: "POST",
+				data: $(this).serialize(),
+				success: function (data) {
+						$("#form_output").html(data);
+						[latitude,longitude];
+						console.log("check form success")
+						// window.location.reload();
+				},
+				error: function (jXHR, textStatus, errorThrown) {
+						alert(errorThrown);
+						console.log("check form error", errorThrown)
+				}
+		});
 		return [latitude,longitude]
   }
 
@@ -85,25 +98,12 @@ function geoFindMe() {
 
 $(document).ready(function () {
     $('#check-form').on('submit', function(e) {
-				geoFindMe();
+				let latlong = geoFindMe()
         e.preventDefault();
 				console.log("check-form function triggered")
 				console.log("Form Long: ", document.getElementById('form_long').value)
-				let latlong = geoFindMe()
-        $.ajax({
-            url : ('/add_check_in'),
-            type: "POST",
-            data: $(this).serialize(),
-            success: function (data) {
-                $("#form_output").html(data);
-								latlong;
-								console.log("check form success")
-            },
-            error: function (jXHR, textStatus, errorThrown) {
-                alert(errorThrown);
-								console.log("check form error", errorThrown)
-            }
-        });
+				console.log("Latlong: ", latlong)
+
     });
 });
 
