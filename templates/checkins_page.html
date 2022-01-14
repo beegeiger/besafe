@@ -62,7 +62,19 @@ function geoFindMe() {
     // postapp(latitude, longitude);
     // setInterval(postapp, 60*1000);
     console.log("location found");
-		return [latitude,longitude]
+		$.ajax({
+		  type: "POST",
+		  url: ('/add_location'),
+		  data: [latitude, longitude],
+		  success: function (data) {
+					console.log("check form success")
+					window.location.reload();
+			},
+			error: function (jXHR, textStatus, errorThrown) {
+					alert(errorThrown);
+					console.log("location error", errorThrown)
+			}
+		});
   }
 
 

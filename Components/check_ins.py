@@ -12,10 +12,10 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, Blueprint)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
-from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db
+from model import User, Contact, Alert, CheckIn, ReqCheck, location, connect_to_db, db
 import requests
 import logging
-from Components.helpers import (check_in, create_alert, send_alert_contacts, send_alert_user, check_alerts, add_log_note)
+from Components.helpers import (check_in, create_alert, send_alert_contacts, send_alert_user, check_alerts, add_log_note, add_loc)
 from functools import wraps
 from os import environ as env
 from werkzeug.exceptions import HTTPException
@@ -33,12 +33,10 @@ def add_new_checkin():
     dt = datetime.datetime.now()
     #Get's the check-in details from the form on the page and runs the check_in helper-function
     text = request.form['check_text']
-    lat = request.form['form_lat']
-    long = request.form['form_long']
     user = User.query.filter_by(email=session['current_user']).one()
     add_log_note(user.user_id, dt, "Check-In", text)
     #Use's the helper function check_in()
-    check_in(user.user_id, text, lat, long)
+    check_in(user.user_id, text)
 
     #Queries the active and all alerts
     alerts = Alert.query.filter(Alert.user_id == user.user_id, Alert.active == True).all()
@@ -70,3 +68,12 @@ def add_new_checkin():
     #     send_alert_user(all_alerts[0].alert_id, message)
 
     return redirect("/check_ins")
+
+@check_ins_bp.route("/add_location", methods=["POST"])
+def add_new_location():
+    latlon = request.database
+    print("latlon from add_loc POST: ", latlon)
+    user = User.query.filter_by(email=session['current_user']).one()
+    dt = datetime.datetime.now()
+    add_loc(user.user_id, latlon[0], latlon[1], dt)
+    return

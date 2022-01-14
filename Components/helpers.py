@@ -12,7 +12,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, Blueprint)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (update, asc, desc)
-from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db, User_log
+from model import User, Contact, Alert, CheckIn, ReqCheck, connect_to_db, db, User_log, Location
 import requests
 import logging
 from auth import requires_auth
@@ -54,6 +54,12 @@ def check_in(user_id, notes, lat = '', lon=''):
                 {'datetime': (alert.datetime + datetime.timedelta(days=1)), 'checked_in': alert.checked_in + 1, 'active': False, 'status': "Checked In and Alarm Disarmed"})
     db.session.commit()
     return "Check In has been Logged!"
+
+def add_loc(user_id, lat, long, datetime):
+    new_loc = Location(user_id=user_id, lat=lat, lon=long, datetime=datetime)
+    db.session.add(new_loc)
+    db.session.commit()
+    return "Location has been added!"
 
 def create_alert(alert_id):
     """Helper Function for creating an alert's actual message body"""
