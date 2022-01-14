@@ -62,21 +62,6 @@ function geoFindMe() {
     // postapp(latitude, longitude);
     // setInterval(postapp, 60*1000);
     console.log("location found");
-		$.ajax({
-				url : ('/add_check_in'),
-				type: "POST",
-				data: $(this).serialize(),
-				success: function (data) {
-						$("#form_output").html(data);
-						[latitude,longitude];
-						console.log("check form success")
-						// window.location.reload();
-				},
-				error: function (jXHR, textStatus, errorThrown) {
-						alert(errorThrown);
-						console.log("check form error", errorThrown)
-				}
-		});
 		return [latitude,longitude]
   }
 
@@ -96,16 +81,31 @@ function geoFindMe() {
 }
 // document.querySelector('#check-click').addEventListener('click', geoFindMe);
 
-$(document).ready(function () {
-    $('#check-form').on('submit', function(e) {
-				let latlong = geoFindMe()
-        e.preventDefault();
-				console.log("check-form function triggered")
-				console.log("Form Long: ", document.getElementById('form_long').value)
-				console.log("Latlong: ", latlong)
 
+$('#check-form').on('submit', function(e) {
+		e.preventDefault();
+		let latlong = geoFindMe()
+		console.log("check-form function triggered")
+		console.log("Form Long: ", latlong)
+		setTimeout(() => {  console.log("World!"); }, 1000); document.getElementById('form_long').value;
+		console.log("Latlong: ", latlong)
+    $.ajax({
+        url : ('/add_check_in'),
+        type: "POST",
+        data: $(this).serialize(),
+        success: function (data) {
+            $("#form_output").html(data);
+						latlong;
+						console.log("check form success")
+						// window.location.reload();
+        },
+        error: function (jXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+						console.log("check form error", errorThrown)
+        }
     });
 });
+
 
 
 
