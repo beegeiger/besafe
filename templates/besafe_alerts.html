@@ -82,10 +82,15 @@
 					</div>
 					<br>
 					<div class="tooltips">
-						<b style="display:inline-block; vertical-align:top">Check In Details: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> </b>
+						<b style="display:inline-block; vertical-align:top">
+              Check In Details:
+              <button data-toggle="popover" data-content="Where are you going and/or what are you doing that you might need this alert?" aria-describedby="tooltip">
+                <img src="../static/img/tooltip.png" style="height: 20px" alt="" />
+                <span class="sr-only">Where are you going and/or what are you doing that you might need this alert?</span>
+            </b>
 						<textarea style="display:inline-block; max-width: 75%; width: 400px" name="descri" value='{{ al.message }}'></textarea>
 						<br>
-						<span class="tooltiptext">Where are you going and/or what are you doing that you might need this alert?</span>
+						<!-- <span class="tooltiptext">Where are you going and/or what are you doing that you might need this alert?</span> -->
 					</div>
 					<div class="tooltips">
 	          <b>Check In Time: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time" value='{{ al.time }}'></input><br>
