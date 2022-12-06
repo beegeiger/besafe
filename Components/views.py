@@ -213,7 +213,7 @@ def edit_schedset_page(alert_set_id):
 
     return render_template("edit_sched_alerts.html", alert_set=alert_set, contacts=contacts, alerts=alerts, timezone=user.timezone)
 
-@views_bp.route("/test_page, methods=["GET"])
+@views_bp.route("/test_page", methods=["GET"])
 def testing_page():
     """Renders the page to test new components"""
 
