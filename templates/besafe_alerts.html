@@ -76,7 +76,9 @@
         <form name="save_alert_form{{ al.alert_id }}" id="save_alert_form{{ al.alert_id }}" action="/save_alert/{{ al.alert_id }}" onsubmit="event.preventDefault(); validateForm(save_alert_form{{ al.alert_id }})" method="POST" class="checkinForm">
 					<div class="tooltips" style="display: inline-block; max-width: 85%">
 
-						<b>Check In Name: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p></b>  <input type=textbox name='a_name' value='{{ al.a_name }}'></input><br>
+						<b>Check In Name: 
+							<!-- <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p></b>   -->
+							<input type=textbox name='a_name' value='{{ al.a_name }}'></input><br>
 						<span class="tooltiptext">What would you like to name this Check In?</span>
 
 					</div>
@@ -85,8 +87,8 @@
 						<b style="display:inline-block; vertical-align:top">
               Check In Details:
               <button data-toggle="popover" data-content="Where are you going and/or what are you doing that you might need this alert?" aria-describedby="tooltip">
-                <img src="../static/img/tooltip.png" style="height: 20px" alt="" />
-                <span class="sr-only">Where are you going and/or what are you doing that you might need this alert?</span>
+                <!-- <img src="../static/img/tooltip.png" style="height: 20px" alt="" />
+                <span class="sr-only">Where are you going and/or what are you doing that you might need this alert?</span> -->
             </b>
 						<textarea style="display:inline-block; max-width: 75%; width: 400px" name="descri" value='{{ al.message }}'></textarea>
 						<br>
@@ -94,7 +96,7 @@
 					</div>
 					<div class="tooltips">
 	          <b>Check In Time: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time" value='{{ al.time }}'></input><br>
-						<span class="tooltiptext">What time would you like the app to send an alert if you don't check-in by that time?</span>
+						<!-- <span class="tooltiptext">What time would you like the app to send an alert if you don't check-in by that time?</span> -->
 					</div>
 					<br>
 					<div class="tooltips">
