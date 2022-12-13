@@ -262,7 +262,9 @@ $(document).ready(function(){
         <form name="add_alert_form" id="add_alert_form" action="/add_alert" onsubmit="event.preventDefault(); validateForm(add_alert_form)" method="POST">
 					<div class="tooltips">
 
-						<b>Check In Name: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p></b>  <input type=textbox name='a_name'></input><br>
+						<b>Check In Name: 
+							<!-- <img src="../static/img/tooltip.png" style="height: 20px" alt="" />  -->
+							<p style="color:red; display:inline-block">*</p></b>  <input type=textbox name='a_name'></input><br>
 						<!-- <span class="tooltiptext">What would you like to name this Check In?</span> -->
 
 					</div>
@@ -271,7 +273,7 @@ $(document).ready(function(){
             <b style="display:inline-block; vertical-align:top">
               Check In Details:
               <button class="popoverButton" type="button" data-toggle="popover" title="Check In Details" data-content="Where are you going and/or what are you doing that you might need this alert?">
-                <img src="../static/img/tooltip.png" style="height: 20px" alt="" />
+                <!-- <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> -->
               </button>
             </b>
             <textarea style="display:inline-block; max-width: 75%; width: 400px" name="descri"></textarea>
@@ -287,13 +289,15 @@ $(document).ready(function(){
 					</div>
 					<br>
 					<div class="tooltips">
-	          <b>Contact(s): <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b>
+	          <b>Contact(s): 
+	          	<!-- <img src="../static/img/tooltip.png" style="height: 20px" alt="" />  -->
+	          	<p style="color:red; display:inline-block">*</p> </b>
 						{% for contact in contacts %}
 				    {% set contactloop = loop %}
 				    <input type="checkbox" name="contact" value="{{ contact.contact_id }}">{{ contact.name }} &nbsp &nbsp
 				    {% endfor %}
 						<br>
-						<span class="tooltiptext">Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)</span>
+						<!-- <span class="tooltiptext">Which contact(s) would you like to be alerted if you miss a check-in? (select up to 3)</span> -->
 					</div>
 					<button type="button" class="button-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
 					  Add/Edit Contacts
@@ -302,9 +306,9 @@ $(document).ready(function(){
 					<div class="tooltips">
             <b>Time Between Check Ins (in minutes):</b>
 	            <input type="number" name="interval" placeholder="120" min="45" max="1500"><br>
-							<span class="tooltiptext">
+						<!-- 	<span class="tooltiptext">
 							Leave blank for a one-time alert.
-							</span>
+							</span> -->
 					</div>
 	            <br>
             <button style="display: inline-block;" id="add_new_alert" type="submit">
