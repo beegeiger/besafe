@@ -86,7 +86,7 @@
 					<div class="tooltips">
 						<b style="display:inline-block; vertical-align:top">
               Check In Details:
-              <button data-toggle="popover" data-content="Where are you going and/or what are you doing that you might need this alert?" aria-describedby="tooltip">
+              <!-- <button data-toggle="popover" data-content="Where are you going and/or what are you doing that you might need this alert?" aria-describedby="tooltip"> -->
                 <!-- <img src="../static/img/tooltip.png" style="height: 20px" alt="" />
                 <span class="sr-only">Where are you going and/or what are you doing that you might need this alert?</span> -->
             </b>
@@ -95,12 +95,14 @@
 						<!-- <span class="tooltiptext">Where are you going and/or what are you doing that you might need this alert?</span> -->
 					</div>
 					<div class="tooltips">
-	          <b>Check In Time: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time" value='{{ al.time }}'></input><br>
+	          <!-- <b>Check In Time: <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b><input type="time" name="time" value='{{ al.time }}'></input><br> -->
 						<!-- <span class="tooltiptext">What time would you like the app to send an alert if you don't check-in by that time?</span> -->
 					</div>
 					<br>
 					<div class="tooltips">
-	          <b>Contact(s): <img src="../static/img/tooltip.png" style="height: 20px" alt="" /> <p style="color:red; display:inline-block">*</p> </b>
+	          <b>Contact(s): 
+	          	<!-- <img src="../static/img/tooltip.png" style="height: 20px" alt="" />  -->
+	          	<p style="color:red; display:inline-block">*</p> </b>
 	          {% for contact in contacts %}
 				    {% set contactloop = loop %}
 				    <input type="checkbox" name="contact" value="{{ contact.contact_id }}" {% if contact.contact_id == al.contact_id1 or contact.contact_id == al.contact_id2 or contact.contact_id == al.contact_id3%}checked{% endif %}>{{ contact.name }} &nbsp &nbsp
@@ -116,9 +118,9 @@
 					<div class="tooltips" style="max-width: 85%">
             <b>Time Between Check Ins (in minutes):</b>
 	            <input type="number" name="interval" placeholder="120" min="45" max="1500" value='{{ al.interval }}'><br>
-							<span class="tooltiptext">
+						<!-- 	<span class="tooltiptext">
 							Leave blank for a one-time alert.
-							</span>
+							</span> -->
 					</div>
 	            <br>
             <button id="save_al_submit{{ al.alert_id }}" type="submit" class="button-1">
