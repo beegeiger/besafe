@@ -16,6 +16,7 @@
 {% else %}
 <!--#########################################-->
 <!--In Progress Check-in Redesign-->
+<!--Already-Existing Scheduled Check Ins-->
 {% for al in alerts %}
 
 
@@ -254,6 +255,7 @@ $(document).ready(function(){
 </script>
 {% endfor %}
 <!--#########################################-->
+<!--New Scheduled Check Ins-->
 <div class="check-in-div hidden" id="alertDivnew" style="border-style: solid;">
 	<div id="all_content_new" class="unhide.fullWidth">
         {% if contacts|length < 1 %}
