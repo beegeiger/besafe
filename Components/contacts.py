@@ -48,13 +48,14 @@ def add_contact(modal = ""):
     db.session.commit()
 
     #If this is first time a contact is added, the user's timezone is also saved
-    if modal == "first":
-        timezone = request.form['tzim']
-        (db.session.query(User).filter(
-            User.user_id == user.user_id).update(
-                {'timezone': timezone}))
-        db.session.commit()
-        return redirect("/bs_alerts")
+    # print("MODAL: ", modal)
+    # if modal == "first":
+    #     timezone = request.form['tzim']
+    #     (db.session.query(User).filter(
+    #         User.user_id == user.user_id).update(
+    #             {'timezone': timezone}))
+    #     db.session.commit()
+    #     return redirect("/bs_alerts")
 
     #If the call came from a modal, it redirects them back to the same modal
     if modal == "modal":
