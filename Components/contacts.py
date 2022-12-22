@@ -48,14 +48,14 @@ def add_contact(modal = ""):
     db.session.commit()
 
     #If this is first time a contact is added, the user's timezone is also saved
-    # print("MODAL: ", modal)
-    # if modal == "first":
-    #     timezone = request.form['tzim']
-    #     (db.session.query(User).filter(
-    #         User.user_id == user.user_id).update(
-    #             {'timezone': timezone}))
-    #     db.session.commit()
-    #     return redirect("/bs_alerts")
+    print("MODAL: ", modal)
+    if modal == "first":
+        timezone = request.form['tzim']
+        (db.session.query(User).filter(
+            User.user_id == user.user_id).update(
+                {'timezone': timezone}))
+        db.session.commit()
+        return redirect("/bs_alerts")
 
     #If the call came from a modal, it redirects them back to the same modal
     if modal == "modal":
@@ -90,7 +90,7 @@ def delete_contact(contact_num, modal = ""):
 @contacts_bp.route("/edit_contact/<contact_num>/<modal>", methods=["POST"])
 def edit_contact(contact_num, modal = ""):
     """Edit's a contact's info"""
-    timezone = request.form['tzim']
+    # timezone = request.form['tzim']
     #Creates variables from the form on the contacts page
     name = request.form['name']
     phone = request.form['phone']
